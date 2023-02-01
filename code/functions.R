@@ -52,7 +52,7 @@ fix_names <- function(old_nm, new_nm) {
     base <- paste0(w[w != "hybrid"], "(.+)?$", collapse = "|")
     nm <- paste(new_nm, str_extract(old_nm, base))
   }
-  trimws( str_replace(nm, "\\s+", " ") )
+  trimws( str_replace_all(nm, "\\s+", " ") )
 }
 
 

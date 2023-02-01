@@ -1,8 +1,8 @@
 ## User inputs -------------------------------------------------------
 
 ask <- TRUE # ask for user input if multiple taxa match?
-save_to_gdrive <- FALSE
-year <- 2022 # if not defined will use current year
+save_to_gdrive <- TRUE
+# year <- 2022 # if not defined will use current year
 
 
 # database(s) to check against
@@ -155,7 +155,8 @@ taxonomy <- accepted_spp %>%
       !is.na(reason1) ~ reason1,
       is.na(db) & !grepl(rm_all, survey_name) &
         !is.na(survey_name) & !grepl("morphotype", common_name) ~ "nomen nudum",
-      survey_name != suggested_name ~ "synonym"
+      survey_name != suggested_name ~ "synonym",
+      TRUE ~ ""
     ),
     db_id = ifelse(grepl(paste0(rm_bits, "|sp\\. "), survey_name), NA, db_id),
     id_rank = ifelse(grepl("sp\\. ", survey_name), "species", id_rank)
