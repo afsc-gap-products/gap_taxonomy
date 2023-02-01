@@ -1,6 +1,15 @@
-# TO DO
-# make this into a package?
-# update names properly for things with rm_bits
+## User inputs -------------------------------------------------------
+
+ask <- TRUE # ask for user input if multiple taxa match?
+save_to_gdrive <- FALSE
+year <- 2022 # if not defined will use current year
+
+
+# database(s) to check against
+db <- "worms"
+db2 <- "itis" # optional backup db if not found in first db
+
+
 
 
 ## Loading libraries -------------------------------------------------------
@@ -22,15 +31,10 @@ for (p in pkg) {
 
 
 source("code/functions.R")
-ask <- TRUE # ask for user input if multiple taxa match?
 
 
-## Set reference databases ------------------------------------------
 
-# database to check against
-db <- "worms"
-db2 <- "itis" # optional backup db if not found in first db
-
+## check database status ------------------------------------------
 
 # make sure WORMS website is working properly before querying; it goes down not infrequently
 if (tolower(db) == "worms") {
@@ -41,7 +45,13 @@ if (tolower(db) == "worms") {
 
 
 ## Get this year's RACE species codes ------------------------------------------
-nm <- paste0("output/", format(Sys.Date(), "%Y"), "_race_species_codes.csv")
+
+if (!exists("year")) {
+  year <- format(Sys.Date(), "%Y")
+}
+
+nm <- paste0("data/", year, "_race_species_codes.csv")
+
 
 if (file.exists(nm)) {
   tmp <- read_csv(nm) %>%
@@ -56,9 +66,7 @@ if (file.exists(nm)) {
 }
 
 race_species <- tmp %>%
-  select(survey_name = species_name, species_code) %>%
-  filter(!is.na(survey_name))
-
+  select(survey_name = species_name, species_code, common_name)
 
 
 
@@ -66,25 +74,46 @@ race_species <- tmp %>%
 
 ## Updating/validating names -------------------------------------------------------
 
-if (!exists("db2")) db2 <- NA
-
 
 # clean up any names/inconsistencies in species list and check for typos
 fixed_spp <- race_species %>%
   mutate(
-    survey_name = str_to_sentence(gsub("_", " ", survey_name)),
-    fixed_name = map_chr(survey_name, check_spelling)
+    survey_name = gsub("_", " ", survey_name),
+    fixed_name = map_chr(survey_name, check_spelling),
+    reason1 = ifelse(survey_name != fixed_name & !grepl(rm_all, survey_name),
+      "misspelling", NA
+    )
   )
 
 
 
-# manually fixing typos that code doesn't catch; need to find a better solution
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Ciliatoclinocardium ciliatum")] <- "Ciliatocardium cilium"
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Tridonta rollandi")] <- "Astarte (Tridonta) rollandi"
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Cancer anthonyi")] <- "Metacarcinus anthonyi"
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Brada villosa")] <- "Bradabyssa villosa"
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Leptasterias truculenta")] <- "Leptasterias coei truculenta"
-fixed_spp$fixed_name[which(fixed_spp$survey_name == "Acoelida")] <- "Acoela"
+# manually fixing typos/issues that code doesn't catch; need to find a better solution
+fixed_spp <- fixed_spp %>%
+  mutate(fixed_name = case_when(
+    survey_name == "Ciliatoclinocardium ciliatum" ~ "Ciliatocardium cilium",
+    survey_name == "Tridonta rollandi" ~ "Astarte rollandi",
+    survey_name == "Cancer anthonyi" ~ "Metacarcinus anthonyi",
+    survey_name == "Brada villosa" ~ "Bradabyssa villosa",
+    survey_name == "Leptasterias truculenta" ~ "Leptasterias coei truculenta",
+    survey_name == "Acoelida" ~ "Acoela",
+    survey_name == "Buccinum transliratum" ~ "Buccinum angulosum transliratum",
+    survey_name == "Buccinum triplostephanum" ~ "Buccinum castaneum",
+    survey_name == "Buccinum moarchianum" ~ "Buccinum glaciale",
+    survey_name == "Bathybuccinum ovulum" ~ "Buccinum ovulum",
+    survey_name == "Geodinella lendenfeldi" ~ "Geodinella robusta",
+    survey_name == "Henricia aleutica" ~ "Henricia longispina aleutica",
+    survey_name == "Leptasterias katharinae" ~ "Leptasterias polaris katherinae",
+    survey_name == "Cyclopecten uschakovi" ~ "Parvamussium uschakovi",
+    survey_name == "Capulacmaea commoda" ~ "Piliscus commodus",
+    survey_name == "Poraniopsis flexilius" ~ "Poraniopsis inflata",
+    survey_name == "Escharopsis sarsi" ~ "Escharoides sarsi",
+    survey_name == "Hippoporina insculpta" ~ "Primavelans insculpta",
+    survey_name == "Solaster arcticus" ~ "Solaster dawsoni arcticus",
+    survey_name == "Stylocordyla eous" ~ "Stylocordyla borealis eous",
+    survey_name == "Ancistrolepis bicinctus" ~ "Ancistrolepis eucosmius",
+    survey_name == "Chlamys erythocomata" ~ "Chlamys islandica erythrocomata",
+    TRUE ~ fixed_name
+  ))
 
 
 
@@ -92,8 +121,12 @@ fixed_spp$fixed_name[which(fixed_spp$survey_name == "Acoelida")] <- "Acoela"
 ## Getting taxonomic info -------------------------------------------------------
 # THIS MAY TAKE A WHILE; also checks for accepted name
 accepted_spp <- fixed_spp %>%
-  mutate(tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
-         tax = map(tmp_name, ~ get_taxonomy(.x, db, db2, ask)))
+  arrange(survey_name) %>%
+  mutate(
+    tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
+    tax = purrr::map(tmp_name, ~ get_taxonomy(.x, db, db2, predefined_taxa = defined_tax))
+  )
+
 
 
 
@@ -101,57 +134,79 @@ accepted_spp <- fixed_spp %>%
 taxonomy <- accepted_spp %>%
   unnest(tax) %>%
   pivot_wider(names_from = rank, values_from = name) %>%
-  mutate( suggested_name = case_when(
-      grepl(paste0(rm_bits, "| cf."), survey_name) ~ survey_name,
+  mutate(suggested_name = map2_chr(
+    survey_name, accepted_name, # updates names of sp. with rm_bits
+    ~ if (grepl(rm_all, .x) & !is.na(.y)) {
+      fix_names(.x, .y)
+    } else {
+      NA
+    }
+  )) %>%
+  mutate(
+    suggested_name = case_when(
+      grepl("hybrid", survey_name) ~ survey_name,
+      !is.na(suggested_name) ~ suggested_name,
       is.na(accepted_name) & is.na(fixed_name) ~ survey_name,
       is.na(accepted_name) & !is.na(fixed_name) ~ fixed_name,
       !is.na(accepted_name) ~ accepted_name
     ),
-    db_id = ifelse(grepl(str_extract(rm_bits, " .+$"), survey_name), NA, db_id)
+    reason = case_when(
+      !is.na(reason2) ~ reason2,
+      !is.na(reason1) ~ reason1,
+      is.na(db) & !grepl(rm_all, survey_name) &
+        !is.na(survey_name) & !grepl("morphotype", common_name) ~ "nomen nudum",
+      survey_name != suggested_name ~ "synonym"
+    ),
+    db_id = ifelse(grepl(paste0(rm_bits, "|sp\\. "), survey_name), NA, db_id),
+    id_rank = ifelse(grepl("sp\\. ", survey_name), "species", id_rank)
   ) %>%
-  select(
-    survey_name, accepted_name, suggested_name,
-    species_code,
+  select(reason,
+    survey_name,
+    accepted_name = suggested_name,
+    common_name, species_code, id_rank,
     database = db, database_id = db_id,
     all_of(keep_ranks)
-  )
+  ) %>%
+  arrange(accepted_name)
 
+
+#write_csv(taxonomy, paste0("output/", year, "_taxonomy_updates.csv"))
 
 
 ## Checks -------------------------------------------------------
 
-
-filename <- paste0("output/", format(Sys.Date(), "%Y"), "_taxonomy_tocheck.csv")
-
-
-# name changes
-to_check <- taxonomy %>%
-  group_by(suggested_name) %>%
-  add_count() %>%
-  mutate(check = case_when(
-    n > 1 ~ "combining taxa",
-    survey_name != suggested_name & !grepl("sp.", survey_name) ~ "name change",
-    is.na(database) & !grepl("sp.", survey_name) ~ "taxon not found",
-    database == "ITIS" ~ "double check",
-    is.na(kingdom) | kingdom != "Animalia" ~ "fix taxonomy",
-    TRUE ~ ""
-  )) %>%
-  arrange(suggested_name) %>%
-  select(check, everything(), -n)
-
-write_csv(to_check, filename)
+if (save_to_gdrive) {
+  filename <- paste0("output/", year, "_taxonomy_tocheck.csv")
 
 
+  # name changes
+  to_check <- taxonomy %>%
+    group_by(accepted_name) %>%
+    add_count() %>%
+    mutate(check = case_when(
+      n > 1 & !is.na(survey_name) ~ "combining taxa",
+      survey_name != accepted_name ~ "name change",
+      !is.na(survey_name) & is.na(database) & !grepl(rm_all, survey_name) ~ "taxon not found",
+      database == "ITIS" ~ "double check",
+      TRUE ~ ""
+    )) %>%
+    arrange(accepted_name) %>%
+    select(check, everything(), -n)
 
-# authorize google drive
-googledrive::drive_deauth()
-googledrive::drive_auth()
-1
+  write_csv(to_check, filename)
 
 
-gpath <- "1j2jSCrjJim8RbinRLG2675mTv9xXJvqu" # path in google drive
-drive_upload(filename,
-  path = as_id(gpath),
-  type = "spreadsheet",
-  overwrite = FALSE
-)
+
+  # authorize google drive
+  googledrive::drive_deauth()
+  googledrive::drive_auth()
+  1
+
+
+  gpath <- "1j2jSCrjJim8RbinRLG2675mTv9xXJvqu" # path in google drive
+  drive_upload(filename,
+    path = as_id(gpath),
+    type = "spreadsheet",
+    overwrite = FALSE
+  )
+}
