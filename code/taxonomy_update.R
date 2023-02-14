@@ -36,10 +36,8 @@ source("code/functions.R")
 
 ## check database status ------------------------------------------
 
-# make sure WORMS website is working properly before querying; it goes down not infrequently
-if (tolower(db) == "worms") {
-  source("code/check_worms.R")
-}
+# make sure db website is working properly before querying; it goes down not infrequently
+source("code/check_db.R")
 
 
 
@@ -169,7 +167,6 @@ taxonomy <- accepted_spp %>%
     all_of(keep_ranks)
   ) %>%
   arrange(accepted_name)
-
 
 #write_csv(taxonomy, paste0("output/", year, "_taxonomy_updates.csv"))
 

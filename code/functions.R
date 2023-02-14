@@ -1,11 +1,15 @@
 # pre-defined taxa with multiple matches to avoid user prompts
 defined_tax <- tribble(
-  ~taxon, ~db_id,
-  "Clavularia", 125286,
-  "Selachii", 368408,
-  "Vulcanella", 170325,
-  "Ascidian", 1839
+  ~taxon, ~db_id, ~dbe,
+  "Clavularia", 125286, "worms",
+  "Selachii", 368408, "worms",
+  "Vulcanella", 170325, "worms",
+  "Ascidian", 1839, "worms",
+  "Ascidian", 158854, "itis",
+  "Acoelida", 914208, "itis",
+  "Hirudinea", 69290, "itis"
 )
+
 
 
 
@@ -52,7 +56,7 @@ fix_names <- function(old_nm, new_nm) {
     base <- paste0(w[w != "hybrid"], "(.+)?$", collapse = "|")
     nm <- paste(new_nm, str_extract(old_nm, base))
   }
-  trimws( str_replace_all(nm, "\\s+", " ") )
+  trimws(str_replace_all(nm, "\\s+", " "))
 }
 
 
@@ -195,9 +199,38 @@ wrms_syn <- function(species) {
 
 itis_syn <- function(species) {
   species <- str_remove(species, " sp\\.")
-  id <- as.integer(get_tsn(species, ask = FALSE, messages = FALSE))
-
   syn <- reason <- NA
+
+  tsn_df <- ritis::terms(species, what = "scientific")
+
+  if (nrow(tsn_df) > 1) {
+
+       tsn_df <- tsn_df %>%
+          filter(scientificName == species)
+      
+
+      if (any(tsn_df$nameUsage %in% c("valid", "accepted"))) {
+        tsn_df <- tsn_df %>% filter(nameUsage %in% c("valid", "accepted"))
+      }
+
+      if (nrow(tsn_df) > 1) { # ensuring only animal kingdom
+        tsn_df <- tsn_df %>%
+          mutate(tax = purrr::map2(scientificName, tsn, ~ get_classification(.x, .y, db))) %>%
+          unnest(cols = tax) %>%
+          select(-id) %>%
+          pivot_wider(names_from = rank, values_from = name) %>%
+          filter(kingdom == "Animalia")
+      }
+  }
+ 
+  if(nrow(tsn_df) > 0){
+    id <- tsn_df %>%
+      pluck("tsn") %>%
+      .[1] %>%
+      as.numeric()
+  } else {
+    id <- NA
+  }
 
   if (!is.na(id)) {
     tmp <- ritis::accepted_names(id)
@@ -225,11 +258,15 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
   message("\nRetrieving data for taxon '", species, "'\n")
 
   db <- tolower(db)
+  
+  if(!is.null(predefined_taxa)){
+    predefined_taxa <- predefined_taxa %>%
+      filter(dbe == db)
+  }
 
   # defining ID for problematic species with multiple db matches
-  if (!is.na(species) && !is.null(predefined_taxa) &&
-    grepl(rm_all, species) &
-    str_extract(species, "\\w+") %in% predefined_taxa$taxon) {
+  if (!is.na(species) && !is.null(predefined_taxa) && species %in% predefined_taxa$taxon |
+    grepl(rm_all, species) && str_extract(species, "\\w+") %in% predefined_taxa$taxon) {
     id <- predefined_taxa %>%
       filter(taxon == str_extract(species, "\\w+")) %>%
       pluck("db_id") %>%
@@ -248,16 +285,25 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
       # if no success with database 1, try database 2
       if (is.na(ll$id) & !is.na(db2)) {
         db <- tolower(db2)
-        if (tolower(db) == "wrms") ll <- wrms_syn(species)
+        if (tolower(db) == "worms") ll <- wrms_syn(species)
         if (tolower(db) == "itis") ll <- itis_syn(species)
       }
 
-      # if synonym found in database 2, try using those results to re-search WORMS again
+
+      # if synonym found in database 2, try using those results to re-search db1 again
       if (!is.na(db2) && tolower(db2) == tolower(db) & !is.na(ll$syn)) {
-        ll2 <- wrms_syn(ll$syn)
-        if (!is.na(ll2$syn)) {
-          ll <- ll2
-          db <- "worms"
+        if (tolower(db2) != "worms") {
+          ll2 <- wrms_syn(ll$syn)
+          if (!is.na(ll2$syn)) {
+            ll <- ll2
+            db <- "worms"
+          }
+        } else {
+          ll2 <- itis_syn(ll$syn)
+          if (!is.na(ll2$syn)) {
+            ll <- ll2
+            db <- "itis"
+          }
         }
       }
 

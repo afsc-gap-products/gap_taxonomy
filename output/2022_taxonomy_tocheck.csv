@@ -85,7 +85,7 @@ combining taxa,synonym,Calliostoma titanium,Akoya platinum,NA,72513,species,WORM
 name change,synonym,Amauropsis purpurea,Amauropsis islandica,purple moon snail,71520,species,WORMS,140521,Amauropsis,Polinicinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Amblyosyllis sp.,Amblyosyllis sp.,NA,54015,genus,WORMS,129645,Amblyosyllis,Eusyllinae,Syllidae,NA,Nereidiformia,Phyllodocida,NA,Errantia,Polychaeta,NA,NA,Annelida,Animalia
 name change,synonym,Raja badia,Amblyraja hyperborea,roughshoulder skate,445,species,WORMS,105863,Amblyraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Raja badia egg case,Amblyraja hyperborea  egg case,roughshoulder skate egg case,446,species,WORMS,NA,Amblyraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+name change,synonym,Raja badia egg case,Amblyraja hyperborea egg case,roughshoulder skate egg case,446,species,WORMS,NA,Amblyraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 name change,synonym,Tellina carpenteri,Ameritella carpenteri,carpenter tellin,75202,species,WORMS,878479,Ameritella,Tellininae,Tellinidae,Tellinoidea,NA,Cardiida,Imparidentia,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
 name change,synonym,Tellina modesta,Ameritella modesta,NA,75204,species,WORMS,878514,Ameritella,Tellininae,Tellinidae,Tellinoidea,NA,Cardiida,Imparidentia,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
 ,,Amicula vestita,Amicula vestita,NA,70115,species,WORMS,159928,Amicula,Mopaliinae,Mopaliidae,Mopalioidea,Acanthochitonina,Chitonida,NA,Neoloricata,Polyplacophora,NA,NA,Mollusca,Animalia
@@ -178,7 +178,7 @@ name change,synonym,Aplidium n. sp. A,Aplidium sp. A,orange Aplidium,98311,speci
 ,,Apostichopus japonicus,Apostichopus japonicus,NA,85205,species,WORMS,241776,Apostichopus,NA,Stichopodidae,NA,NA,Synallactida,NA,Actinopoda,Holothuroidea,NA,Echinozoa,Echinodermata,Animalia
 ,,Apostichopus leukothele,Apostichopus leukothele,giant orange cucumber,85016,species,WORMS,529431,Apostichopus,NA,Stichopodidae,NA,NA,Synallactida,NA,Actinopoda,Holothuroidea,NA,Echinozoa,Echinodermata,Animalia
 ,,Apristurus brunneus,Apristurus brunneus,brown cat shark,210,species,WORMS,158512,Apristurus,NA,Pentanchidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Apristurus brunneus egg case,Apristurus brunneus  egg case,brown cat shark egg case,201,species,WORMS,NA,Apristurus,NA,Pentanchidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Apristurus brunneus egg case,Apristurus brunneus egg case,brown cat shark egg case,201,species,WORMS,NA,Apristurus,NA,Pentanchidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Apristurus kampae,Apristurus kampae,longnose cat shark,212,species,WORMS,271342,Apristurus,NA,Pentanchidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Apristurus sp.,Apristurus sp.,NA,213,genus,WORMS,105727,Apristurus,NA,Pentanchidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Aptocyclus ventricosus,Aptocyclus ventricosus,smooth lumpsucker,22175,species,WORMS,254299,Aptocyclus,NA,Cyclopteridae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
@@ -193,7 +193,7 @@ name change,synonym,Arctomelon borealis,Arctomelon boreale,NA,72791,species,WORM
 ,,Arctomelon tamikoae,Arctomelon tamikoae,NA,72792,species,WORMS,384684,Arctomelon,Cymbiinae,Volutidae,Volutoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Arctonoe vittata,Arctonoe vittata,red-banded commensal scale worm,50301,species,WORMS,254301,Arctonoe,Arctonoinae,Polynoidae,NA,Aphroditiformia,Phyllodocida,NA,Errantia,Polychaeta,NA,NA,Annelida,Animalia
 name change,synonym,Bathyraja parmifera,Arctoraja parmifera,Alaska skate,471,species,WORMS,1577324,Arctoraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja parmifera egg case,Arctoraja parmifera  egg case,Alaska skate egg case,474,species,WORMS,NA,Arctoraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+name change,synonym,Bathyraja parmifera egg case,Arctoraja parmifera egg case,Alaska skate egg case,474,species,WORMS,NA,Arctoraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Arctozenus risso,Arctozenus risso,ribbon barracudina,22956,species,WORMS,126352,Arctozenus,NA,Paralepididae,NA,NA,Aulopiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Arcturidae,Arcturidae,NA,62001,family,WORMS,118280,NA,NA,Arcturidae,NA,Valvifera,Isopoda,Peracarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Arcturus longispinis,Arcturus longispinis,NA,62003,species,WORMS,257288,Arcturus,NA,Arcturidae,NA,Valvifera,Isopoda,Peracarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
@@ -342,29 +342,29 @@ name change,synonym,Halipteris willemoesi,Balticina willemoesi,NA,42012,species,
 ,,Bathyplotes sp.,Bathyplotes sp.,NA,85180,genus,WORMS,123460,Bathyplotes,NA,Synallactidae,NA,NA,Synallactida,NA,Actinopoda,Holothuroidea,NA,Echinozoa,Echinodermata,Animalia
 name change,synonym,Benthoctopus sp.,Bathypolypus sp.,NA,78452,genus,WORMS,138265,Bathypolypus,NA,Bathypolypodidae,Octopodoidea,Incirrata,Octopoda,Octopodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
 ,,Bathyraja abyssicola,Bathyraja abyssicola,deepsea skate,410,species,WORMS,271503,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja abyssicola egg case,Bathyraja abyssicola  egg case,deepsea skate egg case,411,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja abyssicola egg case,Bathyraja abyssicola egg case,deepsea skate egg case,411,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja aleutica,Bathyraja aleutica,Aleutian skate,472,species,WORMS,271506,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja aleutica egg case,Bathyraja aleutica  egg case,Aleutian skate egg case,473,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja aleutica egg case,Bathyraja aleutica egg case,Aleutian skate egg case,473,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja interrupta,Bathyraja interrupta,Bering skate,435,species,WORMS,271515,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja interrupta egg case,Bathyraja interrupta  egg case,Bering skate egg case,436,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja interrupta egg case,Bathyraja interrupta egg case,Bering skate egg case,436,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja lindbergi,Bathyraja lindbergi,Commander skate,475,species,WORMS,271517,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja lindbergi egg case,Bathyraja lindbergi  egg case,Commander skate egg case,476,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja lindbergi egg case,Bathyraja lindbergi egg case,Commander skate egg case,476,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja maculata,Bathyraja maculata,whiteblotched skate,480,species,WORMS,271520,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja maculata egg case,Bathyraja maculata  egg case,whiteblotched skate egg case,481,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja maculata egg case,Bathyraja maculata egg case,whiteblotched skate egg case,481,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja mariposa,Bathyraja mariposa,butterfly skate,483,species,WORMS,271522,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja mariposa egg case,Bathyraja mariposa  egg case,butterfly skate egg case,484,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja mariposa egg case,Bathyraja mariposa egg case,butterfly skate egg case,484,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja minispinosa,Bathyraja minispinosa,whitebrow skate,485,species,WORMS,271524,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja minispinosa egg case,Bathyraja minispinosa  egg case,whitebrow skate egg case,486,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja minispinosa egg case,Bathyraja minispinosa egg case,whitebrow skate egg case,486,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja panthera,Bathyraja panthera,leopard skate,477,species,WORMS,712390,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja panthera egg case,Bathyraja panthera  egg case,leopard skate egg case,478,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja panthera egg case,Bathyraja panthera egg case,leopard skate egg case,478,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja smirnovi,Bathyraja smirnovi,golden skate,490,species,WORMS,271535,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja sp.,Bathyraja sp.,NA,405,genus,WORMS,105761,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja sp. egg case,Bathyraja sp. egg case,Bathyraja sp. egg case,402,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja spinosissima,Bathyraja spinosissima,white skate,406,species,WORMS,271536,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja taranetzi,Bathyraja taranetzi,mud skate,455,species,WORMS,298834,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja taranetzi egg case,Bathyraja taranetzi  egg case,mud skate egg case,456,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja taranetzi egg case,Bathyraja taranetzi egg case,mud skate egg case,456,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja trachura,Bathyraja trachura,roughtail skate,460,species,WORMS,271538,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Bathyraja trachura egg case,Bathyraja trachura  egg case,roughtail skate egg case,461,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Bathyraja trachura egg case,Bathyraja trachura egg case,roughtail skate egg case,461,species,WORMS,NA,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Bathyraja violacea,Bathyraja violacea,Okhotsk skate,495,species,WORMS,271540,Bathyraja,NA,Arhynchobatidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Batrachoididae,Batrachoididae,toadfishes,20803,family,WORMS,125450,NA,NA,Batrachoididae,NA,NA,Batrachoidiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 name change,synonym,Leptochiton alveolus,Belknapchiton alveolus,NA,70125,species,WORMS,1610477,Belknapchiton,NA,Leptochitonidae,NA,Lepidopleurina,Lepidopleurida,NA,Neoloricata,Polyplacophora,NA,NA,Mollusca,Animalia
@@ -381,7 +381,7 @@ name change,misspelling,Beringius behringi,Beringius behringii,Bering beringius,
 ,,Beringius eyerdami,Beringius eyerdami,NA,71780,species,WORMS,490763,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 combining taxa,synonym,Beringius incisus,Beringius kennicottii,NA,71781,species,WORMS,580830,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 combining taxa,,Beringius kennicottii,Beringius kennicottii,NA,71770,species,WORMS,580830,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-taxon not found,nomen nudum,Beringius rotundus,Beringius rotundus,rotund whelk,71787,NA,NA,NA,Beringius,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
+taxon not found,,Beringius rotundus,Beringius rotundus,rotund whelk,71787,NA,NA,NA,Beringius,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Beringius sp.,Beringius sp.,NA,71769,genus,WORMS,137699,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Beringius sp. A (McLean and Clark),Beringius sp. A (McLean and Clark),Baxter Beringius,71778,species,WORMS,NA,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Beringius sp. B (McLean and Clark),Beringius sp. B (McLean and Clark),two-channeled Beringius,71779,species,WORMS,NA,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -398,10 +398,10 @@ taxon not found,nomen nudum,Beringius rotundus,Beringius rotundus,rotund whelk,7
 ,,Beringius stimpsoni,Beringius stimpsoni,NA,71774,species,WORMS,490767,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Beringius undatus,Beringius undatus,NA,71776,species,WORMS,490768,Beringius,Beringiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Beringraja binoculata,Beringraja binoculata,big skate,420,species,WORMS,1021330,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Beringraja binoculata egg case,Beringraja binoculata  egg case,big skate egg case,421,species,WORMS,NA,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+,,Beringraja binoculata egg case,Beringraja binoculata egg case,big skate egg case,421,species,WORMS,NA,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 name change,synonym,Raja inornata,Beringraja inornata,California skate,425,species,WORMS,1461134,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 name change,synonym,Raja rhina,Beringraja rhina,longnose skate,440,species,WORMS,1461133,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Raja rhina egg case,Beringraja rhina  egg case,longnose skate egg case,441,species,WORMS,NA,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
+name change,synonym,Raja rhina egg case,Beringraja rhina egg case,longnose skate egg case,441,species,WORMS,NA,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 name change,synonym,Raja stellulata,Beringraja stellulata,starry skate,450,species,WORMS,1461135,Beringraja,NA,Rajidae,NA,NA,Rajiformes,NA,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Beroe abyssicola,Beroe abyssicola,NA,45010,species,WORMS,265150,Beroe,NA,Beroidae,NA,NA,Beroida,NA,NA,Nuda,NA,NA,Ctenophora,Animalia
 ,,Beroe sp.,Beroe sp.,NA,45005,genus,WORMS,1434803,Beroe,NA,Beroidae,NA,NA,Beroida,NA,NA,Nuda,NA,NA,Ctenophora,Animalia
@@ -436,7 +436,7 @@ name change,synonym,Scabrotrophon kamchatkanus,Boreotrophon kamchatkanus,Kamchat
 ,,Borostomias panamensis,Borostomias panamensis,NA,22450,species,WORMS,275052,Borostomias,Astronesthinae,Stomiidae,NA,NA,Stomiiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Bothidae,Bothidae,lefteye flounder unid.,10003,family,WORMS,125576,NA,NA,Bothidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Bothrocara brunneum,Bothrocara brunneum,twoline eelpout,24110,species,WORMS,279397,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Bothrocara brunneum (juvenile),Bothrocara brunneum  (juvenile),twoline eelpout (juvenile),24116,species,WORMS,NA,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Bothrocara brunneum (juvenile),Bothrocara brunneum (juvenile),twoline eelpout (juvenile),24116,species,WORMS,NA,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Bothrocara hollandi,Bothrocara hollandi,Japan-sea eelpout,24115,species,WORMS,279399,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Bothrocara molle,Bothrocara molle,soft eelpout,24120,species,WORMS,234593,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Bothrocara nyx,Bothrocara nyx,shadow eelpout,24114,species,WORMS,254582,Bothrocara,Lycodinae,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
@@ -786,7 +786,7 @@ combining taxa,,Cryptonatica affinis,Cryptonatica affinis,Arctic moonsnail,71526
 combining taxa,synonym,Natica clausa,Cryptonatica affinis,NA,71530,species,WORMS,140525,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Cryptonatica aleutica,Cryptonatica aleutica,Aleutian moonsnail,71535,species,WORMS,576533,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Cryptonatica russa,Cryptonatica russa,rusty moonsnail,71537,species,WORMS,580692,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Natica russa egg,Cryptonatica russa  egg,NA,71512,species,WORMS,NA,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+name change,synonym,Natica russa egg,Cryptonatica russa egg,NA,71512,species,WORMS,NA,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Cryptonatica sp.,Cryptonatica sp.,NA,71524,genus,WORMS,138238,Cryptonatica,Naticinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Cryptopsaras couesii,Cryptopsaras couesii,triplewart seadevil,20981,species,WORMS,126538,Cryptopsaras,NA,Ceratiidae,NA,NA,Lophiiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Crystallichthys cyclospilus,Crystallichthys cyclospilus,blotched snailfish,22206,species,WORMS,280451,Crystallichthys,NA,Liparidae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
@@ -894,8 +894,8 @@ name change,synonym,Lopholithodes sp.,Echidnocerus sp.,box crab unid.,69260,genu
 ,,Elassodiscus sp.,Elassodiscus sp.,NA,22214,genus,WORMS,269048,Elassodiscus,NA,Liparidae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Elassodiscus tremebundus,Elassodiscus tremebundus,blacklip snailfish,22216,species,WORMS,280631,Elassodiscus,NA,Liparidae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Eleginus gracilis,Eleginus gracilis,saffron cod,21735,species,WORMS,254537,Eleginus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Eleginus gracilis (juvenile),Eleginus gracilis  (juvenile),saffron cod (juvenile),21736,species,WORMS,NA,Eleginus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Eleginus gracilis (adult),Eleginus gracilis (adult),saffron cod (adult),21737,species,WORMS,NA,Eleginus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Eleginus gracilis (juvenile),Eleginus gracilis (juvenile),saffron cod (juvenile),21736,species,WORMS,NA,Eleginus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Embiotoca lateralis,Embiotoca lateralis,striped surfperch,21506,species,WORMS,240740,Embiotoca,NA,Embiotocidae,NA,NA,Ovalentaria incertae sedis,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Embiotocidae,Embiotocidae,surfperch unid.,21500,family,WORMS,151386,NA,NA,Embiotocidae,NA,NA,Ovalentaria incertae sedis,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Emplectonema sp.,Emplectonema sp.,NA,92502,genus,WORMS,122404,Emplectonema,NA,Emplectonematidae,NA,Eumonostilifera,Monostilifera,NA,NA,Hoplonemertea,NA,NA,Nemertea,Animalia
@@ -988,7 +988,7 @@ name change,synonym,Lunatia pallida,Euspira pallida,pale moonsnail,71580,species
 ,,Flabellinidae,Flabellinidae,NA,71112,family,WORMS,190,NA,NA,Flabellinidae,Aeolidioidea,Cladobranchia,Nudibranchia,Nudipleura,Heterobranchia,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Flabellum sp. A (Clark 2006),Flabellum sp. A (Clark 2006),tan trumpet coral,44005,species,WORMS,NA,Flabellum,NA,Flabellidae,NA,NA,Scleractinia,NA,Hexacorallia,Anthozoa,NA,NA,Cnidaria,Animalia
 ,,Flagellostomias boureei,Flagellostomias boureei,NA,22401,species,WORMS,127351,Flagellostomias,Melanostomiinae,Stomiidae,NA,NA,Stomiiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-taxon not found,nomen nudum,Florometra acririma,Florometra acririma,NA,82761,NA,NA,NA,Florometra,NA,Antedonidae,NA,Macrophreata,Comatulida,NA,Articulata,Crinoidea,NA,Crinozoa,Echinodermata,Animalia
+taxon not found,,Florometra acririma,Florometra acririma,NA,82761,NA,NA,NA,Florometra,NA,Antedonidae,NA,Macrophreata,Comatulida,NA,Articulata,Crinoidea,NA,Crinozoa,Echinodermata,Animalia
 combining taxa,,Florometra asperrima,Florometra asperrima,common northern feather star,82771,species,WORMS,714293,Florometra,Heliometrinae,Antedonidae,Antedonoidea,NA,Comatulida,NA,Articulata,Crinoidea,NA,Crinozoa,Echinodermata,Animalia
 combining taxa,synonym,Florometra inexpectata,Florometra asperrima,NA,82765,species,WORMS,714293,Florometra,Heliometrinae,Antedonidae,Antedonoidea,NA,Comatulida,NA,Articulata,Crinoidea,NA,Crinozoa,Echinodermata,Animalia
 ,,Florometra serratissima,Florometra serratissima,featherstar crinoid,82770,species,WORMS,714272,Florometra,Heliometrinae,Antedonidae,Antedonoidea,NA,Comatulida,NA,Articulata,Crinoidea,NA,Crinozoa,Echinodermata,Animalia
@@ -996,17 +996,17 @@ combining taxa,synonym,Florometra inexpectata,Florometra asperrima,NA,82765,spec
 ,,Flustrellidra corniculata,Flustrellidra corniculata,NA,95035,species,WORMS,111620,Flustrellidra,NA,Flustrellidridae,Flustrellidroidea,Flustrellidrina,Ctenostomatida,NA,NA,Gymnolaemata,NA,NA,Bryozoa,Animalia
 ,,Frieleia halli,Frieleia halli,Hall lamp shell,97111,species,WORMS,235423,Frieleia,Frieleiinae,Frieleiidae,Norelloidea,NA,Rhynchonellida,NA,NA,Rhynchonellata,NA,Rhynchonelliformea,Brachiopoda,Animalia
 ,,Fusitriton oregonensis,Fusitriton oregonensis,Oregon triton,72500,species,WORMS,476496,Fusitriton,NA,Cymatiidae,Tonnoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Fusitriton oregonensis egg,Fusitriton oregonensis  egg,NA,71003,species,WORMS,NA,Fusitriton,NA,Cymatiidae,Tonnoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+,,Fusitriton oregonensis egg,Fusitriton oregonensis egg,NA,71003,species,WORMS,NA,Fusitriton,NA,Cymatiidae,Tonnoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Fusitriton sp.,Fusitriton sp.,NA,72501,genus,WORMS,390535,Fusitriton,NA,Cymatiidae,Tonnoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Gadidae,Gadidae,cod unid.,21705,family,WORMS,125469,NA,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Gadilidae,Gadilidae,NA,77015,family,WORMS,435,NA,NA,Gadilidae,NA,Gadilimorpha,Gadilida,NA,NA,Scaphopoda,NA,NA,Mollusca,Animalia
 ,,Gadus chalcogrammus,Gadus chalcogrammus,walleye pollock,21740,species,WORMS,300735,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Gadus chalcogrammus (juvenile),Gadus chalcogrammus  (juvenile),walleye pollock (juvenile),21741,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Gadus chalcogrammus larva,Gadus chalcogrammus  larva,walleye pollock larva,21744,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Gadus chalcogrammus (adult),Gadus chalcogrammus (adult),walleye pollock (adult),21742,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Gadus chalcogrammus (juvenile),Gadus chalcogrammus (juvenile),walleye pollock (juvenile),21741,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Gadus chalcogrammus larva,Gadus chalcogrammus larva,walleye pollock larva,21744,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Gadus macrocephalus,Gadus macrocephalus,Pacific cod,21720,species,WORMS,254538,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Gadus macrocephalus (juvenile),Gadus macrocephalus  (juvenile),Pacific cod (juvenile),21721,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Gadus macrocephalus (adult),Gadus macrocephalus (adult),Pacific cod (adult),21722,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Gadus macrocephalus (juvenile),Gadus macrocephalus (juvenile),Pacific cod (juvenile),21721,species,WORMS,NA,Gadus,NA,Gadidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Galatheidae,Galatheidae,galatheid crab unid.,69550,family,WORMS,106733,NA,NA,Galatheidae,Galatheoidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Galeorhinus galeus,Galeorhinus galeus,soupfin shark,332,species,WORMS,105820,Galeorhinus,Galeorhininae,Triakidae,NA,NA,Carcharhiniformes,Galeomorphi,Neoselachii,Elasmobranchii,NA,Vertebrata,Chordata,Animalia
 ,,Galiteuthis phyllura,Galiteuthis phyllura,NA,79340,species,WORMS,341807,Galiteuthis,Taoniinae,Cranchiidae,Cranchioidea,NA,Oegopsida,Decapodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
@@ -1042,7 +1042,7 @@ combining taxa,,Glycymeris septentrionalis,Glycymeris septentrionalis,NA,74485,s
 combining taxa,synonym,Glycymeris subobsoleta,Glycymeris septentrionalis,California bittersweet,74486,species,WORMS,504512,Glycymeris,NA,Glycymerididae,Arcoidea,NA,Arcida,NA,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
 ,,Glycymeris sp.,Glycymeris sp.,bittersweets,75235,genus,WORMS,138035,Glycymeris,NA,Glycymerididae,Arcoidea,NA,Arcida,NA,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
 ,,Glyptocephalus zachirus,Glyptocephalus zachirus,rex sole,10200,species,WORMS,274287,Glyptocephalus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Glyptocephalus zachirus larvae,Glyptocephalus zachirus  larvae,rex sole larvae,10201,species,WORMS,NA,Glyptocephalus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Glyptocephalus zachirus larvae,Glyptocephalus zachirus larvae,rex sole larvae,10201,species,WORMS,NA,Glyptocephalus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Gnorimosphaeroma sp.,Gnorimosphaeroma sp.,pill bug isopod,62015,genus,WORMS,248784,Gnorimosphaeroma,NA,Sphaeromatidae,Sphaeromatoidea,Sphaeromatidea,Isopoda,Peracarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Gobiidae,Gobiidae,goby unid.,21770,family,WORMS,125537,NA,NA,Gobiidae,NA,NA,Gobiiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Golfingia margaritacea,Golfingia margaritacea,NA,94001,species,WORMS,175027,Golfingia,NA,Golfingiidae,NA,NA,Sipuncula,NA,NA,NA,NA,NA,Annelida,Animalia
@@ -1119,7 +1119,7 @@ name change,synonym,Colossendeis dofleini,Hedgpethia dofleini,NA,69911,species,W
 name change,misspelling,Hemithyrididae,Hemithirididae,hemithyrid brachiopods,97010,family,WORMS,104027,NA,NA,Hemithirididae,Hemithiridoidea,NA,Rhynchonellida,NA,NA,Rhynchonellata,NA,Rhynchonelliformea,Brachiopoda,Animalia
 ,,Hemithiris psittacea,Hemithiris psittacea,black brachiopod,97120,species,WORMS,104054,Hemithiris,NA,Hemithirididae,Hemithiridoidea,NA,Rhynchonellida,NA,NA,Rhynchonellata,NA,Rhynchonelliformea,Brachiopoda,Animalia
 ,,Hemitripterus bolini,Hemitripterus bolini,bigmouth sculpin,21420,species,WORMS,254541,Hemitripterus,NA,Hemitripteridae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Hemitripterus bolini egg,Hemitripterus bolini  egg,bigmouth sculpin egg,21422,species,WORMS,NA,Hemitripterus,NA,Hemitripteridae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Hemitripterus bolini egg,Hemitripterus bolini egg,bigmouth sculpin egg,21422,species,WORMS,NA,Hemitripterus,NA,Hemitripteridae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hemitripterus villosus,Hemitripterus villosus,sea raven,21421,species,WORMS,276257,Hemitripterus,NA,Hemitripteridae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Henricia aspera,Henricia aspera,ridged blood star,80543,species,WORMS,369100,Henricia,NA,Echinasteridae,NA,NA,Spinulosida,Spinulosacea,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
 ,,Henricia asthenactis,Henricia asthenactis,NA,80547,species,WORMS,369103,Henricia,NA,Echinasteridae,NA,NA,Spinulosida,Spinulosacea,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
@@ -1181,10 +1181,10 @@ combining taxa,Synonym according to Mah et al. (2014),Hippasteria phrygiana (=sp
 ,,Hippoglossina stomata,Hippoglossina stomata,bigmouth sole,10041,species,WORMS,275827,Hippoglossina,NA,Paralichthyidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hippoglossoides elassodon,Hippoglossoides elassodon,flathead sole,10130,species,WORMS,274289,Hippoglossoides,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hippoglossoides robustus,Hippoglossoides robustus,Bering flounder,10140,species,WORMS,254561,Hippoglossoides,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Hippoglossoides robustus (juvenile),Hippoglossoides robustus  (juvenile),Bering flounder (juvenile),10141,species,WORMS,NA,Hippoglossoides,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Hippoglossoides robustus (juvenile),Hippoglossoides robustus (juvenile),Bering flounder (juvenile),10141,species,WORMS,NA,Hippoglossoides,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hippoglossoides sp.,Hippoglossoides sp.,NA,10129,genus,WORMS,126115,Hippoglossoides,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hippoglossus stenolepis,Hippoglossus stenolepis,Pacific halibut,10120,species,WORMS,274290,Hippoglossus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Hippoglossus stenolepis (juvenile),Hippoglossus stenolepis  (juvenile),Pacific halibut (juvenile),10121,species,WORMS,NA,Hippoglossus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Hippoglossus stenolepis (juvenile),Hippoglossus stenolepis (juvenile),Pacific halibut (juvenile),10121,species,WORMS,NA,Hippoglossus,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hippolytidae,Hippolytidae,hippolytid shrimp unid.,66150,family,WORMS,106777,NA,NA,Hippolytidae,Alpheoidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Hirudinea,Hirudinea,leech unid.,59100,subclass,WORMS,2041,NA,NA,NA,NA,NA,NA,NA,Hirudinea,Clitellata,NA,NA,Annelida,Animalia
 ,,Histioteuthis heteropsis,Histioteuthis heteropsis,NA,79510,species,WORMS,341868,Histioteuthis,NA,Histioteuthidae,[unassigned] Oegopsida,NA,Oegopsida,Decapodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
@@ -1204,7 +1204,7 @@ name change,synonym,Hippoglossus stenolepis (juvenile),Hippoglossus stenolepis  
 ,,Hydractinia sp.,Hydractinia sp.,NA,40020,genus,WORMS,117117,Hydractinia,NA,Hydractiniidae,NA,Filifera,Anthoathecata,NA,Hydroidolina,Hydrozoa,NA,NA,Cnidaria,Animalia
 ,,Hydroidolina,Hydroidolina,hydroid unid.,40011,subclass,WORMS,19494,NA,NA,NA,NA,NA,NA,NA,Hydroidolina,Hydrozoa,NA,NA,Cnidaria,Animalia
 ,,Hydrolagus colliei,Hydrolagus colliei,spotted ratfish,710,species,WORMS,271406,Hydrolagus,NA,Chimaeridae,NA,NA,Chimaeriformes,NA,NA,Holocephali,NA,Vertebrata,Chordata,Animalia
-name change,synonym,Hydrolagus colliei egg case,Hydrolagus colliei  egg case,spotted ratfish egg case,711,species,WORMS,NA,Hydrolagus,NA,Chimaeridae,NA,NA,Chimaeriformes,NA,NA,Holocephali,NA,Vertebrata,Chordata,Animalia
+,,Hydrolagus colliei egg case,Hydrolagus colliei egg case,spotted ratfish egg case,711,species,WORMS,NA,Hydrolagus,NA,Chimaeridae,NA,NA,Chimaeriformes,NA,NA,Holocephali,NA,Vertebrata,Chordata,Animalia
 ,,Hydrozoa,Hydrozoa,NA,40010,class,WORMS,1337,NA,NA,NA,NA,NA,NA,NA,NA,Hydrozoa,NA,NA,Cnidaria,Animalia
 ,,Hygophum reinhardtii,Hygophum reinhardtii,slender lanternfish,22640,species,WORMS,126604,Hygophum,NA,Myctophidae,NA,NA,Myctophiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Hymenaster sp.,Hymenaster sp.,pancake star,81365,genus,WORMS,123333,Hymenaster,NA,Pterasteridae,NA,NA,Velatida,NA,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
@@ -1315,7 +1315,7 @@ name change,synonym,Eunice valens,Leodice valens,iridescent tubeworm,50005,speci
 ,,Lepidisis sp.,Lepidisis sp.,NA,44110,genus,WORMS,125307,Lepidisis,Keratoisidinae,Keratoisididae,NA,NA,Scleralcyonacea,NA,Octocorallia,Anthozoa,NA,NA,Cnidaria,Animalia
 ,,Lepidopsetta bilineata,Lepidopsetta bilineata,southern rock sole,10262,species,WORMS,281305,Lepidopsetta,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Lepidopsetta polyxystra,Lepidopsetta polyxystra,northern rock sole,10261,species,WORMS,281307,Lepidopsetta,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Lepidopsetta polyxystra (juvenile),Lepidopsetta polyxystra  (juvenile),northern rock sole (juvenile),10263,species,WORMS,NA,Lepidopsetta,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Lepidopsetta polyxystra (juvenile),Lepidopsetta polyxystra (juvenile),northern rock sole (juvenile),10263,species,WORMS,NA,Lepidopsetta,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Lepidopsetta sp.,Lepidopsetta sp.,rock sole unid.,10260,genus,WORMS,269638,Lepidopsetta,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Lepidopus fitchi,Lepidopus fitchi,scabbardfish,23945,species,WORMS,274018,Lepidopus,Lepidopodinae,Trichiuridae,NA,NA,Scombriformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Lepidozona retiporosa,Lepidozona retiporosa,NA,70114,species,WORMS,386053,Lepidozona,NA,Ischnochitonidae,Chitonoidea,Chitonina,Chitonida,NA,Neoloricata,Polyplacophora,NA,NA,Mollusca,Animalia
@@ -1364,7 +1364,7 @@ name change,misspelling,Lillipathes lilliei,Lillipathes lillei,NA,41551,species,
 ,,Lillipathes sp. A (Clark 2006),Lillipathes sp. A (Clark 2006),NA,41552,species,WORMS,NA,Lillipathes,NA,Schizopathidae,NA,NA,Antipatharia,NA,Hexacorallia,Anthozoa,NA,NA,Cnidaria,Animalia
 ,,Lillipathes sp. B (Clark 2006),Lillipathes sp. B (Clark 2006),NA,41553,species,WORMS,NA,Lillipathes,NA,Schizopathidae,NA,NA,Antipatharia,NA,Hexacorallia,Anthozoa,NA,NA,Cnidaria,Animalia
 ,,Limanda aspera,Limanda aspera,yellowfin sole,10210,species,WORMS,254562,Limanda,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Limanda aspera (juvenile),Limanda aspera  (juvenile),yellowfin sole (juvenile),10209,species,WORMS,NA,Limanda,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Limanda aspera (juvenile),Limanda aspera (juvenile),yellowfin sole (juvenile),10209,species,WORMS,NA,Limanda,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Limanda sakhalinensis,Limanda sakhalinensis,Sakhalin sole,10212,species,WORMS,274292,Limanda,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Limatula attenuata,Limatula attenuata,NA,74571,species,WORMS,505545,Limatula,NA,Limidae,Limoidea,NA,Limida,NA,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
 ,,Limatula sp. A (Clark and McLean),Limatula sp. A (Clark and McLean),NA,74572,species,WORMS,NA,Limatula,NA,Limidae,Limoidea,NA,Limida,NA,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia
@@ -1517,8 +1517,8 @@ name change,original combination,Yoldia montereyensis,Megayoldia montereyensis,N
 ,,Membranipora sp.,Membranipora sp.,NA,95095,genus,WORMS,110938,Membranipora,NA,Membraniporidae,Membraniporoidea,Membraniporina,Cheilostomatida,NA,NA,Gymnolaemata,NA,NA,Bryozoa,Animalia
 ,,Mentodus eubranchus,Mentodus eubranchus,NA,23709,species,WORMS,272950,Mentodus,NA,Platytroctidae,NA,NA,Alepocephaliformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Merluccius productus,Merluccius productus,Pacific hake,22500,species,WORMS,272458,Merluccius,Merlucciinae,Merlucciidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Merluccius productus (juvenile),Merluccius productus  (juvenile),Pacific hake (juvenile),22501,species,WORMS,NA,Merluccius,Merlucciinae,Merlucciidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Merluccius productus (adult),Merluccius productus (adult),Pacific hake (adult),22502,species,WORMS,NA,Merluccius,Merlucciinae,Merlucciidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Merluccius productus (juvenile),Merluccius productus (juvenile),Pacific hake (juvenile),22501,species,WORMS,NA,Merluccius,Merlucciinae,Merlucciidae,NA,NA,Gadiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 name change,transferred to Mesocentrotus,Strongylocentrotus franciscanus,Mesocentrotus franciscanus,red sea urchin,82520,species,WORMS,591102,Mesocentrotus,NA,Strongylocentrotidae,Odontophora,NA,Camarodonta,NA,Euechinoidea,Echinoidea,NA,Echinozoa,Echinodermata,Animalia
 ,,Mesocrangon intermedia,Mesocrangon intermedia,northern spinyhead,66536,species,WORMS,423517,Mesocrangon,NA,Crangonidae,Crangonoidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 name change,synonym,Cancer anthonyi,Metacarcinus anthonyi,yellow cancer crab,68012,species,WORMS,440385,Metacarcinus,Cancrinae,Cancridae,Cancroidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
@@ -1649,7 +1649,7 @@ name change,synonym,Crangon sp. cf. communis (CAS),Neocrangon sp. cf. communis (
 ,,Neoiphinoe permabilis,Neoiphinoe permabilis,NA,72371,species,WORMS,576327,Neoiphinoe,NA,Capulidae,Capuloidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neolithodes diomedeae,Neolithodes diomedeae,NA,69341,species,WORMS,378126,Neolithodes,NA,Lithodidae,Lithodoidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 name change,synonym,Neomenia cf. yamamoti (Clark 2006),Neomenia cf. yamamatoi (Clark 2006),NA,70062,species,WORMS,367834,Neomenia,NA,Neomeniidae,NA,NA,NA,NA,NA,Solenogastres,NA,NA,Mollusca,Animalia
-taxon not found,nomen nudum,Neomenia efgamatoi,Neomenia efgamatoi,NA,70061,NA,NA,NA,Neomenia,NA,Neomeniidae,NA,NA,Neomeniamorpha,Pachytegmentaria,NA,Solenogastres,NA,NA,Mollusca,Animalia
+taxon not found,,Neomenia efgamatoi,Neomenia efgamatoi,NA,70061,NA,NA,NA,Neomenia,NA,Neomeniidae,NA,NA,Neomeniamorpha,Pachytegmentaria,NA,Solenogastres,NA,NA,Mollusca,Animalia
 ,,Neomenia sp.,Neomenia sp.,NA,70060,genus,WORMS,138249,Neomenia,NA,Neomeniidae,NA,NA,NA,NA,NA,Solenogastres,NA,NA,Mollusca,Animalia
 ,,Neomysis awatschensis,Neomysis awatschensis,NA,64101,species,WORMS,226278,Neomysis,Mysinae,Mysidae,NA,NA,Mysida,Peracarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Neonesthes capensis,Neonesthes capensis,NA,26060,species,WORMS,127366,Neonesthes,Astronesthinae,Stomiidae,NA,NA,Stomiiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
@@ -1661,17 +1661,17 @@ name change,synonym,Callianassa californiensis,Neotrypaea californiensis,ghost s
 ,,Neptunea alexeyevi,Neptunea alexeyevi,sinuous neptune,71916,species,WORMS,457369,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea amianta,Neptunea amianta,white neptune,71810,species,WORMS,423554,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea borealis,Neptunea borealis,NA,71835,species,WORMS,254478,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Neptunea borealis egg,Neptunea borealis  egg,NA,71005,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+,,Neptunea borealis egg,Neptunea borealis egg,NA,71005,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea eulimata,Neptunea eulimata,NA,71850,species,WORMS,491167,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea gyroscopoides,Neptunea gyroscopoides,NA,70871,species,WORMS,457372,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea heros,Neptunea heros,NA,71884,species,WORMS,254479,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Neptunea heros egg,Neptunea heros  egg,NA,71006,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+,,Neptunea heros egg,Neptunea heros egg,NA,71006,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea insularis,Neptunea insularis,NA,71883,species,WORMS,491172,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea ithia,Neptunea ithia,NA,71881,species,WORMS,491174,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea lyrata,Neptunea lyrata,lyre whelk,71870,species,WORMS,254477,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea meridionalis,Neptunea meridionalis,NA,71803,species,WORMS,491180,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 name change,misspelling,Neptunea middendorffii,Neptunea middendorffiana,NA,71840,species,WORMS,160405,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-taxon not found,nomen nudum,Neptunea neptunea,Neptunea neptunea,NA,71860,NA,NA,NA,Neptunea,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
+taxon not found,,Neptunea neptunea,Neptunea neptunea,NA,71860,NA,NA,NA,Neptunea,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea phoenicea,Neptunea phoenicea,NA,71802,species,WORMS,580903,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea pribiloffensis,Neptunea pribiloffensis,Pribilof whelk,71820,species,WORMS,491185,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea smirnia,Neptunea smirnia,NA,71811,species,WORMS,491189,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -1686,8 +1686,8 @@ taxon not found,nomen nudum,Neptunea neptunea,Neptunea neptunea,NA,71860,NA,NA,N
 ,,Neptunea stilesi,Neptunea stilesi,NA,71866,species,WORMS,491190,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea tabulata,Neptunea tabulata,tabled whelk,71822,species,WORMS,491192,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Neptunea ventricosa,Neptunea ventricosa,fat whelk,71882,species,WORMS,156264,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Neptunea ventricosa egg,Neptunea ventricosa  egg,fat whelk egg,71801,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-taxon not found,nomen nudum,Neptunea vermii,Neptunea vermii,NA,71880,NA,NA,NA,Neptunea,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
+,,Neptunea ventricosa egg,Neptunea ventricosa egg,fat whelk egg,71801,species,WORMS,NA,Neptunea,Neptuneinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+taxon not found,,Neptunea vermii,Neptunea vermii,NA,71880,NA,NA,NA,Neptunea,NA,Buccinidae,NA,NA,Neogastropoda,NA,Prosobranchia,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Nereididae,Nereididae,NA,54000,family,WORMS,22496,NA,NA,Nereididae,NA,Nereidiformia,Phyllodocida,NA,Errantia,Polychaeta,NA,NA,Annelida,Animalia
 ,,Nereis sp.,Nereis sp.,NA,54010,genus,WORMS,129379,Nereis,Nereidinae,Nereididae,NA,Nereidiformia,Phyllodocida,NA,Errantia,Polychaeta,NA,NA,Annelida,Animalia
 name change,unaccepted combination,Lunatia lewisii,Neverita lewisii,Lewis moonsnail,71570,species,WORMS,718659,Neverita,Polinicinae,Naticidae,Naticoidea,NA,Littorinimorpha,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -1814,7 +1814,7 @@ name change,synonym,Ophiosphalma sp. cf. jolliensis,Ophiosphalma sp. cf. jollien
 ,,Ophiura sp.,Ophiura sp.,NA,83310,genus,WORMS,123574,Ophiura,Ophiurinae,Ophiuridae,NA,Ophiurina,Ophiurida,Euryophiurida,Myophiuroida,Ophiuroidea,NA,Asterozoa,Echinodermata,Animalia
 ,,Ophiuridae,Ophiuridae,NA,83010,family,WORMS,123200,NA,NA,Ophiuridae,NA,Ophiurina,Ophiurida,Euryophiurida,Myophiuroida,Ophiuroidea,NA,Asterozoa,Echinodermata,Animalia
 ,,Ophiuroidea,Ophiuroidea,brittlestar unid.,83000,class,WORMS,123084,NA,NA,NA,NA,NA,NA,NA,NA,Ophiuroidea,NA,Asterozoa,Echinodermata,Animalia
-,"abandoned concept, including ""Lower Heterobranchia"", Acteonimorpha, Ringipleura, Umbraculida, Cephalaspidea, Runcinida, Aplysiida, Pteropoda and Sacoglossa",Opisthobranchia,Opisthobranchia,NA,71009,infraclass,WORMS,382226,NA,NA,NA,NA,NA,NA,NA,Heterobranchia,Gastropoda,NA,NA,Mollusca,Animalia
+,,Opisthobranchia,Opisthobranchia,NA,71009,infraclass,WORMS,382226,NA,NA,NA,NA,NA,NA,NA,Heterobranchia,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Opisthoproctidae,Opisthoproctidae,spookfish unid.,23958,family,WORMS,125512,NA,NA,Opisthoproctidae,NA,NA,Argentiniformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 name change,synonym,Grimpoteuthis albatrossi,Opisthoteuthis albatrossi,NA,78040,species,WORMS,410386,Opisthoteuthis,NA,Opisthoteuthidae,NA,Cirrata,Octopoda,Octopodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
 ,,Opisthoteuthis californiana,Opisthoteuthis californiana,flapjack devilfish,78030,species,WORMS,342092,Opisthoteuthis,NA,Opisthoteuthidae,NA,Cirrata,Octopoda,Octopodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
@@ -2183,7 +2183,7 @@ name change,synonym,Cranopsis sp.,Puncturella sp.,puncturella,71349,genus,WORMS,
 ,,Pycnopodia helianthoides,Pycnopodia helianthoides,sunflower sea star,80160,species,WORMS,240764,Pycnopodia,Pycnopodiinae,Asteriidae,NA,NA,Forcipulatida,Forcipulatacea,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
 ,,Pyrosoma atlanticum,Pyrosoma atlanticum,NA,98071,species,WORMS,137250,Pyrosoma,Pyrosomatinae,Pyrosomatidae,NA,NA,Pyrosomatida,NA,NA,Thaliacea,NA,Tunicata,Chordata,Animalia
 ,,Pyrulofusus deformis,Pyrulofusus deformis,warped whelk,71753,species,WORMS,254378,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Pyrulofusus deformis egg,Pyrulofusus deformis  egg,warped whelk egg,71754,species,WORMS,NA,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+,,Pyrulofusus deformis egg,Pyrulofusus deformis egg,warped whelk egg,71754,species,WORMS,NA,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Pyrulofusus dexius,Pyrulofusus dexius,NA,71749,species,WORMS,491408,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Pyrulofusus harpa,Pyrulofusus harpa,left-hand whelk,71755,species,WORMS,491324,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Pyrulofusus melonis,Pyrulofusus melonis,NA,71761,species,WORMS,491325,Pyrulofusus,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -2203,7 +2203,7 @@ name change,synonym,Pyrulofusus deformis egg,Pyrulofusus deformis  egg,warped wh
 name change,synonym,Pinnixa occidentalis,Rathbunixa occidentalis,pea crab,68072,species,WORMS,1424662,Rathbunixa,Pinnixinae,Pinnotheridae,Pinnotheroidea,Pleocyemata,Decapoda,Eucarida,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia
 ,,Regadrella okinoseana,Regadrella okinoseana,lacy basket sponge,91725,species,WORMS,171875,Regadrella,Corbitellinae,Euplectellidae,NA,NA,Lyssacinosida,NA,Hexasterophora,Hexactinellida,NA,NA,Porifera,Animalia
 ,,Reinhardtius hippoglossoides,Reinhardtius hippoglossoides,Greenland turbot,10115,species,WORMS,127144,Reinhardtius,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
-name change,synonym,Reinhardtius hippoglossoides (juvenile),Reinhardtius hippoglossoides  (juvenile),Greenland turbot (juvenile),10116,species,WORMS,NA,Reinhardtius,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
+,,Reinhardtius hippoglossoides (juvenile),Reinhardtius hippoglossoides (juvenile),Greenland turbot (juvenile),10116,species,WORMS,NA,Reinhardtius,Pleuronectinae,Pleuronectidae,NA,NA,Pleuronectiformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 name change,synonym,Plicifusus brunneus,Retifusus jessoensis,brown whelk,71893,species,WORMS,580850,Retifusus,NA,Retimohniidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Retifusus roseus,Retifusus roseus,rosy whelk,71724,species,WORMS,596553,Retifusus,NA,Retimohniidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Retifusus sp.,Retifusus sp.,NA,72767,genus,WORMS,576159,Retifusus,NA,Retimohniidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -2233,7 +2233,7 @@ name change,misspelling,Rhamphocottus richardsoni,Rhamphocottus richardsonii,gru
 ,,Rondeletia loricata,Rondeletia loricata,armored redmouth whalefish,20995,species,WORMS,126412,Rondeletia,NA,Rondeletiidae,NA,NA,Beryciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Ronquilus jordani,Ronquilus jordani,northern ronquil,20702,species,WORMS,282629,Ronquilus,NA,Bathymasteridae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Rossia pacifica,Rossia pacifica,eastern Pacific bobtail,79020,species,WORMS,346432,Rossia,Rossiinae,Sepiolidae,Sepioloidea,Sepiolina,Sepiida,Decapodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
-name change,synonym,Rossia pacifica eggs,Rossia pacifica  eggs,NA,79021,species,WORMS,NA,Rossia,Rossiinae,Sepiolidae,Sepioloidea,Sepiolina,Sepiida,Decapodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
+,,Rossia pacifica eggs,Rossia pacifica eggs,NA,79021,species,WORMS,NA,Rossia,Rossiinae,Sepiolidae,Sepioloidea,Sepiolina,Sepiida,Decapodiformes,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia
 ,,Rouleina attrita,Rouleina attrita,softskin slickhead,20130,species,WORMS,126709,Rouleina,NA,Alepocephalidae,NA,NA,Alepocephaliformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Ruscarius meanyi,Ruscarius meanyi,Puget Sound sculpin,21436,species,WORMS,282637,Ruscarius,NA,Cottidae,NA,Cottoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Sabellidae,Sabellidae,sabellid unid.,57000,family,WORMS,985,NA,NA,Sabellidae,NA,NA,Sabellida,NA,Sedentaria,Polychaeta,NA,NA,Annelida,Animalia
@@ -2659,7 +2659,7 @@ name change,junior synonym,Volutomitra alaskana,Volutomitra groenlandica,NA,7279
 ,,Volutomitra sp. B (Clark and McLean),Volutomitra sp. B (Clark and McLean),NA,72788,species,WORMS,NA,Volutomitra,NA,Volutomitridae,Turbinelloidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 name change,misspelling,Volutopsius castanea,Volutopsius castaneus,volute whelk,71760,species,WORMS,254481,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Volutopsius fragilis,Volutopsius fragilis,fragile whelk,71756,species,WORMS,491385,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
-name change,synonym,Volutopsius fragilis egg,Volutopsius fragilis  egg,fragile whelk egg,71758,species,WORMS,NA,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
+,,Volutopsius fragilis egg,Volutopsius fragilis egg,fragile whelk egg,71758,species,WORMS,NA,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Volutopsius middendorffi,Volutopsius middendorffi,tulip whelk,71764,species,WORMS,491386,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Volutopsius pallidus,Volutopsius pallidus,NA,71766,species,WORMS,491387,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
 ,,Volutopsius regularis,Volutopsius regularis,regular whelk,71757,species,WORMS,491388,Volutopsius,Volutopsiinae,Buccinidae,Buccinoidea,NA,Neogastropoda,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia
@@ -2700,64 +2700,64 @@ name change,synonym,Yoldia seminuda,Yoldia aeolica,crisscrossed Yoldia,74416,spe
 ,,Zoarcidae,Zoarcidae,eelpout unid.,24100,family,WORMS,125575,NA,NA,Zoarcidae,NA,Zoarcoidei,Perciformes,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia
 ,,Zoroaster ophiurus,Zoroaster ophiurus,NA,82060,species,WORMS,254837,Zoroaster,NA,Zoroasteridae,NA,NA,Forcipulatida,Forcipulatacea,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
 ,,Zoroasteridae,Zoroasteridae,NA,82030,family,WORMS,123125,NA,NA,Zoroasteridae,NA,NA,Forcipulatida,Forcipulatacea,Ambuloasteroidea,Asteroidea,NA,Asterozoa,Echinodermata,Animalia
-,,NA,NA,black rockfish unid.,30580,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,red rockfish unid.,30590,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,rougheye and blackspotted rockfish unid.,30050,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,dusky and dark rockfishes unid.,30150,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,whelk unid.,71700,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,limpet unid.,71405,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,pelagic octopus unid.,78011,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,cockle unid.,74981,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,crab unid.,68000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,shrimp unid.,66000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,tube worm unid.,50010,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,bristle worm unid.,59000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,brown leafy compound tunicate,98330,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,slimy antler sponge,91096,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,yellow papillate sponge,91081,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,pussywillow hydroid,40015,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,roundfish unid.,29999,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,leptocephalus unid.,23952,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,bryozoan sp. A unid.,95010,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,compound ascidian unid.,98300,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,invertebrate unid.,99990,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,invertebrate egg unid.,99992,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,empty bivalve shells,99993,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,empty gastropod shells,99994,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,unsorted shab,99999,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,sea pickle,98003,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,pink hormathiid anemone,43201,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,orange papillate sponge,91090,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,pineapple tunicate,98073,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,fish egg unid.,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,fish larvae unid.,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,fish unid.,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,tumbling anemone,43121,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,hairy lemon sponge,91002,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,vase sponge unid.,91005,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,neon yellow vase sponge,91051,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,brain sponge,91055,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,staghorn sponge,91071,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,orange ball sponge,91072,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,orange sponge,91076,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,yellow bowl sponge,91077,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,black papillate sponge,91079,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,yellow green papillate sponge,91080,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,orange encrusting sponge,91083,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,firm yellow green sponge,91084,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,fluffy sponge,95011,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,purple striated sea anemone,43006,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,red striated sea anemone,43007,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,large green heart urchin,82672,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,oval heart urchin,82673,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,soft finger sponge,91093,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,neon yellow ascidian,99910,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,heart urchin unid.,82650,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,sand dollar unid.,82730,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,crinoid unid.,82750,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,unsorted catch and debris,99997,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,funnel sponge,91056,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,red-spotted amphipod,60113,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,empty barnacle shells,99991,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,nudibranch egg,71008,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-,,NA,NA,lens star,80604,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,black rockfish unid.,30580,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,red rockfish unid.,30590,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,rougheye and blackspotted rockfish unid.,30050,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,dusky and dark rockfishes unid.,30150,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,whelk unid.,71700,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,limpet unid.,71405,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,pelagic octopus unid.,78011,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,cockle unid.,74981,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,crab unid.,68000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,shrimp unid.,66000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,tube worm unid.,50010,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,bristle worm unid.,59000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,brown leafy compound tunicate,98330,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,slimy antler sponge,91096,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,yellow papillate sponge,91081,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,pussywillow hydroid,40015,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,roundfish unid.,29999,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,leptocephalus unid.,23952,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,bryozoan sp. A unid.,95010,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,compound ascidian unid.,98300,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,invertebrate unid.,99990,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,invertebrate egg unid.,99992,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,empty bivalve shells,99993,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,empty gastropod shells,99994,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,unsorted shab,99999,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,sea pickle,98003,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,pink hormathiid anemone,43201,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,orange papillate sponge,91090,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,pineapple tunicate,98073,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,fish egg unid.,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,fish larvae unid.,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,fish unid.,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,tumbling anemone,43121,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,hairy lemon sponge,91002,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,vase sponge unid.,91005,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,neon yellow vase sponge,91051,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,brain sponge,91055,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,staghorn sponge,91071,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,orange ball sponge,91072,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,orange sponge,91076,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,yellow bowl sponge,91077,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,black papillate sponge,91079,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,yellow green papillate sponge,91080,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,orange encrusting sponge,91083,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,firm yellow green sponge,91084,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,fluffy sponge,95011,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,purple striated sea anemone,43006,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,red striated sea anemone,43007,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,large green heart urchin,82672,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,oval heart urchin,82673,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,soft finger sponge,91093,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,neon yellow ascidian,99910,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,heart urchin unid.,82650,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,sand dollar unid.,82730,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,crinoid unid.,82750,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,unsorted catch and debris,99997,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,funnel sponge,91056,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,red-spotted amphipod,60113,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,empty barnacle shells,99991,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,nudibranch egg,71008,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,lens star,80604,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
