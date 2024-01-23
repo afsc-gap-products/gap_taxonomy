@@ -259,13 +259,14 @@ species_classification <- taxonomy_final %>%
 
 # list of taxonomic changes that need to be made
 taxonomic_changes <- taxonomy_final %>%
-  dplyr::group_by(species_code) %>%
-  dplyr::mutate(n = sum(survey_species)) %>% 
   dplyr::filter(survey_species == 1 | reason != "") %>%
+  dplyr::group_by(survey_name) %>%
+  dplyr::add_count() %>%
+  dplyr:: filter(n == 1 | n == 2 & database == "WORMS") %>% 
   dplyr::mutate(
     new_species_code = ifelse(old_code == species_code, NA, species_code),
     year_changed = format(Sys.Date(), "%Y")
-  ) %>%
+  ) %>% 
   dplyr::distinct(species_name, survey_name, old_code, species_code, action, .keep_all = TRUE) %>% 
   dplyr::filter(species_name != survey_name | old_code != species_code) %>%
   dplyr::select(old_species_name = survey_name, old_species_code = old_code, 
@@ -296,7 +297,6 @@ species_classification_metadata <-  tibble(COLNAME = colnames(species_classifica
   janitor::clean_names()
 
 
-
 gapindex::upload_oracle(
   x = species_classification,
   table_name = "taxonomic_classification",
@@ -320,7 +320,6 @@ taxonomic_changes_metadata <-  tibble(COLNAME = colnames(taxonomic_changes),
   dplyr::mutate(DATATYPE = ifelse(is.na(DATATYPE), datatype, DATATYPE)) %>%
   dplyr::select(-datatype) %>%
   janitor::clean_names()
-
 
 
 gapindex::upload_oracle(
