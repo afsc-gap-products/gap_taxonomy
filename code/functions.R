@@ -7,7 +7,10 @@ defined_tax <- tribble(
   "Ascidian", 1839, "worms",
   "Ascidian", 158854, "itis",
   "Acoelida", 914208, "itis",
-  "Hirudinea", 69290, "itis"
+  "Hirudinea", 69290, "itis",
+  "Weberella", 659295, "itis",
+  "Selachii", 563987, "itis",
+  "Liparis", 167550, "itis"
 )
 
 
@@ -17,7 +20,7 @@ defined_tax <- tribble(
 keep_ranks <- c(
   "genus",
   "subfamily", "family", "superfamily",
-  "suborder", "order", "superorder",
+  "infraorder", "suborder", "order", "superorder",
   "subclass", "class", "superclass",
   "subphylum", "phylum",
   "kingdom"
@@ -27,7 +30,7 @@ keep_ranks <- c(
 
 # vector to temporarily remove extraneous info from species name to find db matches
 rm_bits <- paste0(c(
-  "\\(adult\\)", "\\(juvenile\\)", "egg", "egg case",
+  "\\(adult\\)", "\\(juvenile\\)", "egg case", "egg", 
   "hybrid", "larva", "larvae", "tubes", "group"
 ), collapse = "| ")
 
@@ -38,6 +41,8 @@ rm_all <- paste0(rm_bits, "| sp\\. cf\\.| sp\\.| cf\\.")
 # function to get suffix of species with rm_bits so I can update taxonomy appropriately
 fix_names <- function(old_nm, new_nm) {
   if (str_detect(old_nm, "cf\\.")) {
+    if(is.na(new_nm)) nm <- old_nm else{
+
     # grab end bits
     ps <- str_extract(old_nm, "\\(.+\\)$|group$")
     if (is.na(ps)) ps <- "" else old_nm <- str_remove(old_nm, " \\(.+\\)$|group$")
@@ -50,6 +55,7 @@ fix_names <- function(old_nm, new_nm) {
       nm <- paste(str_extract(new_nm, "^\\w+"), md, str_extract(new_nm, "\\w+$"), ps)
     } else {
       nm <- paste(str_extract(new_nm, "^\\w+"), md, str_extract(old_nm, "\\w+$"), ps)
+    }
     }
   } else {
     w <- str_split(rm_all, "\\|")[[1]] # extra bits to paste on
@@ -215,7 +221,7 @@ itis_syn <- function(species) {
 
       if (nrow(tsn_df) > 1) { # ensuring only animal kingdom
         tsn_df <- tsn_df %>%
-          mutate(tax = purrr::map2(scientificName, tsn, ~ get_classification(.x, .y, db))) %>%
+          mutate(tax = purrr::map2(scientificName, tsn, ~ get_classification(.x, .y, db = "itis"))) %>%
           unnest(cols = tax) %>%
           select(-id) %>%
           pivot_wider(names_from = rank, values_from = name) %>%
@@ -330,16 +336,48 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
   out <- classy %>%
     mutate(
       rw_id = row_number(),
-      accepted_name = syn,
+      database_name = syn,
       reason2 = ifelse(reason != "subgenus assignment", reason, NA),
       id_rank = ifelse(rw_id == max(rw_id) & !is.na(syn), tolower(rank), NA),
-      db_id = ifelse(rw_id == max(rw_id) & !is.na(accepted_name), as.numeric(id), NA),
+      db_id = ifelse(rw_id == max(rw_id) & !is.na(database_name), as.numeric(id), NA),
       rank = tolower(rank),
-      db = ifelse(!is.na(accepted_name), toupper(db), NA)
+      db = ifelse(!is.na(database_name), toupper(db), NA)
     ) %>%
     fill(db_id, .direction = "downup") %>%
     fill(id_rank, .direction = "downup") %>%
     select(-id, -rw_id)
 
   return(out)
+}
+
+
+oracle_datatypes <- function(x){
+  cl <- sapply(x, class)
+  cl[cl == "character"] <- "VARCHAR2(255 BYTE)"
+  cl[cl == "logical"] <- "NUMBER(1,0)"
+  
+  cl
+}
+
+
+
+# function to fix species code issues when two (or more) species are synonymized
+fix_syn_codes <- function(data, nm){
+  if(data$n_codes[[1]] == 1) {
+    new_code <- data$species_code[[1]] 
+  } else {
+    if(is.na(nm) | str_detect(data$survey_name[[1]], " sp. ")) new_code <- NA else {
+    code <- data %>%
+      filter(reason == "" & survey_name == nm) %>%
+      pluck("species_code")
+    if(length(unique(code)) == 1 ) {
+      new_code <- code[[1]]
+    } else {
+      ii <- which(str_extract(data$survey_name, " \\w+") == str_extract(nm, "\\w+$"))
+      if(length(ii) != 1) ii <- agrep(str_extract(nm, "\\w+$"), trimws(str_extract(data$survey_name, " \\w+")))[1]
+      if(is.na(ii)) new_code <- NA else new_code <- data$species_code[[ii]]
+    }
+    }
+  }
+  new_code
 }

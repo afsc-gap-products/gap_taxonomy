@@ -1,5 +1,5 @@
 #  check to make sure WORMS database running
-if(db == "worms") {
+if(db == "worms" | db == "both") {
 url <- "https://www.marinespecies.org/"
 }
 if(db == "itis"){
@@ -12,6 +12,16 @@ options(timeout = 10, warn = -1)
 
 con <- try(readLines(con = url), silent = TRUE)
 
+
+if(db == "both"){
+  url <- "https://www.itis.gov/"
+  con2 <- try(readLines(con = url), silent = TRUE)
+  if(class(con2) == "try-error") {
+    cat("itis database down currently. Recommend running code at a different time.")
+    
+  }
+}
+
 options(timeout = tt, warn = w)
 
 
@@ -20,7 +30,7 @@ rm(url, tt, w)
 
 
 if(class(con) == "try-error") {
+  if(db == "both") db <- "worms"
   cat(paste(db, "database down currently. Recommend running code at a different time."))
-
 }
 
