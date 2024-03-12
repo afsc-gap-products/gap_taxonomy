@@ -1,11 +1,11 @@
 ## User inputs -------------------------------------------------------
 
 ask <- TRUE # ask for user input if multiple taxa match?
-save_to_gdrive <- TRUE
+#save_to_gdrive <- TRUE
 
 # yr <- 2022 # if not defined will use current year
 
-# database(s) to check against
+# database(s) (worms vs. itis) to check against
 db <- "both"
 # db2 <- "itis" # optional backup db if not found in first db
 
@@ -92,7 +92,7 @@ fixed_spp <- race_species %>%
 
 # manually fixing typos/issues that code doesn't catch; need to find a better solution
 fixed_spp <- fixed_spp %>%
-  mutate(fixed_name = case_when(
+  mutate(fixed_name = dplyr::case_when(
     survey_name == "Ciliatoclinocardium ciliatum" ~ "Ciliatocardium cilium",
     survey_name == "Tridonta rollandi" ~ "Astarte rollandi",
     survey_name == "Cancer anthonyi" ~ "Metacarcinus anthonyi",
@@ -145,7 +145,7 @@ taxonomy_cleaned <- dplyr::bind_rows(
     tidyr::pivot_wider(names_from = rank, values_from = name),
   accepted_spp_itis %>%
     tidyr::unnest(tax_itis) %>%
-    tidyr::pivot_wider(names_from = rank, values_from = name)
+    tidyr::pivot_wider(names_from = rank, values_from = name) 
 ) %>%
   dplyr::mutate(suggested_name = purrr::map2_chr( # updates names of sp. with rm_bits
     survey_name, database_name, 
@@ -157,14 +157,14 @@ taxonomy_cleaned <- dplyr::bind_rows(
   )) %>%
   dplyr::group_by(species_code) %>%
   dplyr::mutate( #pick updated name based on available columns
-    new_name = case_when(
+    new_name = dplyr::case_when(
       grepl("hybrid", survey_name) ~ survey_name,
       !is.na(suggested_name) ~ suggested_name,
       is.na(database_name) & is.na(fixed_name) ~ survey_name,
       is.na(database_name) & !is.na(fixed_name) ~ fixed_name,
       !is.na(database_name) ~ database_name
     ),
-    reason = case_when(
+    reason = dplyr::case_when(
       !is.na(reason2) ~ reason2,
       !is.na(reason1) ~ reason1,
       !grepl(rm_all, survey_name) & sum(is.na(db_id) > 1) &
@@ -179,7 +179,7 @@ taxonomy_cleaned <- dplyr::bind_rows(
     survey_name, accepted_name = new_name,
     common_name, species_code, id_rank,
     database = db, database_id = db_id,
-    all_of(keep_ranks)
+    tidyselect::all_of(keep_ranks)
   )
 
 
@@ -191,9 +191,9 @@ taxonomy_cleaned <- dplyr::bind_rows(
 
 taxonomy_final <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>% 
-  dplyr::mutate(n_codes = n_distinct(species_code)) %>% #finding species with multiple codes; indicates synonymy
+  dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>% #finding species with multiple codes; indicates synonymy
   tidyr::nest() %>%
-  dplyr::mutate(new_code = map2_dbl(data, accepted_name, fix_syn_codes)) %>% #fixing species code issues
+  dplyr::mutate(new_code = purrr::map2_dbl(data, accepted_name, fix_syn_codes)) %>% #fixing species code issues
   tidyr::unnest(cols = c(data)) %>%
   dplyr::mutate(
     old_code = species_code,
@@ -205,7 +205,7 @@ taxonomy_final <- taxonomy_cleaned %>%
     ),
     species_code = ifelse(is.na(new_code), old_code, new_code)) %>% 
   dplyr::group_by(species_code) %>%
-  dplyr::mutate(survey_species = case_when( #determining species to retain for each species code
+  dplyr::mutate(survey_species = dplyr::case_when( #determining species to retain for each species code
     database == "WORMS" & !is.na(database_id) ~ 1,
     sum(is.na(database_id)) == 2 & database == "WORMS" ~ 1,
     sum(is.na(database_id)) == 2 & row_number() == 1 ~ 1,
@@ -214,12 +214,13 @@ taxonomy_final <- taxonomy_cleaned %>%
   )) %>%
   dplyr::mutate(survey_species = ifelse(sum(survey_species) > 1 & row_number() != 1, 0, survey_species)) %>%
   dplyr::group_by(accepted_name) %>% #fixing last few problem species
-  mutate(n_codes = n_distinct(species_code)) %>% 
-  mutate(accepted_name = ifelse(n_codes != 1, survey_name, accepted_name)) %>%
-  dplyr::select(reason, survey_species, survey_name,  species_name = accepted_name, 
+  dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>% 
+  dplyr::mutate(accepted_name = ifelse(n_codes != 1, survey_name, accepted_name)) %>%
+  dplyr::rows_update(missing_taxa, by = "species_code") %>% #adding in taxonomy for sp. where survey_name = NA
+  dplyr::select(reason, survey_species, survey_name, species_name = accepted_name, 
                 common_name, species_code:database_id, genus:kingdom, old_code, action) %>%
   dplyr::distinct(survey_name, species_name, species_code, database_id, .keep_all = TRUE) %>% #removing unnecessary rows
-  dplyr::filter(!(survey_species == 0 & is.na(database) & !is.na(species_name))) 
+  dplyr::filter(!(survey_species == 0 & is.na(database) & !is.na(species_name)))
 
 
 
@@ -295,12 +296,13 @@ species_classification_metadata <-  tibble(COLNAME = colnames(species_classifica
   dplyr::mutate(DATATYPE = ifelse(is.na(DATATYPE), datatype, DATATYPE)) %>%
   dplyr::select(-datatype) %>%
   janitor::clean_names()
-
+species_classification_metadata$datatype[species_classification_metadata$colname == "DATABASE_ID"] <- "NUMBER(38,0)"
+species_classification_metadata$datatype[species_classification_metadata$colname == "SURVEY_SPECIES"] <- "NUMBER(1,0)"
 
 gapindex::upload_oracle(
   x = species_classification,
   table_name = "taxonomic_classification",
-  table_metadata = "Species classification table",
+  table_metadata = "species classification table",
   metadata_column = species_classification_metadata,
   channel = channel,
   schema = "GAP_PRODUCTS",

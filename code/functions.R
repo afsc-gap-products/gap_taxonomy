@@ -15,7 +15,6 @@ defined_tax <- tribble(
 
 
 
-
 # taxonomic ranks to keep in final output
 keep_ranks <- c(
   "genus",
@@ -193,7 +192,8 @@ wrms_syn <- function(species) {
       syn <- id <- reason <- NA
     }
   }
-
+  #if(grepl(")$", syn)) syn <- str_remove(syn, " \\([A-Za-z]+\\)")
+    
   if (grepl(" ", species) & !grepl(" ", syn) & !grepl("sp\\.", species) |
     !grepl(" ", species) & grepl(" ", syn)) {
     syn <- id <- NA
@@ -252,7 +252,6 @@ itis_syn <- function(species) {
       reason <- "invalid synonym"
     }
   }
-
   if (!grepl(" ", species) & grepl(" ", syn)) syn <- NA
 
   list(syn = syn, id = id, reason = reason)
@@ -381,3 +380,74 @@ fix_syn_codes <- function(data, nm){
   }
   new_code
 }
+
+
+
+# clunky way to add taxonomic info for species_codes with only common names (i.e. species_name = NA)
+missing_taxa <- tibble::tribble(
+  ~"species_code", ~"level",
+  99990, "Animalia",
+  99992, "Animalia",
+  91002, "Porifera",
+  91005, "Porifera",
+  91051, "Porifera",
+  91055, "Porifera",
+  91056, "Porifera",
+  91071, "Porifera",
+  91072, "Porifera",
+  91076, "Porifera",
+  91077, "Porifera",
+  91079, "Porifera",
+  91080, "Porifera",
+  91081, "Porifera",
+  91083, "Porifera",
+  91084, "Porifera",
+  91090, "Porifera",
+  91093, "Porifera",
+  91096, "Porifera",
+  95010, "Porifera",
+  95011, "Bryozoa",
+  1, "Vertebrata",
+  2, "Vertebrata",
+  3, "Vertebrata",
+  29999, "Vertebrata",
+  50010, "Polychaeta",
+  71405, "Gastropoda",
+  80604, "Asteroidea",
+  82750, "Crinoidea",  
+  98003, "Ascidiacea",
+  98073, "Ascidiacea",
+  98300, "Ascidiacea",
+  98330, "Ascidiacea",
+  99910, "Ascidiacea",
+  99993, "Bivalvia",
+  99994, "Gastropoda",
+  23952, "Teleostei",
+  40015, "Hydroidolina",
+  99991, "Cirripedia",
+  43006, "Actiniaria",
+  43007, "Actiniaria",
+  43121, "Actiniaria",
+  43201, "Actiniaria",
+  60113, "Amphipoda",
+  71008, "Nudibranchia",
+  78011, "Octopoda",
+  82650, "Spatangoidea",
+  82672, "Spatangoidea",
+  82673, "Spatangoidea",
+  82730, "Echinolampadacea",
+  66000, "Caridea",
+  68000, "Brachyura",
+  30050, "Sebastidae",
+  30150, "Sebastidae",
+  30580, "Sebastidae",
+  30590, "Sebastidae",
+  71700, "Buccinidae",
+  74981, "Cardiidae") %>%
+  dplyr::mutate(tax_worms = purrr::map(level, ~ get_taxonomy(.x, "worms"))) %>%
+  tidyr::unnest(tax_worms) %>%
+  tidyr::pivot_wider(names_from = rank, values_from = name) %>%
+  dplyr::mutate(survey_species = 1,
+                database = "WORMS") %>%
+  dplyr::select(survey_species, species_code, database, tidyselect::any_of(keep_ranks))
+
