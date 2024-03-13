@@ -1,5 +1,5 @@
 # pre-defined taxa with multiple matches to avoid user prompts
-defined_tax <- tribble(
+defined_tax <- tibble::tribble(
   ~taxon, ~db_id, ~dbe,
   "Clavularia", 125286, "worms",
   "Selachii", 368408, "worms",
@@ -29,7 +29,7 @@ keep_ranks <- c(
 
 # vector to temporarily remove extraneous info from species name to find db matches
 rm_bits <- paste0(c(
-  "\\(adult\\)", "\\(juvenile\\)", "egg case", "egg", 
+  "\\(adult\\)", "\\(juvenile\\)", "egg case", "egg",
   "hybrid", "larva", "larvae", "tubes", "group"
 ), collapse = "| ")
 
@@ -39,29 +39,30 @@ rm_all <- paste0(rm_bits, "| sp\\. cf\\.| sp\\.| cf\\.")
 
 # function to get suffix of species with rm_bits so I can update taxonomy appropriately
 fix_names <- function(old_nm, new_nm) {
-  if (str_detect(old_nm, "cf\\.")) {
-    if(is.na(new_nm)) nm <- old_nm else{
-
-    # grab end bits
-    ps <- str_extract(old_nm, "\\(.+\\)$|group$")
-    if (is.na(ps)) ps <- "" else old_nm <- str_remove(old_nm, " \\(.+\\)$|group$")
-
-    # grab middle bits
-    md <- str_extract(old_nm, "sp\\. cf\\.|cf\\.")
-
-    # if new name doesn't have species take species from old name
-    if (grepl(" ", new_nm)) {
-      nm <- paste(str_extract(new_nm, "^\\w+"), md, str_extract(new_nm, "\\w+$"), ps)
+  if (stringr::str_detect(old_nm, "cf\\.")) {
+    if (is.na(new_nm)) {
+      nm <- old_nm
     } else {
-      nm <- paste(str_extract(new_nm, "^\\w+"), md, str_extract(old_nm, "\\w+$"), ps)
-    }
+      # grab end bits
+      ps <- stringr::str_extract(old_nm, "\\(.+\\)$|group$")
+      if (is.na(ps)) ps <- "" else old_nm <- stringr::str_remove(old_nm, " \\(.+\\)$|group$")
+
+      # grab middle bits
+      md <- stringr::str_extract(old_nm, "sp\\. cf\\.|cf\\.")
+
+      # if new name doesn't have species take species from old name
+      if (grepl(" ", new_nm)) {
+        nm <- paste(stringr::str_extract(new_nm, "^\\w+"), md, stringr::str_extract(new_nm, "\\w+$"), ps)
+      } else {
+        nm <- paste(stringr::str_extract(new_nm, "^\\w+"), md, stringr::str_extract(old_nm, "\\w+$"), ps)
+      }
     }
   } else {
-    w <- str_split(rm_all, "\\|")[[1]] # extra bits to paste on
+    w <- stringr::str_split(rm_all, "\\|")[[1]] # extra bits to paste on
     base <- paste0(w[w != "hybrid"], "(.+)?$", collapse = "|")
-    nm <- paste(new_nm, str_extract(old_nm, base))
+    nm <- paste(new_nm, stringr::str_extract(old_nm, base))
   }
-  trimws(str_replace_all(nm, "\\s+", " "))
+  trimws(stringr::str_replace_all(nm, "\\s+", " "))
 }
 
 
@@ -74,26 +75,26 @@ check_spelling <- function(species) {
   sp <- species
 
   if (!is.na(sp)) {
-    if (str_detect(sp, " \\(=")) {
-      s <- ifelse(str_detect(sp, " [a-z]+ \\("), str_remove(sp, "[a-z]+ \\(="),
-        str_to_sentence(str_remove(sp, "[A-Za-z]+ \\(="))
+    if (stringr::str_detect(sp, " \\(=")) {
+      s <- ifelse(stringr::str_detect(sp, " [a-z]+ \\("), stringr::str_remove(sp, "[a-z]+ \\(="),
+        stringr::str_to_sentence(stringr::str_remove(sp, "[A-Za-z]+ \\(="))
       )
-      sp <- str_remove(s, "\\)")
+      sp <- stringr::str_remove(s, "\\)")
     }
 
-    if (str_detect(sp, "cf.")) {
-      sp <- str_remove(sp, " sp\\. cf\\.|cf\\. ") %>%
-        str_remove("\\(.+\\)$")
+    if (stringr::str_detect(sp, "cf.")) {
+      sp <- stringr::str_remove(sp, " sp\\. cf\\.|cf\\. ") %>%
+        stringr::str_remove("\\(.+\\)$")
     }
 
-    sp <- str_remove_all(sp, rm_bits)
+    sp <- stringr::str_remove_all(sp, rm_bits)
     sp <- trimws(sp)
 
     # restricting to a few sources, prioritizing WORMS; see https://resolver.globalnames.org/data_sources
-    new_id <- gnr_resolve(sp, data_source_ids = 9, canonical = TRUE)
+    new_id <- taxize::gnr_resolve(sp, data_source_ids = 9, canonical = TRUE)
 
     if (nrow(new_id) == 0) {
-      new_id <- gnr_resolve(sp,
+      new_id <- taxize::gnr_resolve(sp,
         best_match_only = TRUE, canonical = TRUE,
         data_source_ids = c(1, 3, 12, 151, 155, 163)
       )
@@ -104,12 +105,12 @@ check_spelling <- function(species) {
     new_id <- NA
   } else {
     new_id <- new_id %>%
-      pluck("matched_name2") %>%
+      purrr::pluck("matched_name2") %>%
       .[1]
 
     # if species has two words and only genus returned ignore
     # if (str_detect(sp, "^[A-Za-z]+ sp\\. ") | str_detect(sp, " ") & !str_detect(new, " ")) {
-    if (str_detect(sp, " ") & !str_detect(new_id, " ") & !any(grepl(rm_all, sp))) {
+    if (stringr::str_detect(sp, " ") & !stringr::str_detect(new_id, " ") & !any(grepl(rm_all, sp))) {
       new_id <- NA
     }
   }
@@ -134,15 +135,15 @@ get_classification <- function(sp, id = NA, db = "worms", ask = FALSE) {
     }
 
     if (is.na(res) & grepl(" ", sp)) { # if no matching species, find genus
-      try2 <- str_extract(sp, "^[A-Za-z]+")
-      res <- classification(try2, db = db, fuzzy = FALSE, accepted = TRUE, messages = FALSE)
+      try2 <- stringr::str_extract(sp, "^[A-Za-z]+")
+      res <- taxize::classification(try2, db = db, fuzzy = FALSE, accepted = TRUE, messages = FALSE)
     }
   }
   if (exists("res") && !is.na(res)) {
-    out <- as_tibble(res[[1]]) %>%
-      filter(!rank %in% c("Subgenus", "Variety"))
+    out <- tibble::as_tibble(res[[1]]) %>%
+      dplyr::filter(!rank %in% c("Subgenus", "Variety"))
   } else {
-    out <- tibble(
+    out <- tibble::tibble(
       name = sp,
       rank = NA,
       id = NA
@@ -173,16 +174,16 @@ wrms_syn <- function(species) {
   if (!any(class(syn_tmp) == "try-error")) {
     if (nrow(syn_tmp) > 1) {
       syn_tmp <- syn_tmp %>%
-        filter(kingdom == "Animalia") %>%
-        filter(status != "deleted" & !grepl("invalid", unacceptreason))
+        dplyr::filter(kingdom == "Animalia") %>%
+        dplyr::filter(status != "deleted" & !grepl("invalid", unacceptreason))
     }
     if (any(syn_tmp$status == "accepted")) {
-      syn_tmp <- syn_tmp %>% filter(status %in% c("accepted", "alternate representation"))
+      syn_tmp <- syn_tmp %>% dplyr::filter(status %in% c("accepted", "alternate representation"))
     }
 
     if (nrow(syn_tmp) > 0) {
       tmp_out <- syn_tmp %>%
-        filter(!is.na(valid_name)) %>%
+        dplyr::filter(!is.na(valid_name)) %>%
         dplyr::select(valid_name, valid_AphiaID, unacceptreason)
       id <- tmp_out$valid_AphiaID[1]
 
@@ -192,8 +193,8 @@ wrms_syn <- function(species) {
       syn <- id <- reason <- NA
     }
   }
-  #if(grepl(")$", syn)) syn <- str_remove(syn, " \\([A-Za-z]+\\)")
-    
+  # if(grepl(")$", syn)) syn <- str_remove(syn, " \\([A-Za-z]+\\)")
+
   if (grepl(" ", species) & !grepl(" ", syn) & !grepl("sp\\.", species) |
     !grepl(" ", species) & grepl(" ", syn)) {
     syn <- id <- NA
@@ -204,34 +205,33 @@ wrms_syn <- function(species) {
 
 
 itis_syn <- function(species) {
-  species <- str_remove(species, " sp\\.")
+  species <- stringr::str_remove(species, " sp\\.")
   syn <- reason <- NA
 
   tsn_df <- ritis::terms(species, what = "scientific")
 
   if (nrow(tsn_df) > 1) {
+    tsn_df <- tsn_df %>%
+      dplyr::filter(scientificName == species)
 
-       tsn_df <- tsn_df %>%
-          filter(scientificName == species)
-      
 
-      if (any(tsn_df$nameUsage %in% c("valid", "accepted"))) {
-        tsn_df <- tsn_df %>% filter(nameUsage %in% c("valid", "accepted"))
-      }
+    if (any(tsn_df$nameUsage %in% c("valid", "accepted"))) {
+      tsn_df <- tsn_df %>% dplyr::filter(nameUsage %in% c("valid", "accepted"))
+    }
 
-      if (nrow(tsn_df) > 1) { # ensuring only animal kingdom
-        tsn_df <- tsn_df %>%
-          mutate(tax = purrr::map2(scientificName, tsn, ~ get_classification(.x, .y, db = "itis"))) %>%
-          unnest(cols = tax) %>%
-          select(-id) %>%
-          pivot_wider(names_from = rank, values_from = name) %>%
-          filter(kingdom == "Animalia")
-      }
+    if (nrow(tsn_df) > 1) { # ensuring only animal kingdom
+      tsn_df <- tsn_df %>%
+        dplyr::mutate(tax = purrr::map2(scientificName, tsn, ~ get_classification(.x, .y, db = "itis"))) %>%
+        tidyr::unnest(cols = tax) %>%
+        dplyr::select(-id) %>%
+        tidyr::pivot_wider(names_from = rank, values_from = name) %>%
+        dplyr::filter(kingdom == "Animalia")
+    }
   }
- 
-  if(nrow(tsn_df) > 0){
+
+  if (nrow(tsn_df) > 0) {
     id <- tsn_df %>%
-      pluck("tsn") %>%
+      purrr::pluck("tsn") %>%
       .[1] %>%
       as.numeric()
   } else {
@@ -244,10 +244,10 @@ itis_syn <- function(species) {
       syn <- species
     } else {
       syn <- tmp %>%
-        pluck("acceptedName") %>%
+        purrr::pluck("acceptedName") %>%
         .[1]
       id <- tmp %>%
-        pluck("acceptedTsn") %>%
+        purrr::pluck("acceptedTsn") %>%
         .[1]
       reason <- "invalid synonym"
     }
@@ -263,25 +263,25 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
   message("\nRetrieving data for taxon '", species, "'\n")
 
   db <- tolower(db)
-  
-  if(!is.null(predefined_taxa)){
+
+  if (!is.null(predefined_taxa)) {
     predefined_taxa <- predefined_taxa %>%
-      filter(dbe == db)
+      dplyr::filter(dbe == db)
   }
 
   # defining ID for problematic species with multiple db matches
   if (!is.na(species) && !is.null(predefined_taxa) && species %in% predefined_taxa$taxon |
-    grepl(rm_all, species) && str_extract(species, "\\w+") %in% predefined_taxa$taxon) {
+    grepl(rm_all, species) && stringr::str_extract(species, "\\w+") %in% predefined_taxa$taxon) {
     id <- predefined_taxa %>%
-      filter(taxon == str_extract(species, "\\w+")) %>%
-      pluck("db_id") %>%
+      dplyr::filter(taxon == stringr::str_extract(species, "\\w+")) %>%
+      purrr::pluck("db_id") %>%
       .[1]
-    syn <- str_extract(species, "\\w+")
+    syn <- stringr::str_extract(species, "\\w+")
     reason <- NA
   } else {
     if (!is.na(species) && !grepl("sp\\. .$", species)) {
       if (grepl("sp\\. ..", species)) {
-        species <- str_remove_all(species, rm_all)
+        species <- stringr::str_remove_all(species, rm_all)
       }
 
       if (tolower(db) == "worms") ll <- wrms_syn(species)
@@ -327,13 +327,13 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
   } else {
     # removes subgenus assignment
     if (grepl("\\(", syn) & !grepl("\\(", species)) {
-      syn <- str_remove(syn, " \\([A-Za-z]+\\)")
+      syn <- stringr::str_remove(syn, " \\([A-Za-z]+\\)")
     }
     classy <- get_classification(syn, id, db, ask = ask)
   }
 
   out <- classy %>%
-    mutate(
+    dplyr::mutate(
       rw_id = row_number(),
       database_name = syn,
       reason2 = ifelse(reason != "subgenus assignment", reason, NA),
@@ -342,40 +342,42 @@ get_taxonomy <- function(species, db, db2 = NA, ask = FALSE, predefined_taxa = N
       rank = tolower(rank),
       db = ifelse(!is.na(database_name), toupper(db), NA)
     ) %>%
-    fill(db_id, .direction = "downup") %>%
-    fill(id_rank, .direction = "downup") %>%
-    select(-id, -rw_id)
+    tidyr::fill(db_id, .direction = "downup") %>%
+    tidyr::fill(id_rank, .direction = "downup") %>%
+    dplyr::select(-id, -rw_id)
 
   return(out)
 }
 
 
-oracle_datatypes <- function(x){
+oracle_datatypes <- function(x) {
   cl <- sapply(x, class)
   cl[cl == "character"] <- "VARCHAR2(255 BYTE)"
   cl[cl == "logical"] <- "NUMBER(1,0)"
-  
+
   cl
 }
 
 
 
 # function to fix species code issues when two (or more) species are synonymized
-fix_syn_codes <- function(data, nm){
-  if(data$n_codes[[1]] == 1) {
-    new_code <- data$species_code[[1]] 
+fix_syn_codes <- function(data, nm) {
+  if (data$n_codes[[1]] == 1) {
+    new_code <- data$species_code[[1]]
   } else {
-    if(is.na(nm) | str_detect(data$survey_name[[1]], " sp. ")) new_code <- NA else {
-    code <- data %>%
-      filter(reason == "" & survey_name == nm) %>%
-      pluck("species_code")
-    if(length(unique(code)) == 1 ) {
-      new_code <- code[[1]]
+    if (is.na(nm) | str_detect(data$survey_name[[1]], " sp. ")) {
+      new_code <- NA
     } else {
-      ii <- which(str_extract(data$survey_name, " \\w+") == str_extract(nm, "\\w+$"))
-      if(length(ii) != 1) ii <- agrep(str_extract(nm, "\\w+$"), trimws(str_extract(data$survey_name, " \\w+")))[1]
-      if(is.na(ii)) new_code <- NA else new_code <- data$species_code[[ii]]
-    }
+      code <- data %>%
+        dplyr::filter(reason == "" & survey_name == nm) %>%
+        purrr::pluck("species_code")
+      if (length(unique(code)) == 1) {
+        new_code <- code[[1]]
+      } else {
+        ii <- which(stringr::str_extract(data$survey_name, " \\w+") == stringr::str_extract(nm, "\\w+$"))
+        if (length(ii) != 1) ii <- agrep(str_extract(nm, "\\w+$"), trimws(str_extract(data$survey_name, " \\w+")))[1]
+        if (is.na(ii)) new_code <- NA else new_code <- data$species_code[[ii]]
+      }
     }
   }
   new_code
@@ -414,7 +416,7 @@ missing_taxa <- tibble::tribble(
   50010, "Polychaeta",
   71405, "Gastropoda",
   80604, "Asteroidea",
-  82750, "Crinoidea",  
+  82750, "Crinoidea",
   98003, "Ascidiacea",
   98073, "Ascidiacea",
   98300, "Ascidiacea",
@@ -443,11 +445,13 @@ missing_taxa <- tibble::tribble(
   30580, "Sebastidae",
   30590, "Sebastidae",
   71700, "Buccinidae",
-  74981, "Cardiidae") %>%
+  74981, "Cardiidae"
+) %>%
   dplyr::mutate(tax_worms = purrr::map(level, ~ get_taxonomy(.x, "worms"))) %>%
   tidyr::unnest(tax_worms) %>%
   tidyr::pivot_wider(names_from = rank, values_from = name) %>%
-  dplyr::mutate(survey_species = 1,
-                database = "WORMS") %>%
+  dplyr::mutate(
+    survey_species = 1,
+    database = "WORMS"
+  ) %>%
   dplyr::select(survey_species, species_code, database, tidyselect::any_of(keep_ranks))
-
