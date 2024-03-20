@@ -104,9 +104,7 @@ check_spelling <- function(species) {
   if (!exists("new_id") || is.null(new_id) || nrow(new_id) == 0) {
     new_id <- NA
   } else {
-    new_id <- new_id %>%
-      purrr::pluck("matched_name2") %>%
-      .[1]
+    new_id <- new_id$matched_name2[[1]]
 
     # if species has two words and only genus returned ignore
     # if (str_detect(sp, "^[A-Za-z]+ sp\\. ") | str_detect(sp, " ") & !str_detect(new, " ")) {
@@ -230,10 +228,7 @@ itis_syn <- function(species) {
   }
 
   if (nrow(tsn_df) > 0) {
-    id <- tsn_df %>%
-      purrr::pluck("tsn") %>%
-      .[1] %>%
-      as.numeric()
+    id <- as.numeric(tsn_df$tsn[[1]])
   } else {
     id <- NA
   }
@@ -243,12 +238,8 @@ itis_syn <- function(species) {
     if (nrow(tmp) == 0) {
       syn <- species
     } else {
-      syn <- tmp %>%
-        purrr::pluck("acceptedName") %>%
-        .[1]
-      id <- tmp %>%
-        purrr::pluck("acceptedTsn") %>%
-        .[1]
+      syn <- tmp$acceptedName[[1]]
+      id <- tmp$acceptedTsn[[1]]
       reason <- "invalid synonym"
     }
   }
@@ -386,6 +377,8 @@ fix_syn_codes <- function(data, nm) {
 
 
 # clunky way to add taxonomic info for species_codes with only common names (i.e. species_name = NA)
+message("Getting taxonomic information for species codes without scientific names.
+      This will take a few minutes.\n")
 missing_taxa <- tibble::tribble(
   ~"species_code", ~"level",
   99990, "Animalia",
@@ -440,14 +433,14 @@ missing_taxa <- tibble::tribble(
   82730, "Echinolampadacea",
   66000, "Caridea",
   68000, "Brachyura",
-  30050, "Sebastidae",
-  30150, "Sebastidae",
-  30580, "Sebastidae",
-  30590, "Sebastidae",
+  30050, "Sebastes",
+  30150, "Sebastes",
+  30580, "Sebastes",
+  30590, "Sebastes",
   71700, "Buccinidae",
   74981, "Cardiidae"
 ) %>%
-  dplyr::mutate(tax_worms = purrr::map(level, ~ get_taxonomy(.x, "worms"))) %>%
+  dplyr::mutate(tax_worms = purrr::map(level, ~ suppressMessages(get_taxonomy(.x, "worms")))) %>%
   tidyr::unnest(tax_worms) %>%
   tidyr::pivot_wider(names_from = rank, values_from = name) %>%
   dplyr::mutate(

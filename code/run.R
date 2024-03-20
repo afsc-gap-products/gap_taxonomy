@@ -255,6 +255,7 @@ species_classification <- taxonomy_final %>%
   dplyr::rename_with(toupper)
 
 
+write_csv(species_classification, paste0("output/species_classification_", yr, ".csv"))
 
 
 ## Documenting taxonomic changes -------------------------------------------------------
