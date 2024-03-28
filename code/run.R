@@ -32,6 +32,7 @@ for (p in pkg) {
 
 
 source("code/functions.R")
+source("code/data.R")
 
 
 
@@ -198,9 +199,9 @@ taxonomy_final <- taxonomy_cleaned %>%
   dplyr::mutate(
     old_code = species_code,
     action = case_when(
-      reason == "nomen nudum" ~ "delete species code",
-      old_code != new_code & survey_name != accepted_name & n_codes > 1 ~ "change species code/name",
-      reason != "" & survey_name != accepted_name ~ "change species name",
+      reason == "nomen nudum" ~ "delete taxon code",
+      old_code != new_code & survey_name != accepted_name & n_codes > 1 ~ "change taxon code/name",
+      reason != "" & survey_name != accepted_name ~ "change taxon name",
       TRUE ~ ""
     ),
     species_code = ifelse(is.na(new_code), old_code, new_code)
@@ -270,10 +271,11 @@ taxonomic_changes <- taxonomy_final %>%
   dplyr::filter(n == 1 | n == 2 & database == "WORMS") %>%
   dplyr::mutate(
     new_species_code = ifelse(old_code == species_code, NA, species_code),
-    year_changed = format(Sys.Date(), "%Y")
+    year_changed = as.numeric(format(Sys.Date(), "%Y"))
   ) %>%
   dplyr::distinct(species_name, survey_name, old_code, species_code, action, .keep_all = TRUE) %>%
   dplyr::filter(species_name != survey_name | old_code != species_code) %>%
+  dplyr::bind_rows(species_year) %>%
   dplyr::select(
     old_species_name = survey_name, old_species_code = old_code,
     new_species_name = species_name, new_species_code = species_code, action, year_changed, reason
