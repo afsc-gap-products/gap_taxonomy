@@ -31,10 +31,14 @@ for (p in pkg) {
 }
 
 
+## Download files, authenticate googledrive ---------------------------------
+# googledrive::drive_deauth()
+googledrive::drive_auth()
+1
+
+
 source("code/functions.R")
 source("code/data.R")
-
-
 
 ## check database status ------------------------------------------
 

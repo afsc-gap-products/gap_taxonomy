@@ -1,28 +1,15 @@
-# species_year table; table of information on when certain species codes were added, important for estimating indices for commercially important taxa
-species_year <- tibble::tribble(
-  ~"species_name", ~"species_code", ~"year_changed",
-  "Bathyraja interrupta", 435, 1999,
-  "Bathyraja interrupta egg case", 436, 1999,
-  "Bathyraja taranetzi", 455, 1999,
-  "Bathyraja taranetzi egg case", 456, 1999,
-  "Bathyraja parmifera", 471, 1999,
-  "Bathyraja aleutica", 472, 1999,
-  "Bathyraja aleutica egg case", 473, 1999,
-  "Bathyraja parmifera egg case", 474, 1999,
-  "Bathyraja maculata", 480, 1988,
-  "Bathyraja maculata egg case", 481, 1988,
-  "Atheresthes stomias", 10110, 1992,
-  "Atheresthes evermanni", 10112, 1992,
-  "Limanda sakhalinensis", 10212, 1984,
-  "Lepidopsetta polyxystra", 10261, 1996,
-  "Lepidopsetta bilineata", 10262, 1996,
-  "Sebastes aleutianus", 30051, 2006,
-  "Sebastes melanostictus", 30052, 2006,
-  "Sebastes variabilis", 30152, 1996,
-  "Careproctus comus", 22246, 2024
-) %>%
-  dplyr::mutate(action = "new taxon added") 
+# download species_year table for new species added
+dir_data <- "https://docs.google.com/spreadsheets/d/1yuw03-ybZBSnzXbmkBXNbvbbpWE48-_b2OqG-_qEBbA/edit#gid=0"
 
+googledrive::drive_download(
+  file = googledrive::as_id(dir_data), 
+  path = "data/new_species_codes.xlsx", 
+  overwrite = TRUE)
+
+
+# species_year table; table of information on when certain species codes were added, important for estimating indices for commercially important taxa
+species_year <- readxl::read_excel(path = "data/new_species_codes.xlsx") %>%
+  dplyr::mutate(action = "new taxon added") 
 
 
 
