@@ -357,4 +357,13 @@ fix_syn_codes <- function(data, nm) {
   new_code
 }
 
-
+# matched newly described species with those in newly_described_species table and then checks spelling
+lookup_name <- function(x){
+  y <- stringr::str_remove(x, " \\(.+$")
+  if(y %in% desc_spp$current_name){
+    out <- desc_spp$fixed_name[y == desc_spp$current_name]
+  } else {
+    out <- check_spelling(x)
+  }
+  out
+}

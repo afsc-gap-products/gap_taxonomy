@@ -19,7 +19,8 @@ pkg <- c(
   "taxize",
   "janitor",
   "googledrive",
-  "gapindex"
+  "gapindex",
+  "readxl"
 )
 
 pkg <- unique(pkg)
@@ -63,13 +64,12 @@ if (file.exists(nm)) {
   cat("Can't find current RACE species codes. Downloading from Oracle.\n")
   if (file.exists("Z:/Projects/ConnectToOracle.R")) {
     source("Z:/Projects/ConnectToOracle.R")
-    channel <- channel_products
   } else {
     gapindex::get_connected()
   }
   tmp <- RODBC::sqlQuery(channel, paste0("SELECT * FROM RACE_DATA.RACE_SPECIES_CODES")) %>%
     tibble::as_tibble() %>%
-    janitor::clean_names()
+    janitor::clean_names() 
   readr::write_csv(tmp, nm)
 }
 
@@ -82,17 +82,25 @@ race_species <- tmp %>%
 
 ## Updating/validating names -------------------------------------------------------
 
+# newly described species
+desc_spp <- readxl::read_xlsx("data/newly_described_species.xlsx") %>%
+  janitor::clean_names() %>%
+  dplyr::mutate(fixed_name = purrr::map_chr(new_name, check_spelling)) 
+
 
 # clean up any names/inconsistencies in species list and check for typos; need to fix names first or databases won't recognize them
 fixed_spp <- race_species %>%
-  dplyr::mutate(
-    survey_name = gsub("_", " ", survey_name),
-    fixed_name = purrr::map_chr(survey_name, check_spelling),
-    reason1 = ifelse(survey_name != fixed_name & !grepl(rm_all, survey_name),
-      "misspelling", NA
-    )
+  dplyr::mutate(survey_name = stringr::str_replace_all(survey_name, "_", " "),
+                fixed_name = purrr::map_chr(survey_name, lookup_name),
+                reason1 = case_when(
+                  fixed_name %in% desc_spp$new_name & grepl("sp\\. ", survey_name) ~ "species described",
+                  survey_name != fixed_name & !grepl(rm_all, survey_name) ~ "misspelling",
+                  TRUE ~ NA
+                )
   )
 
+# # making sure all described species incorporated in list
+# desc_spp %>% filter(!new_name %in% fixed_spp$fixed_name)
 
 
 # manually fixing typos/issues that code doesn't catch; need to find a better solution
@@ -120,6 +128,7 @@ fixed_spp <- fixed_spp %>%
     survey_name == "Stylocordyla eous" ~ "Stylocordyla borealis eous",
     survey_name == "Ancistrolepis bicinctus" ~ "Ancistrolepis eucosmius",
     survey_name == "Chlamys erythocomata" ~ "Chlamys islandica erythrocomata",
+    common_name == "tumbling anemone" ~ "Ptychodactis aleutiensis",
     TRUE ~ fixed_name
   ))
 
@@ -133,7 +142,8 @@ accepted_spp_worms <- fixed_spp %>%
   dplyr::mutate(
     tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
     tax_worms = purrr::map(tmp_name, ~ get_taxonomy(.x, "worms", predefined_taxa = defined_tax))
-  )
+  ) 
+# saveRDS(accepted_spp_worms, paste0("output/accepted_spp_worms_", yr, ".RData"))
 
 accepted_spp_itis <- fixed_spp %>%
   dplyr::arrange(survey_name) %>%
@@ -141,6 +151,7 @@ accepted_spp_itis <- fixed_spp %>%
     tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
     tax_itis = purrr::map(tmp_name, ~ get_taxonomy(.x, "itis", predefined_taxa = defined_tax))
   )
+# saveRDS(accepted_spp_itis, paste0("output/accepted_spp_itis_", yr, ".RData"))
 
 
 # cleaning up data frame, picking final accepted name and reasons for changes
@@ -163,6 +174,7 @@ taxonomy_cleaned <- dplyr::bind_rows(
   dplyr::group_by(species_code) %>%
   dplyr::mutate( # pick updated name based on available columns
     new_name = dplyr::case_when(
+      reason1 == "species described" ~ fixed_name,
       grepl("hybrid", survey_name) ~ survey_name,
       !is.na(suggested_name) ~ suggested_name,
       is.na(database_name) & is.na(fixed_name) ~ survey_name,
@@ -177,7 +189,7 @@ taxonomy_cleaned <- dplyr::bind_rows(
       survey_name != new_name ~ "synonym",
       TRUE ~ ""
     ),
-    db_id = ifelse(grepl(paste0(rm_bits, "|sp\\. "), survey_name), NA, db_id),
+    db_id = ifelse(grepl(paste0(rm_bits, "|sp\\. "), survey_name) & reason != "species described", NA, db_id),
     id_rank = ifelse(grepl("sp\\. ", survey_name), "species", id_rank)
   ) %>%
   dplyr::select(reason,
@@ -204,6 +216,7 @@ taxonomy_final <- taxonomy_cleaned %>%
     old_code = species_code,
     action = case_when(
       reason == "nomen nudum" ~ "delete taxon code",
+      reason == "species described" ~ "change taxon name",
       old_code != new_code & survey_name != accepted_name & n_codes > 1 ~ "change taxon code/name",
       reason != "" & survey_name != accepted_name ~ "change taxon name",
       TRUE ~ ""
@@ -222,7 +235,7 @@ taxonomy_final <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>% # fixing last few problem species
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>%
   dplyr::mutate(accepted_name = ifelse(n_codes != 1, survey_name, accepted_name)) %>%
-  dplyr::rows_update(missing_taxa, by = "species_code") %>% # adding in taxonomy for sp. where survey_name = NA
+  # dplyr::rows_update(missing_taxa, by = "species_code") %>% # adding in taxonomy for sp. where survey_name = NA
   dplyr::select(reason, survey_species, survey_name,
     species_name = accepted_name,
     common_name, species_code:database_id, genus:kingdom, old_code, action
@@ -267,27 +280,54 @@ write_csv(species_classification, paste0("output/species_classification_", yr, "
 # dataframe of exact changes that need to be made to species names/codes
 
 
-# list of taxonomic changes that need to be made
-taxonomic_changes <- taxonomy_final %>%
+# pulling last year's version to compare/append new changes
+current_tax_changes <- sqlQuery(channel, "SELECT * FROM GAP_PRODUCTS.TAXONOMIC_CHANGES") %>%
+  tibble::as_tibble() %>%
+  janitor::clean_names()
+
+current_tax_class <- sqlQuery(channel, "SELECT * FROM GAP_PRODUCTS.TAXONOMIC_CLASSIFICATION") %>%
+  tibble::as_tibble() %>%
+  janitor::clean_names()
+
+
+new_species_codes <- taxonomy_final %>%
+  dplyr::filter(!species_code %in% current_tax_class$species_code & survey_species == 1) %>%
+  dplyr::mutate(reason = "species code added",
+                action = "add taxon code/name",
+                old_code = NA
+  )
+
+
+
+
+# list of taxonomic changes that need to be made for this year
+tax_changes <- taxonomy_final %>%
+  dplyr::bind_rows(new_species_codes) %>%
   dplyr::filter(survey_species == 1 | reason != "") %>%
   dplyr::group_by(survey_name) %>%
   dplyr::add_count() %>%
   dplyr::filter(n == 1 | n == 2 & database == "WORMS") %>%
   dplyr::mutate(
-    new_species_code = ifelse(old_code == species_code, NA, species_code),
+    new_species_code = ifelse(old_code == species_code & reason != "species code added", NA, species_code),
     year_changed = as.numeric(format(Sys.Date(), "%Y"))
   ) %>%
   dplyr::distinct(species_name, survey_name, old_code, species_code, action, .keep_all = TRUE) %>%
-  dplyr::filter(species_name != survey_name | old_code != species_code) %>%
-  dplyr::bind_rows(species_year) %>%
+  dplyr::filter(species_name != survey_name | old_code != species_code | is.na(old_code)) %>%
+  dplyr::mutate(survey_name = ifelse(reason == "species code added", NA, survey_name)) %>%
   dplyr::select(
     old_species_name = survey_name, old_species_code = old_code,
     new_species_name = species_name, new_species_code = species_code, action, year_changed, reason
-  ) %>%
-  dplyr::arrange(old_species_name) %>%
-  dplyr::rename_with(toupper)
+  ) 
 
+taxonomic_changes <- current_tax_changes %>%
+  mutate(year_changed = 2023) %>%
+  dplyr::bind_rows(tax_changes) %>%
+  dplyr::distinct(old_species_name, old_species_code, new_species_code, action, reason, .keep_all = TRUE) %>%
+  dplyr::arrange(desc(year_changed), old_species_name) %>%
+  dplyr::rename_with(toupper) 
+  
 
+write_csv(taxonomic_changes, paste0("output/taxonomic_changes_", yr, ".csv"))
 
 
 
