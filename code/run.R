@@ -33,9 +33,9 @@ for (p in pkg) {
 
 
 ## Download files, authenticate googledrive ---------------------------------
-# googledrive::drive_deauth()
-googledrive::drive_auth()
-1
+# # googledrive::drive_deauth()
+# googledrive::drive_auth()
+# 1
 
 
 source("code/functions.R")
@@ -130,7 +130,8 @@ fixed_spp <- fixed_spp %>%
     survey_name == "Chlamys erythocomata" ~ "Chlamys islandica erythrocomata",
     common_name == "tumbling anemone" ~ "Ptychodactis aleutiensis",
     TRUE ~ fixed_name
-  ))
+  )) %>%
+  filter(species_code != 99999999) # Chris test species
 
 
 
@@ -235,7 +236,7 @@ taxonomy_final <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>% # fixing last few problem species
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>%
   dplyr::mutate(accepted_name = ifelse(n_codes != 1, survey_name, accepted_name)) %>%
-  # dplyr::rows_update(missing_taxa, by = "species_code") %>% # adding in taxonomy for sp. where survey_name = NA
+  dplyr::rows_update(missing_taxa, by = "species_code") %>% # adding in taxonomy for sp. where survey_name = NA
   dplyr::select(reason, survey_species, survey_name,
     species_name = accepted_name,
     common_name, species_code:database_id, genus:kingdom, old_code, action
@@ -250,7 +251,10 @@ taxonomy_final <- taxonomy_cleaned %>%
 taxonomy_final %>%
   dplyr::group_by(species_name) %>%
   dplyr::mutate(n_codes = n_distinct(species_code)) %>%
-  dplyr::filter(n_codes != 1 & !is.na(species_name))
+  dplyr::group_by(species_code) %>%
+  dplyr::mutate(n_survey_sp = sum(survey_species)) %>%
+  dplyr::filter(n_codes != 1 & !is.na(species_name) | 
+                  n_survey_sp > 1 & !is.na(species_name))
 
 # species that were synonymized and we will no longer use these codes; will be dropped from final table
 taxonomy_final %>%

@@ -3,7 +3,7 @@ keep_ranks <- c(
   "genus",
   "subfamily", "family", "superfamily",
   "infraorder", "suborder", "order", "superorder",
-  "subclass", "class", "superclass",
+  "infraclass", "subclass", "class", "superclass",
   "subphylum", "phylum",
   "kingdom"
 )
@@ -41,9 +41,11 @@ fix_names <- function(old_nm, new_nm) {
       }
     }
   } else {
+    if(!is.na(new_nm)){
     w <- stringr::str_split(rm_all, "\\|")[[1]] # extra bits to paste on
     base <- paste0(w[w != "hybrid"], "(.+)?$", collapse = "|")
     nm <- paste(new_nm, stringr::str_extract(old_nm, base))
+    } else nm <- old_nm
   }
   trimws(stringr::str_replace_all(nm, "\\s+", " "))
 }

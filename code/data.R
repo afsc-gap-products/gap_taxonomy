@@ -77,7 +77,6 @@ missing_taxa <- tibble::tribble(
   99991, "Cirripedia", NA,
   43006, "Actiniaria", "species",
   43007, "Actiniaria", "species",
-  43121, "Actiniaria", "species",
   43201, "Actiniaria", "species",
   60113, "Amphipoda", "species",
   71008, "Nudibranchia", "order",
@@ -93,7 +92,8 @@ missing_taxa <- tibble::tribble(
   30580, "Sebastes", NA,
   30590, "Sebastes", NA,
   71700, "Buccinidae", "family",
-  74981, "Cardiidae", "family"
+  74981, "Cardiidae", "family",
+  59000, "Polychaeta", "class"
 ) %>%
   dplyr::mutate(tax_worms = purrr::map(level, ~ suppressMessages(get_taxonomy(.x, "worms")))) %>%
   tidyr::unnest(tax_worms) %>%
