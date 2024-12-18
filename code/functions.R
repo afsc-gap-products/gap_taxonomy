@@ -76,9 +76,13 @@ check_spelling <- function(species) {
     sp <- trimws(sp)
 
     # restricting to a few sources, prioritizing WORMS; see https://resolver.globalnames.org/data_sources
-    new_id <- taxize::gnr_resolve(sp, data_source_ids = 9, canonical = TRUE)
+    ss <- c(9, 3, 1, 2, 12)
+    for(ii in 1:length(ss)){
+      new_id <- try(taxize::gnr_resolve(sp, data_source_ids = ss[ii], canonical = TRUE), silent = TRUE)
+      if(methods::is(new_id, "try-error")) next else break
+    }
 
-    if (nrow(new_id) == 0) {
+    if (nrow(new_id) == 0 && !methods::is(new_id, "try-error")) {
       new_id <- taxize::gnr_resolve(sp,
         best_match_only = TRUE, canonical = TRUE,
         data_source_ids = c(1, 3, 12, 151, 155, 163)
@@ -86,7 +90,7 @@ check_spelling <- function(species) {
     }
   }
   if (exists("new_id") && is.null(new_id) & sp != species) new_id <- sp
-  if (!exists("new_id") || is.null(new_id) || nrow(new_id) == 0) {
+  if (!exists("new_id") || is.null(new_id) || nrow(new_id) == 0 || methods::is(new_id, "try-error")) {
     new_id <- NA
   } else {
     new_id <- new_id$matched_name2[[1]]

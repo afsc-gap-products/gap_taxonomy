@@ -56,7 +56,7 @@ missing_taxa <- tibble::tribble(
   91093, "Porifera", "species",
   91096, "Porifera", "species",
   95010, "Bryozoa", "species",
-  95011, "Bryozoa", "species",
+  95011, "Porifera", "species",
   1, "Vertebrata", NA,
   2, "Vertebrata", NA,
   3, "Vertebrata", NA,

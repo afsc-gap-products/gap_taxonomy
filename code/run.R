@@ -1,9 +1,7 @@
 ## User inputs -------------------------------------------------------
 
 ask <- TRUE # ask for user input if multiple taxa match?
-# save_to_gdrive <- TRUE
 
-# yr <- 2022 # if not defined will use current year
 
 # database(s) (worms vs. itis) to check against
 db <- "both"
@@ -20,7 +18,9 @@ pkg <- c(
   "janitor",
   "googledrive",
   "gapindex",
-  "readxl"
+  "readxl",
+  "ritis",
+  "worrms"
 )
 
 pkg <- unique(pkg)
