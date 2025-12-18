@@ -1,0 +1,61 @@
+survey_species,species_code,id_rank,database,genus,subfamily,family,superfamily,infraorder,suborder,order,superorder,infraclass,subclass,class,superclass,subphylum,phylum,kingdom,survey_name,common_name
+1,1,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Vertebrata,Chordata,Animalia,NA,fish egg unid.
+1,2,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Vertebrata,Chordata,Animalia,NA,fish larvae unid.
+1,3,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Vertebrata,Chordata,Animalia,NA,fish unid.
+1,23952,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia,NA,leptocephalus unid.
+1,29999,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Vertebrata,Chordata,Animalia,NA,roundfish unid.
+1,30050,NA,WORMS,Sebastes,Sebastinae,Sebastidae,NA,NA,Scorpaenoidei,Perciformes,NA,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia,NA,rougheye and blackspotted rockfish unid.
+1,30150,NA,WORMS,Sebastes,Sebastinae,Sebastidae,NA,NA,Scorpaenoidei,Perciformes,NA,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia,NA,dusky and dark rockfishes unid.
+1,30580,NA,WORMS,Sebastes,Sebastinae,Sebastidae,NA,NA,Scorpaenoidei,Perciformes,NA,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia,NA,black rockfish unid.
+1,30590,NA,WORMS,Sebastes,Sebastinae,Sebastidae,NA,NA,Scorpaenoidei,Perciformes,NA,NA,NA,Teleostei,Actinopteri,Vertebrata,Chordata,Animalia,NA,red rockfish unid.
+1,40015,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,Hydroidolina,Hydrozoa,NA,Medusozoa,Cnidaria,Animalia,NA,pussywillow hydroid
+1,43006,species,WORMS,NA,NA,NA,NA,NA,NA,Actiniaria,NA,NA,NA,Hexacorallia,NA,Anthozoa,Cnidaria,Animalia,NA,purple striated sea anemone
+1,43007,species,WORMS,NA,NA,NA,NA,NA,NA,Actiniaria,NA,NA,NA,Hexacorallia,NA,Anthozoa,Cnidaria,Animalia,NA,red striated sea anemone
+1,43201,species,WORMS,NA,NA,NA,NA,NA,NA,Actiniaria,NA,NA,NA,Hexacorallia,NA,Anthozoa,Cnidaria,Animalia,NA,pink hormathiid anemone
+1,50010,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Polychaeta,NA,NA,Annelida,Animalia,NA,tube worm unid.
+1,59000,class,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Polychaeta,NA,NA,Annelida,Animalia,NA,bristle worm unid.
+1,60113,species,WORMS,NA,NA,NA,NA,NA,NA,Amphipoda,Peracarida,NA,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia,NA,red-spotted amphipod
+1,66000,infraorder,WORMS,NA,NA,NA,NA,Caridea,Pleocyemata,Decapoda,Eucarida,NA,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia,NA,shrimp unid.
+1,68000,infraorder,WORMS,NA,NA,NA,NA,Brachyura,Pleocyemata,Decapoda,Eucarida,NA,Eumalacostraca,Malacostraca,Multicrustacea,Crustacea,Arthropoda,Animalia,NA,crab unid.
+1,71008,order,WORMS,NA,NA,NA,NA,NA,NA,Nudibranchia,Nudipleura,Euthyneura,Heterobranchia,Gastropoda,NA,NA,Mollusca,Animalia,NA,nudibranch egg
+1,71405,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Gastropoda,NA,NA,Mollusca,Animalia,NA,limpet unid.
+1,71700,family,WORMS,NA,NA,Buccinidae,Buccinoidea,NA,NA,Neogastropoda,NA,NA,Caenogastropoda,Gastropoda,NA,NA,Mollusca,Animalia,NA,whelk unid.
+1,74981,family,WORMS,NA,NA,Cardiidae,Cardioidea,NA,NA,Cardiida,Imparidentia,Heteroconchia,Autobranchia,Bivalvia,NA,NA,Mollusca,Animalia,NA,cockle unid.
+1,78011,NA,WORMS,NA,NA,NA,NA,NA,NA,Octopoda,Octopodiformes,NA,Coleoidea,Cephalopoda,NA,NA,Mollusca,Animalia,NA,pelagic octopus unid.
+1,80604,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Asteroidea,NA,Asterozoa,Echinodermata,Animalia,NA,lens star
+1,82650,order,WORMS,NA,NA,NA,Spatangoidea,NA,Brissidina,Spatangoida,NA,Irregularia,Euechinoidea,Echinoidea,NA,Echinozoa,Echinodermata,Animalia,NA,heart urchin unid.
+1,82672,species,WORMS,NA,NA,NA,Spatangoidea,NA,Brissidina,Spatangoida,NA,Irregularia,Euechinoidea,Echinoidea,NA,Echinozoa,Echinodermata,Animalia,NA,large green heart urchin
+1,82673,species,WORMS,NA,NA,NA,Spatangoidea,NA,Brissidina,Spatangoida,NA,Irregularia,Euechinoidea,Echinoidea,NA,Echinozoa,Echinodermata,Animalia,NA,oval heart urchin
+1,82730,order,WORMS,NA,NA,NA,NA,NA,NA,Echinolampadacea,Luminacea,Irregularia,Euechinoidea,Echinoidea,NA,Echinozoa,Echinodermata,Animalia,NA,sand dollar unid.
+1,82750,class,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Crinoidea,NA,Crinozoa,Echinodermata,Animalia,NA,crinoid unid.
+1,91002,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,hairy lemon sponge
+1,91005,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,vase sponge unid.
+1,91051,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,neon yellow vase sponge
+1,91055,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,brain sponge
+1,91056,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,funnel sponge
+1,91071,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,staghorn sponge
+1,91072,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,orange ball sponge
+1,91076,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,orange sponge
+1,91077,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,yellow bowl sponge
+1,91079,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,black papillate sponge
+1,91080,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,yellow green papillate sponge
+1,91081,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,yellow papillate sponge
+1,91083,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,orange encrusting sponge
+1,91084,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,firm yellow green sponge
+1,91090,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,orange papillate sponge
+1,91093,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,soft finger sponge
+1,91096,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,slimy antler sponge
+1,95010,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Bryozoa,Animalia,NA,bryozoan sp. A unid.
+1,95011,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Porifera,Animalia,NA,fluffy sponge
+1,98003,genus,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Ascidiacea,NA,Tunicata,Chordata,Animalia,NA,sea pickle
+1,98073,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Ascidiacea,NA,Tunicata,Chordata,Animalia,NA,pineapple tunicate
+1,98300,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Ascidiacea,NA,Tunicata,Chordata,Animalia,NA,compound ascidian unid.
+1,98330,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Ascidiacea,NA,Tunicata,Chordata,Animalia,NA,brown leafy compound tunicate
+1,99910,species,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Ascidiacea,NA,Tunicata,Chordata,Animalia,NA,neon yellow ascidian
+1,99990,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Animalia,NA,invertebrate unid.
+1,99991,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,Cirripedia,Thecostraca,Multicrustacea,Crustacea,Arthropoda,Animalia,NA,empty barnacle shells
+1,99992,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Animalia,NA,invertebrate egg unid.
+1,99993,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Bivalvia,NA,NA,Mollusca,Animalia,NA,empty bivalve shells
+1,99994,NA,WORMS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Gastropoda,NA,NA,Mollusca,Animalia,NA,empty gastropod shells
+1,99997,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,unsorted catch and debris
+1,99999,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,unsorted shab

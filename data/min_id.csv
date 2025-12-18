@@ -1,0 +1,42 @@
+Group,Taxon,common_name,id_level,species_code
+Arthropoda,Amphipoda,Amphipods,Amphipod unid.,60100
+Arthropoda,Cirripedia,Barnacles,Barnacle unid.,65000
+Arthropoda,Cumacea,Cumaceans,Cumacean unid.,63000
+Arthropoda,Caridea,Shrimps,Genus,
+Arthropoda,Paguridae,Hermit crabs,Species,
+Arthropoda,Decapoda,Crabs,Species,
+Arthropoda,Isopoda,Isopods,Isopod unid.,62000
+Arthropoda,Mysidae,Mysids,Mysid unid.,64000
+Arthropoda,Pycnogonida,Sea spiders,Sea spider unid.,69900
+Brachiopoda,Brachiopoda,Brachiopods,Brachiopod unid.,97000
+Bryozoa,Bryozoa,Bryozoans,Bryozoan unid.,95000
+Chordata,Chordata,Vertebrates,"Species (ex. Lycodapus eelpouts, snailfishes, and myctophids to genus)",
+Cnidaria,Actiniaria,Anemones,Sea anemone unid.,43000
+Cnidaria,Caryophylliidae            ,Cup corals,Cup coral unid.,44004
+Cnidaria,Hydroidolina,Hydroids,Hydroid unid,40011
+Cnidaria,Octocorallia,Octocorals,Octocoral unid.,41099
+Cnidaria,Pennatuloidea ,Sea pens and sea whips,Sea pen or whip unid.,42000
+Cnidaria,Scleractinia ,Stony corals,Stony coral unid.,44000
+Cnidaria,Scyphozoa,Jellyfish,Jellyfish unid.,40500
+Ctenophora,Ctenophora,Comb jellies,Ctenophore unid.,45000
+Echinodermata,Asteroidea,Sea stars,Species (ex. Pteraster and Henricia),
+Echinodermata,Crinoidea,Crinoids,Crinoid unid.,82750
+Echinodermata,Echinoidea,Sea urchins,Genus,
+Echinodermata,Echinolampadacea,Sand dollars,Species,
+Echinodermata,Holothuroidea,Sea cucumbers,Species,
+Echinodermata,Ophiuroidea,Brittle stars,Brittlestar unid.,83000
+Echinodermata,Gorgonocephalus,Basket star,Species,
+Echiura,Echiura,Spoon worms,Echiurid unid.,94500
+Hirudinea,Hirudinea,Leeches,Sea leech unid.,59100
+Mollusca,Aplacophora,Solenogastres,Aplacophora unid.,70049
+Mollusca,Bivalvia,Clams,Genus,
+Mollusca,Decapodiformes,Squids,Species,
+Mollusca,Octopoda,Octopus,Genus,
+Mollusca,Gastropoda,Snails,Genus,
+Mollusca,Nudipleura,Nudibranchs,Nudibranch unid.,71010
+Mollusca,Polyplacophora,Chitons,Chiton unid.,70100
+Polychaeta,Polychaeta,Polychaetes,Polychaete unid.,50000
+Porifera,Porifera,Sponges,Porifera unid.,91000
+Sipuncula,Sipuncula,Peanut worms,Peanut worm unid.,94000
+Urochordata,Ascidiacea,Tunicates,Tunicate unid.,98000
+Urochordata,Thaliacea,Salps,Salp unid.,98070
