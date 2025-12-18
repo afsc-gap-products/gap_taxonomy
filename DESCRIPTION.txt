@@ -1,0 +1,21 @@
+Package: taxonomyUpdate
+Type: Package
+Title: Taxonomy Update Utilities
+Version: 0.1.0
+Authors@R: person("Sarah Friedman", email="sarah.friedman@noaa.gov", role=c("aut","cre"))
+Description: Utilities for cleaning, validating, and updating species taxonomy using WoRMS and ITIS databases.
+Depends: R (>= 4.0)
+Imports:
+    stringr,
+    dplyr,
+    tidyr,
+    purrr,
+    taxize,
+    ritis,
+    worrms,
+    tibble,
+    methods,
+    utils
+License: GPL-3
+Encoding: UTF-8
+LazyData: true

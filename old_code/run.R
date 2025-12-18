@@ -138,21 +138,9 @@ fixed_spp <- fixed_spp %>%
 
 ## Getting taxonomic info -------------------------------------------------------
 # THIS MAY TAKE A WHILE; also checks for accepted name
-accepted_spp_worms <- fixed_spp %>%
-  dplyr::arrange(survey_name) %>%
-  dplyr::mutate(
-    tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
-    tax_worms = purrr::map(tmp_name, ~ get_taxonomy(.x, "worms", predefined_taxa = defined_tax))
-  ) 
-# saveRDS(accepted_spp_worms, paste0("output/accepted_spp_worms_", yr, ".RData"))
-
-accepted_spp_itis <- fixed_spp %>%
-  dplyr::arrange(survey_name) %>%
-  dplyr::mutate(
-    tmp_name = ifelse(is.na(fixed_name), survey_name, fixed_name),
-    tax_itis = purrr::map(tmp_name, ~ get_taxonomy(.x, "itis", predefined_taxa = defined_tax))
-  )
-# saveRDS(accepted_spp_itis, paste0("output/accepted_spp_itis_", yr, ".RData"))
+# Query WoRMS and ITIS
+tax_worms <- get_taxonomy_for_db(fixed_spp, "worms")
+tax_itis  <- get_taxonomy_for_db(fixed_spp, "itis")
 
 
 # cleaning up data frame, picking final accepted name and reasons for changes
@@ -207,7 +195,7 @@ taxonomy_cleaned <- dplyr::bind_rows(
 
 # species classification table formatting for oracle; adding variable survey_species, which designate the species name RACE accepts (relies primarily on WORMS with supplemented ITIS codes where necessary); removing species that were synonmized with existing species codes
 
-taxonomy_final <- taxonomy_cleaned %>%
+taxonomy_final <- taxonomy_cleaned %>% 
   dplyr::group_by(accepted_name) %>%
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>% # finding species with multiple codes; indicates synonymy
   tidyr::nest() %>%
@@ -330,6 +318,11 @@ taxonomic_changes <- current_tax_changes %>%
   dplyr::arrange(desc(year_changed), old_species_name) %>%
   dplyr::rename_with(toupper) 
   
+
+# checking to make sure no species code accidentally dropped
+all(race_species$species_codes %in% c(taxonomic_changes$OLD_SPECIES_CODE, species_classification$SPECIES_CODE))
+
+
 
 write_csv(taxonomic_changes, paste0("output/taxonomic_changes_", yr, ".csv"))
 
