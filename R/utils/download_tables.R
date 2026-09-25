@@ -1,84 +1,105 @@
 # Oracle connection helpers
 path_oracle_connect <- "Z:/Projects/ConnectToOracle.R" 
 
+tables <- c("race_species_codes", "species_taxonomics", "taxonomic_ranks",
+            "taxonomic_classification", "taxonomic_changes", "species_year",
+            "taxonomic_confidence", "survey_design")
 
-# Filenames
-nm_species <- file.path("data", paste0(this_year, "_race_species_codes.csv"))
-nm_tax     <- file.path("data", paste0(this_year, "_taxonomic_classification.csv"))
-nm_changes <- file.path("data", paste0(this_year, "_taxonomic_changes.csv"))
-nm_species_year <- file.path("data", paste0(this_year, "_species_year.csv"))
 
-# Check which CSVs exist
-if(download_tables){
-  species_exists <- tax_exists  <- changes_exists <- species_year_exists <- FALSE
-} else {
-  species_exists <- file.exists(nm_species)
-  tax_exists     <- file.exists(nm_tax)
-  changes_exists <- file.exists(nm_changes)
-  species_year_exists <- file.exists(nm_species_year)
-}
+# Map Oracle tables to local filenames
+table_lookup <- tibble::tibble(
+  table_key = tables,
+  oracle_table = c(
+    "RACE_DATA.RACE_SPECIES_CODES",
+    "RACE_DATA.SPECIES_TAXONOMICS",
+    "RACE_DATA.TAXONOMIC_RANKS",
+    "RACE_DATA.TAXONOMIC_CLASSIFICATION",
+    "RACE_DATA.TAXONOMIC_CHANGES",
+    "GAP_PRODUCTS.SPECIES_YEAR",
+    "GAP_PRODUCTS.TAXONOMIC_CONFIDENCE",
+    "GAP_PRODUCTS.SURVEY_DESIGN"
+  ),
+  file_path = file.path("data/oracle", paste0(this_year, "_", tables, ".csv"))
+)
 
-# If either is missing, connect to Oracle once
-if (!species_exists || !tax_exists || !changes_exists || !species_year_exists) {
+# Determine whether each file exists
+table_lookup <- table_lookup %>%
+  dplyr::mutate(
+    exists = if (download_tables) FALSE else file.exists(file_path)
+  )
+
+# Connect to Oracle if any table missing
+if (any(!table_lookup$exists)) {
+  
   message("Connecting to Oracle to fetch missing tables…")
+  
   if (file.exists(path_oracle_connect)) {
     source(path_oracle_connect)
   } else {
     channel <- gapindex::get_connected()
   }
   
-  if (!species_exists) {
-    dat_species <- RODBC::sqlQuery(channel, "SELECT * FROM RACE_DATA.RACE_SPECIES_CODES") %>%
-      tibble::as_tibble() %>%
-      janitor::clean_names()
-    readr::write_csv(dat_species, nm_species)
-  }
-  
-  if (!tax_exists) {
-    dat_tax <- RODBC::sqlQuery(channel, "SELECT * FROM GAP_PRODUCTS.TAXONOMIC_CLASSIFICATION") %>%
-      tibble::as_tibble() %>%
-      janitor::clean_names()
-    readr::write_csv(dat_tax, nm_tax)
-  }
-  
-  if (!changes_exists) {
-    dat_changes <- RODBC::sqlQuery(channel, "SELECT * FROM GAP_PRODUCTS.TAXONOMIC_CHANGES") %>%
-      tibble::as_tibble() %>%
-      janitor::clean_names()
-    readr::write_csv(dat_changes, nm_changes)
-  }
-  
-  if (!species_year_exists) {
-    dat_species_year <- RODBC::sqlQuery(channel, "SELECT * FROM GAP_PRODUCTS.SPECIES_YEAR") %>%
-      tibble::as_tibble() %>%
-      janitor::clean_names()
-    readr::write_csv(dat_species_year, nm_species_year)
+  # Loop over tables and download missing ones
+  for(i in seq_len(nrow(table_lookup))) {
+    
+    if (!table_lookup$exists[i]) {
+      
+      message("Downloading ", table_lookup$table_key[i])
+      
+      dat <- RODBC::sqlQuery(
+        channel,
+        paste("SELECT * FROM", table_lookup$oracle_table[i])
+      ) %>%
+        tibble::as_tibble() %>%
+        janitor::clean_names()
+      
+      readr::write_csv(dat, table_lookup$file_path[i])
+    }
   }
 }
 
 
-# ---- Load from CSVs (always) ----
-race_species <- readr::read_csv(nm_species, show_col_types = FALSE) %>%
-  janitor::clean_names() %>%
+
+# ---- Load all CSVs into a named list ----
+oracle_tables <- purrr::map(
+  table_lookup$file_path,
+  ~ readr::read_csv(.x, show_col_types = FALSE) %>%
+    janitor::clean_names()
+)
+
+names(oracle_tables) <- table_lookup$table_key
+
+
+# ---- Extract specific tables for workflow ----
+
+race_species <- oracle_tables$race_species_codes %>%
   dplyr::select(
     species_name,
     species_code,
     common_name
-  )
+  ) %>%
+  dplyr::filter(species_code != 99999999)   # removing test species
 
-species_year_current <- readr::read_csv(nm_species_year, show_col_types = FALSE) %>%
-  janitor::clean_names()
+species_taxonomics_current <- oracle_tables$species_taxonomics 
 
-taxchanges_current <- readr::read_csv(nm_changes, show_col_types = FALSE) %>%
-  janitor::clean_names()
+taxonomic_ranks <- oracle_tables$taxonomic_ranks 
 
-classification_current <- readr::read_csv(nm_tax, show_col_types = FALSE) %>%
-  janitor::clean_names()
+taxonomic_classification_current <- oracle_tables$taxonomic_classification
 
-survey_species <- classification_current %>%
-  dplyr::select(survey_species_old = survey_species, species_name:species_code) %>%
+taxonomic_changes_current <- oracle_tables$taxonomic_changes
+
+species_year_current <- oracle_tables$species_year
+
+
+survey_species <- taxonomic_classification_current %>%
+  dplyr::select(
+    survey_species_old = survey_species,
+    species_name:species_code
+  ) %>%
   dplyr::filter(!species_code %in% missing_taxa$species_code) %>%
   unique()
+
+survey_years <- oracle_tables$survey_design
 
 # manual clunky fix; ok to delete after 2026
 survey_species$species_name[survey_species$species_code == 98001] <- "Ascidiacea sp. A"

@@ -1,3 +1,7 @@
+# Purpose: Create taxon grouping tables based on minimum ID standards
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 ## ============================================================
 ## 1) Filter to survey species only
 ## ============================================================
@@ -5,7 +9,7 @@
 survey_species_taxa <- taxonomy_final %>%
   dplyr::select(-c(survey_name, reason, action, old_code)) %>%
   dplyr::arrange(species_code) %>%
-  filter(survey_species == 1)
+  filter(active == 1)
 
 
 ## ============================================================
@@ -13,7 +17,7 @@ survey_species_taxa <- taxonomy_final %>%
 ##    (map old species codes onto current taxonomy)
 ## ============================================================
 
-synonyms <- bind_rows(taxchanges_updates, taxchanges_current) %>%
+synonyms <- bind_rows(taxonomic_changes_new, taxonomic_changes_current) %>%
   filter(old_species_code != new_species_code) %>%
   select(
     old_species_name,
@@ -149,17 +153,21 @@ taxon_groups <- rank_expanded %>%
 
 ## ============================================================
 ## 10) Incorporate group stanzas and composition
+## ============================================================
 
 ## During the early part of the time series, some fish were aggregated to genus
 ## until GAP established high taxonomic ID confidence.
-## ============================================================
-
+## Thus, historical groupings are defined for 1980-1981, and modern groupings
 ## Historical group tables are created in: R/utils/constants.R
 
 historical_groups <- full_join(
   historical_group_stanzas,
   historical_group_composition
-)
+) %>%
+  group_by(group_id) %>%
+  mutate(group_stanza_id = cur_group_id() +
+           length(unique(taxon_groups$group_code))
+  ) %>% select(-group_id)
 
 
 ## Reference table used to update year_start for modern groups
@@ -179,10 +187,9 @@ taxon_group_stanzas <- taxon_groups %>%
   # Define modern group time bounds and assign new stanza IDs
   group_by(group_code) %>%
   mutate(
-    year_start      = 1985,
+    year_start      = 1982,
     year_end        = format(Sys.Date(), "%Y") %>% as.numeric(),
-    group_stanza_id = cur_group_id() +
-      max(historical_groups$group_stanza_id)
+    group_stanza_id = cur_group_id() 
   ) %>%
   
   # Add species-specific year information
@@ -213,7 +220,7 @@ taxon_group_stanzas <- taxon_groups %>%
 
 ## Derive group composition table
 
-group_composition <- taxon_group_stanzas %>%
+taxon_group_composition_new <- taxon_group_stanzas %>%
   select(group_stanza_id, group_code, species_code) %>%
   rename_with(toupper)
 
@@ -221,43 +228,7 @@ group_composition <- taxon_group_stanzas %>%
 
 ## Derive group stanza table
 
-group_stanzas <- taxon_group_stanzas %>%
+taxon_group_stanzas_new <- taxon_group_stanzas %>%
   select(group_stanza_id, group_code, year_start, year_end) %>%
   rename_with(toupper)
 
-
-
-
-
-
-# ###### TESTING HERE
-# # species codes without groups
-# rank_expanded %>% 
-#   mutate(group_code = coalesce(gp_code, new_code, species_code)) %>%
-#   distinct(group, species_code, group_code, .keep_all = TRUE) %>%
-#   select(group, taxon, taxon_rank, group_code, species_code, species_name, common_name) %>%
-#   left_join(survey_species_taxa) %>% filter(is.na(group)) %>% 
-#   left_join(min_id_expanded) %>% 
-#   mutate(id_to = case_when(
-#     grepl("species", id_level) ~ "species",
-#     id_level == "genus" ~ "genus",
-#     TRUE ~ taxon_rank)) %>%
-#   select(group:common_name, id_to, id_rank:kingdom) %>% filter(id_to != id_rank) %>% view
-
-
-
-# # REMOVE; just for testing
-# taxon_groups %>%
-#   select(group_code, species_code) %>%
-#   anti_join( orig_taxon_groups %>%  select(group_code, species_code), .) ->o
-# taxon_groups %>% filter(species_code %in% o$species_code) %>%
-#   rename(new_group_code = group_code) %>%
-#   left_join(taxon_groups %>% select(old_group_code = group_code, species_code)) %>%
-#   arrange(species_code) %>%
-#   left_join(survey_species_taxa %>% select(old_group = species_name, old_group_code = species_code)) %>%
-#   left_join(survey_species_taxa %>% select(new_group = species_name, new_group_code = species_code)) %>%
-#   select(old_group_code, old_group, new_group_code, new_group, everything()) %>%
-#   view
-
-
-            

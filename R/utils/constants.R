@@ -50,7 +50,7 @@ defined_tax <- tibble::tribble(
 
 # manually created group temporal stanzas table for information prior to taxonomic workflow (2025)
 historical_group_stanzas <- tibble::tribble(
-  ~group_stanza_id, ~group_code, ~year_start, ~year_end,
+  ~group_id, ~group_code, ~year_start, ~year_end,
   1, 10111, 1982, 1991,
   2, 30050, 1982, 2005,
   3, 30150, 1982, 1995,
@@ -61,7 +61,7 @@ historical_group_stanzas <- tibble::tribble(
 
 # manually created group composition table for information prior to taxonomic workflow (2025)
 historical_group_composition <- tibble::tribble(
-  ~group_stanza_id, ~species_code,
+  ~group_id, ~species_code,
   1, 10110,
   1, 10111,
   1, 10112,
