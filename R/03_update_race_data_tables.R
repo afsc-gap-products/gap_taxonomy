@@ -238,7 +238,7 @@ race_fk_mapper <- race_codes_current %>%
   dplyr::distinct(species_code, .keep_all = TRUE)
 
 # Rebuild race_codes_new, anchoring existing legacy IDs
-race_codes_new <- race_codes_current %>%
+race_species_codes_new <- race_codes_current %>%
   dplyr::left_join(race_fk_mapper, by = "species_code") %>%
   dplyr::left_join(
     new_tax %>% dplyr::select(species_code, active_name = species_name, active_common = common_name, new_active = active),
@@ -262,4 +262,4 @@ race_codes_new <- race_codes_current %>%
 # 6. RUN AUDIT CHECKS
 # ------------------------------------------------------------------------------
 
-run_taxonomy_qaqc(species_taxonomics_new, race_codes_new)
+run_taxonomy_qaqc(species_taxonomics_new, race_species_codes_new)
