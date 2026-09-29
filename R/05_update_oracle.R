@@ -23,7 +23,8 @@ product_schema <- "SFRIEDMAN"
 
 taxon_tables <- list(
   taxonomic_classification = list(pk_cols = c("SPECIES_CODE", "DATABASE")),
-  taxonomic_changes        = list(pk_cols = c("OLD_SPECIES_CODE", "NEW_SPECIES_CODE")),
+  taxonomic_changes        = list(pk_cols = c("OLD_SPECIES_CODE", "NEW_SPECIES_CODE",
+                                              "OLD_SPECIES_NAME", "NEW_SPECIES_NAME")),
   taxon_group_composition  = list(pk_cols = c("GROUP_STANZA_ID", "GROUP_CODE", "SPECIES_CODE")),
   taxon_group_stanzas      = list(pk_cols = c("GROUP_STANZA_ID", "GROUP_CODE")),
   taxonomic_confidence     = list(pk_cols = c("SPECIES_CODE", "SURVEY_DEFINITION_ID", "YEAR"))
@@ -52,6 +53,12 @@ for (tbl in names(taxon_tables)) {
   if (!all(pk_cols %in% names(update_df))) {
     stop("Primary key column(s) missing from ", target_obj_name, ": ",
          paste(setdiff(pk_cols, names(update_df)), collapse = ", "))
+  }
+  
+  n_before  <- nrow(update_df)
+  update_df <- dplyr::distinct(update_df)
+  if (nrow(update_df) < n_before) {
+    message("  Removed ", n_before - nrow(update_df), " exact duplicate row(s) from ", target_obj_name)
   }
   
   base_table_name  <- toupper(tbl)

@@ -222,6 +222,7 @@ taxon_group_stanzas <- taxon_groups %>%
 
 taxon_group_composition_new <- taxon_group_stanzas %>%
   select(group_stanza_id, group_code, species_code) %>%
+  unique() %>%
   rename_with(toupper)
 
 
@@ -230,5 +231,6 @@ taxon_group_composition_new <- taxon_group_stanzas %>%
 
 taxon_group_stanzas_new <- taxon_group_stanzas %>%
   select(group_stanza_id, group_code, year_start, year_end) %>%
+  unique() %>%
   rename_with(toupper)
 

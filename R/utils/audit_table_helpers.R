@@ -2,6 +2,7 @@
 ## ORACLE AUDIT & TABLE DEPLOYMENT HELPERS
 ## =============================================================================
 
+
 # ------------------------------------------------------------------------------
 # 0. SMALL UTILITIES
 # ------------------------------------------------------------------------------
@@ -18,7 +19,9 @@ run_sql <- function(channel, sql, context = "Oracle statement") {
   res <- RODBC::sqlQuery(channel, sql, errors = TRUE)
   if (odbc_failed(res)) {
     stop(context, " failed:\n", paste(res, collapse = "\n"),
-         "\nSQL (first 500 chars):\n", substr(sql, 1, 500), call. = FALSE)
+      "\nSQL (first 500 chars):\n", substr(sql, 1, 500),
+      call. = FALSE
+    )
   }
   invisible(res)
 }
@@ -41,21 +44,35 @@ to_chr <- function(x) {
 }
 
 oracle_type <- function(x) {
-  if (inherits(x, "POSIXt")) "TIMESTAMP"
-  else if (inherits(x, "Date")) "DATE"
-  else if (is.numeric(x)) "NUMBER"
-  else if (is.logical(x)) "NUMBER(1)"
-  else "VARCHAR2(4000)"
+  if (inherits(x, "POSIXt")) {
+    "TIMESTAMP"
+  } else if (inherits(x, "Date")) {
+    "DATE"
+  } else if (is.numeric(x)) {
+    "NUMBER"
+  } else if (is.logical(x)) {
+    "NUMBER(1)"
+  } else {
+    # Size text columns from the data (2x headroom) rather than always 4000
+    w <- max(1L, nchar(as.character(x)[!is.na(x)], type = "bytes"))
+    widths <- c(20, 50, 100, 255, 500, 1000, 2000, 4000)
+    sprintf("VARCHAR2(%d)", as.integer(c(widths[widths >= 2 * w], 4000)[1]))
+  }
 }
 
 # ---- Oracle column-type introspection & coercion ----------------------------
 
 oracle_kind <- function(data_type) {
   dt <- toupper(data_type)
-  if (dt %in% c("NUMBER", "FLOAT", "BINARY_DOUBLE", "BINARY_FLOAT")) "numeric"
-  else if (dt == "DATE" || grepl("^TIMESTAMP", dt)) "datetime"
-  else if (dt %in% c("VARCHAR2", "NVARCHAR2", "CHAR", "NCHAR", "CLOB", "NCLOB")) "character"
-  else NA_character_
+  if (dt %in% c("NUMBER", "FLOAT", "BINARY_DOUBLE", "BINARY_FLOAT")) {
+    "numeric"
+  } else if (dt == "DATE" || grepl("^TIMESTAMP", dt)) {
+    "datetime"
+  } else if (dt %in% c("VARCHAR2", "NVARCHAR2", "CHAR", "NCHAR", "CLOB", "NCLOB")) {
+    "character"
+  } else {
+    NA_character_
+  }
 }
 
 # Full type spec usable in CAST(... AS <spec>); NA when we shouldn't cast.
@@ -65,8 +82,11 @@ oracle_type_spec <- function(data_type, data_length, char_length, precision, sca
     len <- if (!is.na(char_length) && char_length > 0) char_length else data_length
     sprintf("%s(%d)", dt, as.integer(len))
   } else if (dt == "NUMBER") {
-    if (is.na(precision)) "NUMBER"
-    else sprintf("NUMBER(%d,%d)", as.integer(precision), as.integer(ifelse(is.na(scale), 0, scale)))
+    if (is.na(precision)) {
+      "NUMBER"
+    } else {
+      sprintf("NUMBER(%d,%d)", as.integer(precision), as.integer(ifelse(is.na(scale), 0, scale)))
+    }
   } else if (dt %in% c("FLOAT", "BINARY_DOUBLE", "BINARY_FLOAT", "DATE", "CLOB", "NCLOB") || grepl("^TIMESTAMP", dt)) {
     dt
   } else {
@@ -78,20 +98,26 @@ oracle_type_spec <- function(data_type, data_length, char_length, precision, sca
 oracle_column_types <- function(channel, schema, table) {
   res <- RODBC::sqlQuery(
     channel,
-    paste0("SELECT COLUMN_NAME, DATA_TYPE, DATA_LENGTH, CHAR_LENGTH, DATA_PRECISION, DATA_SCALE ",
-           "FROM ALL_TAB_COLUMNS WHERE OWNER = '", toupper(schema),
-           "' AND TABLE_NAME = '", toupper(table), "' ORDER BY COLUMN_ID"),
+    paste0(
+      "SELECT COLUMN_NAME, DATA_TYPE, DATA_LENGTH, CHAR_LENGTH, DATA_PRECISION, DATA_SCALE ",
+      "FROM ALL_TAB_COLUMNS WHERE OWNER = '", toupper(schema),
+      "' AND TABLE_NAME = '", toupper(table), "' ORDER BY COLUMN_ID"
+    ),
     stringsAsFactors = FALSE
   )
   if (odbc_failed(res)) {
-    stop("Failed to read column types for ", schema, ".", toupper(table), ":\n",
-         paste(res, collapse = "\n"))
+    stop(
+      "Failed to read column types for ", schema, ".", toupper(table), ":\n",
+      paste(res, collapse = "\n")
+    )
   }
   res$COLUMN_NAME <- toupper(res$COLUMN_NAME)
   res$KIND <- vapply(res$DATA_TYPE, oracle_kind, character(1), USE.NAMES = FALSE)
   res$TYPE_SPEC <- vapply(seq_len(nrow(res)), function(i) {
-    oracle_type_spec(res$DATA_TYPE[i], res$DATA_LENGTH[i], res$CHAR_LENGTH[i],
-                     res$DATA_PRECISION[i], res$DATA_SCALE[i])
+    oracle_type_spec(
+      res$DATA_TYPE[i], res$DATA_LENGTH[i], res$CHAR_LENGTH[i],
+      res$DATA_PRECISION[i], res$DATA_SCALE[i]
+    )
   }, character(1))
   res
 }
@@ -102,67 +128,122 @@ oracle_column_types <- function(channel, schema, table) {
 coerce_to_oracle_types <- function(df, types, quiet = FALSE) {
   df <- as.data.frame(df, stringsAsFactors = FALSE)
   converted <- character(0)
-  
+
   for (col in intersect(names(df), types$COLUMN_NAME)) {
-    ty   <- types[match(col, types$COLUMN_NAME), ]
+    ty <- types[match(col, types$COLUMN_NAME), ]
     kind <- ty$KIND
     if (is.na(kind)) next
-    
+
     x <- df[[col]]
     if (is.factor(x)) x <- as.character(x)
     x_blank <- is.na(x) | (is.character(x) & x == "")
-    
-    out <- switch(
-      kind,
+
+    out <- switch(kind,
       numeric = {
-        if (is.numeric(x)) x
-        else if (is.logical(x)) as.numeric(x)
-        else suppressWarnings(as.numeric(as.character(x)))
+        if (is.numeric(x)) {
+          x
+        } else if (is.logical(x)) {
+          as.numeric(x)
+        } else {
+          suppressWarnings(as.numeric(as.character(x)))
+        }
       },
       character = if (is.character(x)) x else to_chr(x),
       datetime = {
-        if (inherits(x, "POSIXct")) x
-        else if (inherits(x, "Date")) as.POSIXct(format(x), tz = "")
-        else tryCatch(as.POSIXct(as.character(x), tz = ""),
-                      error = function(e) .POSIXct(rep(NA_real_, length(x))))
+        if (inherits(x, "POSIXct")) {
+          x
+        } else if (inherits(x, "Date")) {
+          as.POSIXct(format(x), tz = "")
+        } else {
+          tryCatch(as.POSIXct(as.character(x), tz = ""),
+            error = function(e) .POSIXct(rep(NA_real_, length(x)))
+          )
+        }
       }
     )
     if (kind == "character") out[x_blank] <- NA_character_
-    
+
     lost <- which(!x_blank & is.na(out))
     if (length(lost) > 0) {
       stop("Column ", col, " cannot be converted to Oracle type ", ty$TYPE_SPEC,
-           ". Offending value(s): ",
-           paste(utils::head(unique(as.character(x[lost])), 5), collapse = ", "), call. = FALSE)
+        ". Offending value(s): ",
+        paste(utils::head(unique(as.character(x[lost])), 5), collapse = ", "),
+        call. = FALSE
+      )
     }
     if (ty$DATA_TYPE %in% c("VARCHAR2", "NVARCHAR2", "CHAR", "NCHAR")) {
       too_long <- which(!is.na(out) & nchar(out, type = "chars") > as.integer(
-        if (!is.na(ty$CHAR_LENGTH) && ty$CHAR_LENGTH > 0) ty$CHAR_LENGTH else ty$DATA_LENGTH))
+        if (!is.na(ty$CHAR_LENGTH) && ty$CHAR_LENGTH > 0) ty$CHAR_LENGTH else ty$DATA_LENGTH
+      ))
       if (length(too_long) > 0) {
         stop("Column ", col, " has value(s) longer than ", ty$TYPE_SPEC, " (e.g. row ",
-             too_long[1], ").", call. = FALSE)
+          too_long[1], ").",
+          call. = FALSE
+        )
       }
     }
     if (kind == "numeric" && !is.na(ty$DATA_PRECISION)) {
-      lim  <- 10^(ty$DATA_PRECISION - ifelse(is.na(ty$DATA_SCALE), 0, ty$DATA_SCALE))
+      lim <- 10^(ty$DATA_PRECISION - ifelse(is.na(ty$DATA_SCALE), 0, ty$DATA_SCALE))
       over <- which(!is.na(out) & abs(out) >= lim)
       if (length(over) > 0) {
         stop("Column ", col, " has value(s) too large for ", ty$TYPE_SPEC,
-             " (e.g. ", out[over[1]], ").", call. = FALSE)
+          " (e.g. ", out[over[1]], ").",
+          call. = FALSE
+        )
       }
     }
-    
+
     if (!identical(class(x)[1], class(out)[1])) {
       converted <- c(converted, sprintf("%s: %s -> %s", col, class(x)[1], ty$TYPE_SPEC))
     }
     df[[col]] <- out
   }
-  
+
   if (!quiet && length(converted) > 0) {
     message("  Coerced to match Oracle column types:\n    ", paste(converted, collapse = "\n    "))
   }
   df
 }
+
+# Value -> SQL literal (vectorised). NA -> NULL. Values are sent as literals in the
+# SQL text, never as RODBC bind parameters (which is what raised ORA-01461).
+sql_literal <- function(x) {
+  if (inherits(x, "POSIXt")) {
+    ifelse(is.na(x), "NULL", paste0("TIMESTAMP '", format(x, "%Y-%m-%d %H:%M:%S"), "'"))
+  } else if (is.numeric(x)) {
+    v <- to_chr(x)
+    ifelse(is.na(v), "NULL", v)
+  } else {
+    v <- to_chr(x)
+    ifelse(is.na(v), "NULL", paste0("'", gsub("'", "''", v, fixed = TRUE), "'"))
+  }
+}
+
+# Multi-row INSERT ALL. Oracle allows at most 999 columns in total per statement,
+# so the batch size depends on the number of columns.
+insert_rows <- function(channel, schema, table, df, batch_size = NULL) {
+  if (nrow(df) == 0) {
+    return(invisible(0L))
+  }
+  df <- as.data.frame(df, stringsAsFactors = FALSE)
+  names(df) <- toupper(names(df))
+  if (is.null(batch_size)) batch_size <- max(1L, floor(900 / ncol(df)))
+
+  cols <- paste(sprintf('"%s"', names(df)), collapse = ", ")
+  lits <- do.call(cbind, lapply(df, sql_literal))
+  vals <- apply(lits, 1, function(r) paste0("(", paste(r, collapse = ", "), ")"))
+  target <- paste0(schema, ".", toupper(table))
+
+  for (start in seq(1, nrow(df), by = batch_size)) {
+    idx <- start:min(start + batch_size - 1, nrow(df))
+    into <- paste0("INTO ", target, " (", cols, ") VALUES ", vals[idx], collapse = "\n")
+    run_sql(channel, paste0("INSERT ALL\n", into, "\nSELECT 1 FROM DUAL"),
+      context = paste("Insert into", target)
+    )
+  }
+  invisible(nrow(df))
+}
+
 
 # ------------------------------------------------------------------------------
 # 1. IDENTIFY CHANGED ROWS BETWEEN LOCAL AND ORACLE DATAFRAMES
@@ -175,72 +256,105 @@ find_changed_rows <- function(old_df, new_df, pk_cols, normalize_names = TRUE) {
   stopifnot(is.data.frame(old_df), is.data.frame(new_df))
   old_df <- as.data.frame(old_df, stringsAsFactors = FALSE)
   new_df <- as.data.frame(new_df, stringsAsFactors = FALSE)
-  
+
   if (normalize_names) {
     names(old_df) <- toupper(names(old_df))
     names(new_df) <- toupper(names(new_df))
     pk_cols <- toupper(pk_cols)
   }
   stopifnot(all(pk_cols %in% names(old_df)), all(pk_cols %in% names(new_df)))
-  
+
   common_cols <- intersect(names(new_df), names(old_df))
   old_df <- old_df[, common_cols, drop = FALSE]
   new_df <- new_df[, common_cols, drop = FALSE]
   value_cols <- setdiff(common_cols, pk_cols)
-  
+
   make_key <- function(df, cols) {
-    if (nrow(df) == 0) return(character(0))
-    if (length(cols) == 0) return(rep("", nrow(df)))
+    if (nrow(df) == 0) {
+      return(character(0))
+    }
+    if (length(cols) == 0) {
+      return(rep("", nrow(df)))
+    }
     parts <- lapply(df[cols], function(x) {
-      v <- to_chr(x); v[is.na(v)] <- "<NA>"; v
+      v <- to_chr(x)
+      v[is.na(v)] <- "<NA>"
+      v
     })
     do.call(paste, c(unname(parts), sep = "\r"))
   }
-  
+
   new_key <- make_key(new_df, pk_cols)
   old_key <- make_key(old_df, pk_cols)
-  
+
   if (anyDuplicated(new_key)) {
-    warning("Duplicate primary keys (", paste(pk_cols, collapse = ", "),
-         ") in the new data; e.g. row(s): ",
-         paste(head(which(duplicated(new_key)), 5), collapse = ", "))
+    dk <- unique(new_key[duplicated(new_key)])
+    in_d <- new_key %in% dk
+    dd <- new_df[in_d, , drop = FALSE]
+    ddk <- new_key[in_d]
+    vary <- vapply(value_cols, function(cc) {
+      v <- to_chr(dd[[cc]])
+      v[is.na(v)] <- "<NA>"
+      any(tapply(v, ddk, function(z) length(unique(z)) > 1))
+    }, logical(1))
+    ex <- dd[order(ddk), , drop = FALSE]
+    stop(length(dk), " key value(s) (", paste(pk_cols, collapse = ", "),
+      ") occur more than once in the new data. ",
+      if (any(vary)) {
+        paste0(
+          "Columns that differ between the duplicate rows (candidates to add to the key): ",
+          paste(names(vary)[vary], collapse = ", "), "."
+        )
+      } else {
+        "The duplicate rows are identical in every column."
+      },
+      "\nFirst duplicated rows:\n",
+      paste(utils::capture.output(print(utils::head(ex, 10), row.names = FALSE)), collapse = "\n"),
+      call. = FALSE
+    )
   }
   if (anyDuplicated(old_key)) {
-    warning("Duplicate primary keys already exist in the Oracle table.")
+    dup <- unique(old_key[duplicated(old_key)])
+    ex <- old_df[match(utils::head(dup, 5), old_key), pk_cols, drop = FALSE]
+    warning(length(dup), " key value(s) (", paste(pk_cols, collapse = ", "),
+      ") appear more than once in the Oracle table. Examples:\n",
+      paste(utils::capture.output(print(ex, row.names = FALSE)), collapse = "\n"),
+      call. = FALSE
+    )
   }
-  
+
   new_idx <- which(!new_key %in% old_key)
   del_idx <- which(!old_key %in% new_key)
-  m       <- match(new_key, old_key)
-  both    <- which(!is.na(m))
-  
+  m <- match(new_key, old_key)
+  both <- which(!is.na(m))
+
   upd_new <- integer(0)
   if (length(value_cols) > 0 && length(both) > 0) {
-    new_fp  <- make_key(new_df[both, , drop = FALSE], value_cols)
-    old_fp  <- make_key(old_df[m[both], , drop = FALSE], value_cols)
+    new_fp <- make_key(new_df[both, , drop = FALSE], value_cols)
+    old_fp <- make_key(old_df[m[both], , drop = FALSE], value_cols)
     upd_new <- both[new_fp != old_fp]
   }
-  
+
   add_suffix <- function(df, suffix) {
     i <- !names(df) %in% pk_cols
     names(df)[i] <- paste0(names(df)[i], suffix)
     rownames(df) <- NULL
     df
   }
-  
+
   if (length(upd_new) > 0) {
     nu <- new_df[upd_new, , drop = FALSE]
     oc <- old_df[m[upd_new], , drop = FALSE]
     changed_rows <- nu[, pk_cols, drop = FALSE]
     for (col in value_cols) {
-      changed_rows[[paste0(col, "_UPDATE")]]  <- nu[[col]]
+      changed_rows[[paste0(col, "_UPDATE")]] <- nu[[col]]
       changed_rows[[paste0(col, "_CURRENT")]] <- oc[[col]]
     }
     rownames(changed_rows) <- NULL
   } else {
     changed_rows <- add_suffix(new_df[0, , drop = FALSE], "_UPDATE")
   }
-  
+
   list(
     new_rows     = add_suffix(new_df[new_idx, , drop = FALSE], "_UPDATE"),
     deleted_rows = add_suffix(old_df[del_idx, , drop = FALSE], "_UPDATE"),
@@ -265,8 +379,10 @@ oracle_table_exists <- function(channel, schema, table) {
     stringsAsFactors = FALSE
   )
   if (odbc_failed(res)) {
-    stop("Could not check whether ", schema, ".", toupper(table), " exists:\n",
-         paste(res, collapse = "\n"))
+    stop(
+      "Could not check whether ", schema, ".", toupper(table), " exists:\n",
+      paste(res, collapse = "\n")
+    )
   }
   res[[1]][1] > 0
 }
@@ -274,18 +390,21 @@ oracle_table_exists <- function(channel, schema, table) {
 # col_types: named character vector, e.g. c(SPECIES_CODE = "NUMBER", NAME = "VARCHAR2(4000)")
 create_table <- function(channel, schema, table, col_types) {
   table <- toupper(table)
-  cols  <- paste(sprintf('"%s" %s', toupper(names(col_types)), col_types),
-                 collapse = ",\n  ")
-  sql   <- paste0("CREATE TABLE ", schema, ".", table, " (\n  ", cols, "\n)")
-  
+  cols <- paste(sprintf('"%s" %s', toupper(names(col_types)), col_types),
+    collapse = ",\n  "
+  )
+  sql <- paste0("CREATE TABLE ", schema, ".", table, " (\n  ", cols, "\n)")
+
   res <- RODBC::sqlQuery(channel, sql)
   if (odbc_failed(res)) {
     if (any(grepl("ORA-00955", res, ignore.case = TRUE))) {
       message("ℹ Table ", schema, ".", table, " already exists. Proceeding...")
       return(invisible(FALSE))
     }
-    stop("Oracle Create Table Error in ", schema, ".", table, ":\n",
-         paste(res, collapse = "\n"))
+    stop(
+      "Oracle Create Table Error in ", schema, ".", table, ":\n",
+      paste(res, collapse = "\n")
+    )
   }
   invisible(TRUE)
 }
@@ -307,139 +426,41 @@ ensure_table_columns <- function(channel, schema, table, col_types) {
     stringsAsFactors = FALSE
   )
   if (odbc_failed(existing)) {
-    stop("Failed to query columns for ", schema, ".", toupper(table), ":\n",
-         paste(existing, collapse = "\n"))
+    stop(
+      "Failed to query columns for ", schema, ".", toupper(table), ":\n",
+      paste(existing, collapse = "\n")
+    )
   }
-  
+
   names(col_types) <- toupper(names(col_types))
   missing <- setdiff(names(col_types), toupper(existing$COLUMN_NAME))
-  
+
   for (col in missing) {
     message("  Adding column ", col, " to ", schema, ".", toupper(table))
     res <- RODBC::sqlQuery(
       channel,
-      paste0('ALTER TABLE ', schema, '.', toupper(table),
-             ' ADD ("', col, '" ', col_types[[col]], ')')
+      paste0(
+        "ALTER TABLE ", schema, ".", toupper(table),
+        ' ADD ("', col, '" ', col_types[[col]], ")"
+      )
     )
     if (odbc_failed(res) && !any(grepl("ORA-01430", res, ignore.case = TRUE))) {
-      stop("Error adding column ", col, " to ", schema, ".", toupper(table), ":\n",
-           paste(res, collapse = "\n"))
+      stop(
+        "Error adding column ", col, " to ", schema, ".", toupper(table), ":\n",
+        paste(res, collapse = "\n")
+      )
     }
   }
   invisible(TRUE)
 }
 
 # ------------------------------------------------------------------------------
-# 3. METADATA & TEMP TABLE STAGING HELPERS
+# 3. STAGING TABLE HELPERS
 # ------------------------------------------------------------------------------
-
-build_table_metadata <- function(channel, df, base_table_name = NULL) {
-  cols <- toupper(names(df))
-  
-  oracle_metadata <- RODBC::sqlQuery(
-    channel,
-    glue::glue("
-      SELECT *
-      FROM GAP_PRODUCTS.METADATA_COLUMN
-      WHERE METADATA_COLNAME IN ({gapindex::stitch_entries(cols)})
-    ")
-  )
-  
-  if (!odbc_failed(oracle_metadata) && is.data.frame(oracle_metadata) && nrow(oracle_metadata) > 0) {
-    oracle_metadata <- oracle_metadata %>%
-      janitor::clean_names() %>%
-      dplyr::rename_with(~ gsub("^metadata_", "", .), dplyr::starts_with("metadata_"))
-    
-    oracle_metadata <- oracle_metadata %>%
-      dplyr::transmute(
-        colname      = toupper(as.character(dplyr::coalesce(colname, colcode, colname_long))),
-        colname_long = as.character(dplyr::coalesce(colname_long, colname, colcode)),
-        units        = as.character(dplyr::coalesce(units, "unitless")),
-        datatype     = as.character(dplyr::coalesce(datatype, "VARCHAR2(4000 BYTE)")),
-        colname_desc = as.character(dplyr::coalesce(colname_desc, desc_col, colname_long))
-      )
-    
-    missing_cols <- setdiff(cols, toupper(oracle_metadata$colname))
-    
-    if (length(missing_cols) > 0) {
-      fallback_metadata <- data.frame(
-        colname      = missing_cols,
-        colname_long = missing_cols,
-        units        = "unitless",
-        datatype     = "VARCHAR2(4000 BYTE)",
-        colname_desc = paste("Auto-generated metadata for", missing_cols, "in", ifelse(is.null(base_table_name), "staging table", base_table_name)),
-        stringsAsFactors = FALSE
-      )
-      oracle_metadata <- dplyr::bind_rows(oracle_metadata, fallback_metadata)
-    }
-  } else {
-    oracle_metadata <- data.frame(
-      colname      = cols,
-      colname_long = cols,
-      units        = "unitless",
-      datatype     = "VARCHAR2(4000 BYTE)",
-      colname_desc = paste("Metadata for column", cols),
-      stringsAsFactors = FALSE
-    )
-  }
-  
-  oracle_metadata <- oracle_metadata %>%
-    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
-  
-  table_comment <- paste("Temp staging table for", ifelse(is.null(base_table_name), "upload", base_table_name))
-  
-  if (!is.null(base_table_name) && toupper(base_table_name) == "TAXONOMIC_CONFIDENCE") {
-    table_comment <- paste0(
-      "The quality and specificity of field identifications for many taxa have ",
-      "fluctuated over the history of the surveys due to changing priorities and ",
-      "resources. The matrix lists a confidence level for each taxon for each survey ",
-      "year and is intended to serve as a general guideline for data users interested ",
-      "in assessing the relative reliability of historical species identifications on ",
-      "these surveys. Quality Codes: ",
-      "1: High confidence and consistency. Taxonomy is stable and reliable at this level, and field identification characteristics are well known and reliable. ",
-      "2: Moderate confidence. Taxonomy may be questionable at this level, or field identification characteristics may be variable and difficult to assess consistently. ",
-      "3: Low confidence. Taxonomy is incompletely known, or reliable field identification characteristics are unknown. ",
-      "NA: Unassessed. Taxonomy quality has not been assessed."
-    )
-  }
-  
-  attr(oracle_metadata, "table_metadata") <- table_comment
-  return(oracle_metadata)
-}
 
 build_temp_table_name <- function(tbl) {
   clean_name <- gsub("[^A-Za-z0-9]", "", toupper(tbl))
   paste0("TMP_", substr(clean_name, 1, 10), "_", format(Sys.time(), "%M%S"), "_", sample(100:999, 1))
-}
-
-# `types` (from oracle_column_types) makes the staging table's declared column
-# types match the target table's instead of the VARCHAR2(4000) fallback.
-upload_temp_table <- function(channel, df, temp_table_name, schema, base_table_name = NULL,
-                              metadata_column = NULL, types = NULL) {
-  if (is.null(metadata_column)) {
-    metadata_column <- build_table_metadata(channel = channel, df = df, base_table_name = base_table_name)
-  }
-  
-  table_metadata <- attr(metadata_column, "table_metadata")
-  if (is.null(table_metadata)) {
-    table_metadata <- paste("Temp staging table for", temp_table_name)
-  }
-  
-  if (!is.null(types)) {
-    i  <- match(toupper(metadata_column$colname), types$COLUMN_NAME)
-    ok <- !is.na(i) & !is.na(types$TYPE_SPEC[i])
-    metadata_column$datatype[ok] <- types$TYPE_SPEC[i][ok]
-  }
-  
-  gapindex::upload_oracle(
-    x                    = df,
-    table_name           = temp_table_name,
-    metadata_column      = metadata_column,
-    table_metadata       = table_metadata,
-    channel              = channel,
-    schema               = schema,
-    share_with_all_users = FALSE
-  )
 }
 
 # Looks up the table's real name in the data dictionary (handles lowercase/quoted
@@ -447,25 +468,33 @@ upload_temp_table <- function(channel, df, temp_table_name, schema, base_table_n
 # REPORTS any Oracle error instead of hiding it.
 drop_temp_table <- function(channel, schema, temp_table_name) {
   try(RODBC::odbcEndTran(channel, commit = TRUE), silent = TRUE)
-  
+
   found <- RODBC::sqlQuery(
     channel,
-    paste0("SELECT TABLE_NAME FROM ALL_TABLES WHERE OWNER = '", toupper(schema),
-           "' AND UPPER(TABLE_NAME) = '", toupper(temp_table_name), "'"),
+    paste0(
+      "SELECT TABLE_NAME FROM ALL_TABLES WHERE OWNER = '", toupper(schema),
+      "' AND UPPER(TABLE_NAME) = '", toupper(temp_table_name), "'"
+    ),
     stringsAsFactors = FALSE
   )
   if (odbc_failed(found)) {
     warning("Could not look up temp table ", schema, ".", temp_table_name, ":\n",
-            paste(found, collapse = "\n"), call. = FALSE)
+      paste(found, collapse = "\n"),
+      call. = FALSE
+    )
     return(invisible(FALSE))
   }
-  if (nrow(found) == 0) return(invisible(TRUE))   # nothing to drop
-  
+  if (nrow(found) == 0) {
+    return(invisible(TRUE))
+  } # nothing to drop
+
   for (nm in found$TABLE_NAME) {
-    res <- RODBC::sqlQuery(channel, paste0('DROP TABLE ', schema, '."', nm, '" PURGE'))
+    res <- RODBC::sqlQuery(channel, paste0("DROP TABLE ", schema, '."', nm, '" PURGE'))
     if (odbc_failed(res)) {
       warning("Failed to drop temp table ", schema, ".", nm, ":\n", paste(res, collapse = "\n"),
-              "\nDrop it manually with: DROP TABLE ", schema, ".", nm, " PURGE", call. = FALSE)
+        "\nDrop it manually with: DROP TABLE ", schema, ".", nm, " PURGE",
+        call. = FALSE
+      )
       return(invisible(FALSE))
     }
   }
@@ -476,8 +505,10 @@ drop_temp_table <- function(channel, schema, temp_table_name) {
 drop_stale_temp_tables <- function(channel, schema) {
   res <- RODBC::sqlQuery(
     channel,
-    paste0("SELECT TABLE_NAME FROM ALL_TABLES WHERE OWNER = '", toupper(schema),
-           "' AND TABLE_NAME LIKE 'TMP%'"),
+    paste0(
+      "SELECT TABLE_NAME FROM ALL_TABLES WHERE OWNER = '", toupper(schema),
+      "' AND TABLE_NAME LIKE 'TMP%'"
+    ),
     stringsAsFactors = FALSE
   )
   if (odbc_failed(res)) stop("Could not list temp tables:\n", paste(res, collapse = "\n"))
@@ -513,10 +544,10 @@ key_expr <- function(cols, alias, types = NULL) {
 }
 
 apply_safe_delete <- function(channel, main_schema, main_table, stage_table, pk_cols, types = NULL) {
-  pk_cols   <- toupper(pk_cols)
+  pk_cols <- toupper(pk_cols)
   main_keys <- paste(key_expr(pk_cols, "M"), collapse = ", ")
-  stg_keys  <- paste(key_expr(pk_cols, "S", types), collapse = ", ")
-  
+  stg_keys <- paste(key_expr(pk_cols, "S", types), collapse = ", ")
+
   run_sql(channel, paste0(
     "DELETE FROM ", main_schema, ".", main_table, " M\n",
     "WHERE (", main_keys, ") IN (\n",
@@ -526,10 +557,10 @@ apply_safe_delete <- function(channel, main_schema, main_table, stage_table, pk_
 }
 
 apply_safe_insert <- function(channel, main_schema, main_table, stage_table, cols, types = NULL) {
-  cols        <- toupper(cols)
+  cols <- toupper(cols)
   cols_quoted <- paste0('"', cols, '"', collapse = ", ")
   select_list <- paste(col_ref("S", cols, types), collapse = ", ")
-  
+
   run_sql(channel, paste0(
     "INSERT INTO ", main_schema, ".", main_table, " (", cols_quoted, ")\n",
     "SELECT ", select_list, "\nFROM ", main_schema, ".", stage_table, " S\n",
@@ -539,15 +570,19 @@ apply_safe_insert <- function(channel, main_schema, main_table, stage_table, col
 
 apply_safe_merge_update <- function(channel, main_schema, main_table, stage_table, cols, pk_cols,
                                     types = NULL) {
-  pk_cols  <- toupper(pk_cols)
+  pk_cols <- toupper(pk_cols)
   set_cols <- setdiff(toupper(cols), pk_cols)
-  if (length(set_cols) == 0) return(invisible(TRUE))
-  
-  set_clause  <- paste(sprintf('MAIN."%s" = %s', set_cols, col_ref("STG", set_cols, types)),
-                       collapse = ", ")
+  if (length(set_cols) == 0) {
+    return(invisible(TRUE))
+  }
+
+  set_clause <- paste(sprintf('MAIN."%s" = %s', set_cols, col_ref("STG", set_cols, types)),
+    collapse = ", "
+  )
   join_clause <- paste(key_expr(pk_cols, "MAIN"), "=", key_expr(pk_cols, "STG", types),
-                       collapse = " AND ")
-  
+    collapse = " AND "
+  )
+
   run_sql(channel, paste0(
     "MERGE INTO ", main_schema, ".", main_table, " MAIN\n",
     "USING (SELECT * FROM ", main_schema, ".", stage_table, " WHERE \"STG_ACTION\" = 'UPDATE') STG\n",
@@ -560,49 +595,59 @@ apply_safe_merge_update <- function(channel, main_schema, main_table, stage_tabl
 # (INSERT / UPDATE / DELETE) so a single staging table serves all three steps.
 build_stage_df <- function(changed_rows, types) {
   prep <- function(df, action) {
-    if (nrow(df) == 0) return(NULL)
+    if (nrow(df) == 0) {
+      return(NULL)
+    }
     df <- as.data.frame(df)
     df <- df[, !grepl("_CURRENT$", names(df)), drop = FALSE]
     names(df) <- sub("_UPDATE$", "", names(df))
-    df <- coerce_to_oracle_types(df, types, quiet = TRUE)   # same classes for all three sources
+    df <- coerce_to_oracle_types(df, types, quiet = TRUE) # same classes for all three sources
     df$STG_ACTION <- action
     df
   }
   dplyr::bind_rows(
-    prep(changed_rows$new_rows,     "INSERT"),
+    prep(changed_rows$new_rows, "INSERT"),
     prep(changed_rows$deleted_rows, "DELETE"),
     prep(changed_rows$changed_rows, "UPDATE")
   )
 }
 
-safe_apply_taxonomy_updates <- function(channel, tbl, changed_rows, schema = "GAP_PRODUCTS", pk_cols) {
+safe_apply_taxonomy_updates <- function(channel, tbl, changed_rows, schema, pk_cols) {
   main_table <- toupper(tbl)
-  pk_cols    <- toupper(pk_cols)
-  types      <- oracle_column_types(channel, schema, main_table)
-  
-  n <- c(INSERT = nrow(changed_rows$new_rows),
-         UPDATE = nrow(changed_rows$changed_rows),
-         DELETE = nrow(changed_rows$deleted_rows))
-  if (sum(n) == 0) return(invisible(TRUE))
-  
-  stage_df    <- build_stage_df(changed_rows, types)
-  stage_cols  <- setdiff(names(stage_df), "STG_ACTION")
-  stage_table <- build_temp_table_name(main_table)
-  
-  # Declared staging types = target types (+ the action column)
-  stage_types <- rbind(
-    types[, c("COLUMN_NAME", "TYPE_SPEC")],
-    data.frame(COLUMN_NAME = "STG_ACTION", TYPE_SPEC = "VARCHAR2(10)", stringsAsFactors = FALSE)
+  pk_cols <- toupper(pk_cols)
+  types <- oracle_column_types(channel, schema, main_table)
+
+  n <- c(
+    INSERT = nrow(changed_rows$new_rows),
+    UPDATE = nrow(changed_rows$changed_rows),
+    DELETE = nrow(changed_rows$deleted_rows)
   )
-  
+  if (sum(n) == 0) {
+    return(invisible(TRUE))
+  }
+
+  stage_df <- as.data.frame(build_stage_df(changed_rows, types), stringsAsFactors = FALSE)
+  stage_cols <- setdiff(names(stage_df), "STG_ACTION")
+  stage_table <- build_temp_table_name(main_table)
+
+  # Staging table = the target's own column types + the action column
+  spec <- types$TYPE_SPEC[match(stage_cols, types$COLUMN_NAME)]
+  spec[is.na(spec)] <- "VARCHAR2(4000)"
+  col_types <- c(stats::setNames(spec, stage_cols), STG_ACTION = "VARCHAR2(10)")
+
   on.exit(drop_temp_table(channel, schema, stage_table), add = TRUE)
-  upload_temp_table(channel, stage_df, stage_table, schema, main_table, types = stage_types)
-  
+  create_table(channel, schema, stage_table, col_types)
+  insert_rows(channel, schema, stage_table, stage_df)
+
   if (n[["DELETE"]] > 0) apply_safe_delete(channel, schema, main_table, stage_table, pk_cols, types)
   if (n[["INSERT"]] > 0) apply_safe_insert(channel, schema, main_table, stage_table, stage_cols, types)
-  if (n[["UPDATE"]] > 0) apply_safe_merge_update(channel, schema, main_table, stage_table,
-                                                 stage_cols, pk_cols, types)
-  
+  if (n[["UPDATE"]] > 0) {
+    apply_safe_merge_update(
+      channel, schema, main_table, stage_table,
+      stage_cols, pk_cols, types
+    )
+  }
+
   invisible(TRUE)
 }
 
@@ -626,9 +671,14 @@ audit_col_names <- function(cols) as.vector(rbind(paste0(cols, "_OLD"), paste0(c
 
 count_table_rows <- function(channel, schema, table) {
   res <- RODBC::sqlQuery(channel, paste0("SELECT COUNT(*) AS N FROM ", schema, ".", toupper(table)),
-                         stringsAsFactors = FALSE)
-  if (odbc_failed(res)) stop("Could not count rows in ", schema, ".", table, ":\n",
-                             paste(res, collapse = "\n"))
+    stringsAsFactors = FALSE
+  )
+  if (odbc_failed(res)) {
+    stop(
+      "Could not count rows in ", schema, ".", table, ":\n",
+      paste(res, collapse = "\n")
+    )
+  }
   as.numeric(res[[1]][1])
 }
 
@@ -638,46 +688,52 @@ setup_audit_table <- function(channel, base_schema, base_table, audit_schema, au
                               base_types = NULL) {
   if (is.null(base_types)) base_types <- oracle_column_types(channel, base_schema, base_table)
   if (nrow(base_types) == 0) stop("No columns found for ", base_schema, ".", base_table)
-  
+
   clash <- intersect(base_types$COLUMN_NAME, AUDIT_META_COLS)
   if (length(clash) > 0) {
     stop("Base table has column(s) that clash with audit columns: ", paste(clash, collapse = ", "))
   }
-  
+
   # Types the trigger can't copy directly fall back to text (trigger uses TO_CHAR)
-  base_spec  <- ifelse(is.na(base_types$TYPE_SPEC), "VARCHAR2(4000)", base_types$TYPE_SPEC)
+  base_spec <- ifelse(is.na(base_types$TYPE_SPEC), "VARCHAR2(4000)", base_types$TYPE_SPEC)
   audit_cols <- audit_col_names(base_types$COLUMN_NAME)
-  base_idx   <- rep(seq_len(nrow(base_types)), each = 2)
-  
-  spec <- c(OPERATION_TYPE = "VARCHAR2(10)", OPERATION_TIMESTAMP = "TIMESTAMP",
-            USER_NAME = "VARCHAR2(128)",
-            stats::setNames(base_spec[base_idx], audit_cols))
-  
+  base_idx <- rep(seq_len(nrow(base_types)), each = 2)
+
+  spec <- c(
+    OPERATION_TYPE = "VARCHAR2(10)", OPERATION_TIMESTAMP = "TIMESTAMP",
+    USER_NAME = "VARCHAR2(128)",
+    stats::setNames(base_spec[base_idx], audit_cols)
+  )
+
   if (!oracle_table_exists(channel, audit_schema, audit_table)) {
     message("Creating audit table: ", audit_schema, ".", audit_table)
     create_table(channel, audit_schema, audit_table, spec)
     return(invisible(base_types))
   }
-  
+
   ensure_table_columns(channel, audit_schema, audit_table, spec)
-  
+
   at <- oracle_column_types(channel, audit_schema, audit_table)
-  j  <- match(audit_cols, at$COLUMN_NAME)
+  j <- match(audit_cols, at$COLUMN_NAME)
   bt <- base_types[base_idx, ]
-  
+
   text_types <- c("VARCHAR2", "CHAR", "NVARCHAR2", "NCHAR")
-  too_short  <- which(bt$DATA_TYPE %in% text_types & !is.na(j) & at$DATA_LENGTH[j] < bt$DATA_LENGTH)
+  too_short <- which(bt$DATA_TYPE %in% text_types & !is.na(j) & at$DATA_LENGTH[j] < bt$DATA_LENGTH)
   if (length(too_short) > 0) {
     stop("Audit column(s) narrower than the base table (inserts would fail with ORA-12899): ",
-         paste(audit_cols[too_short], collapse = ", "),
-         ". ALTER the audit column(s) to be at least as wide.", call. = FALSE)
+      paste(audit_cols[too_short], collapse = ", "),
+      ". ALTER the audit column(s) to be at least as wide.",
+      call. = FALSE
+    )
   }
-  
+
   kind_diff <- which(!is.na(j) & !is.na(bt$KIND) & !is.na(at$KIND[j]) & bt$KIND != at$KIND[j])
   if (length(kind_diff) > 0) {
     warning("Audit column type differs from base table for: ",
-            paste(audit_cols[kind_diff], collapse = ", "),
-            ". The trigger will rely on Oracle's implicit conversion for these.", call. = FALSE)
+      paste(audit_cols[kind_diff], collapse = ", "),
+      ". The trigger will rely on Oracle's implicit conversion for these.",
+      call. = FALSE
+    )
   }
   invisible(base_types)
 }
@@ -685,31 +741,37 @@ setup_audit_table <- function(channel, base_schema, base_table, audit_schema, au
 # The trigger's owner needs a DIRECT (not role-based) INSERT grant when the audit
 # table lives in another schema.
 grant_audit_insert <- function(channel, audit_schema, audit_table, trigger_owner) {
-  if (toupper(audit_schema) == toupper(trigger_owner)) return(invisible(TRUE))
-  stmt <- paste0("GRANT INSERT ON ", toupper(audit_schema), ".", toupper(audit_table),
-                 " TO ", toupper(trigger_owner))
+  if (toupper(audit_schema) == toupper(trigger_owner)) {
+    return(invisible(TRUE))
+  }
+  stmt <- paste0(
+    "GRANT INSERT ON ", toupper(audit_schema), ".", toupper(audit_table),
+    " TO ", toupper(trigger_owner)
+  )
   res <- RODBC::sqlQuery(channel, stmt)
   if (odbc_failed(res)) {
     warning("Could not run: ", stmt, "\n", paste(res, collapse = "\n"),
-            "\nAsk the owner of ", audit_schema, " (or a DBA) to run it, otherwise the trigger will fail.",
-            call. = FALSE)
+      "\nAsk the owner of ", audit_schema, " (or a DBA) to run it, otherwise the trigger will fail.",
+      call. = FALSE
+    )
     return(invisible(FALSE))
   }
   invisible(TRUE)
 }
 
 build_audit_trigger_sql <- function(base_schema, base_table, audit_schema, audit_table, base_types) {
-  cols       <- base_types$COLUMN_NAME
+  cols <- base_types$COLUMN_NAME
   audit_cols <- audit_col_names(cols)
-  col_list   <- paste(sprintf('"%s"', audit_cols), collapse = ", ")
-  
+  col_list <- paste(sprintf('"%s"', audit_cols), collapse = ", ")
+
   val <- function(prefix) {
     ifelse(is.na(base_types$TYPE_SPEC),
-           sprintf('TO_CHAR(%s."%s")', prefix, cols),
-           sprintf('%s."%s"', prefix, cols))
+      sprintf('TO_CHAR(%s."%s")', prefix, cols),
+      sprintf('%s."%s"', prefix, cols)
+    )
   }
-  vals <- as.vector(rbind(val(":OLD"), val(":NEW")))   # matches audit_col_names() order
-  
+  vals <- as.vector(rbind(val(":OLD"), val(":NEW"))) # matches audit_col_names() order
+
   paste0(
     "CREATE OR REPLACE TRIGGER ", toupper(base_schema), ".", trigger_name_for(base_table), "\n",
     "AFTER INSERT OR UPDATE OR DELETE ON ", toupper(base_schema), ".", toupper(base_table), "\n",
@@ -734,15 +796,20 @@ build_audit_trigger_sql <- function(base_schema, base_table, audit_schema, audit
 drop_trigger_if_exists <- function(channel, schema, trigger_name) {
   found <- RODBC::sqlQuery(
     channel,
-    paste0("SELECT TRIGGER_NAME FROM ALL_TRIGGERS WHERE OWNER = '", toupper(schema),
-           "' AND TRIGGER_NAME = '", toupper(trigger_name), "'"),
+    paste0(
+      "SELECT TRIGGER_NAME FROM ALL_TRIGGERS WHERE OWNER = '", toupper(schema),
+      "' AND TRIGGER_NAME = '", toupper(trigger_name), "'"
+    ),
     stringsAsFactors = FALSE
   )
-  if (odbc_failed(found) || nrow(found) == 0) return(invisible(FALSE))
+  if (odbc_failed(found) || nrow(found) == 0) {
+    return(invisible(FALSE))
+  }
   res <- RODBC::sqlQuery(channel, paste0("DROP TRIGGER ", toupper(schema), ".", toupper(trigger_name)))
   if (odbc_failed(res)) {
     warning("Could not drop trigger ", schema, ".", trigger_name, ":\n", paste(res, collapse = "\n"),
-            call. = FALSE)
+      call. = FALSE
+    )
     return(invisible(FALSE))
   }
   message("  Dropped legacy trigger ", schema, ".", trigger_name)
@@ -755,43 +822,54 @@ drop_trigger_if_exists <- function(channel, schema, trigger_name) {
 create_audit_trigger <- function(channel, base_schema, base_table, audit_schema, audit_table,
                                  base_types) {
   trg <- trigger_name_for(base_table)
-  
+
   # Earlier versions of this script named the trigger TRG_<TABLE>[_AUDIT]; remove
   # those so changes aren't logged twice.
-  legacy <- unique(c(substr(paste0("TRG_", toupper(base_table)), 1, 30),
-                     paste0("TRG_", toupper(base_table), "_AUDIT")))
+  legacy <- unique(c(
+    substr(paste0("TRG_", toupper(base_table)), 1, 30),
+    paste0("TRG_", toupper(base_table), "_AUDIT")
+  ))
   for (nm in setdiff(legacy, trg)) drop_trigger_if_exists(channel, base_schema, nm)
-  
+
   sql <- build_audit_trigger_sql(base_schema, base_table, audit_schema, audit_table, base_types)
   res <- RODBC::sqlQuery(channel, sql)
-  
+
   if (odbc_failed(res)) {
     f <- paste0(trg, ".sql")
     writeLines(c(sql, "/"), f)
     stop("Creating trigger ", base_schema, ".", trg, " failed:\n", paste(res, collapse = "\n"),
-         "\nThe DDL was saved to '", f, "' so you can run it in SQL Developer.", call. = FALSE)
+      "\nThe DDL was saved to '", f, "' so you can run it in SQL Developer.",
+      call. = FALSE
+    )
   }
-  
+
   st <- RODBC::sqlQuery(
     channel,
-    paste0("SELECT STATUS FROM ALL_OBJECTS WHERE OWNER = '", toupper(base_schema),
-           "' AND OBJECT_NAME = '", trg, "' AND OBJECT_TYPE = 'TRIGGER'"),
+    paste0(
+      "SELECT STATUS FROM ALL_OBJECTS WHERE OWNER = '", toupper(base_schema),
+      "' AND OBJECT_NAME = '", trg, "' AND OBJECT_TYPE = 'TRIGGER'"
+    ),
     stringsAsFactors = FALSE
   )
   if (odbc_failed(st) || nrow(st) == 0 || st$STATUS[1] != "VALID") {
     err <- RODBC::sqlQuery(
       channel,
-      paste0("SELECT LINE, TEXT FROM ALL_ERRORS WHERE OWNER = '", toupper(base_schema),
-             "' AND NAME = '", trg, "' AND TYPE = 'TRIGGER' ORDER BY SEQUENCE"),
+      paste0(
+        "SELECT LINE, TEXT FROM ALL_ERRORS WHERE OWNER = '", toupper(base_schema),
+        "' AND NAME = '", trg, "' AND TYPE = 'TRIGGER' ORDER BY SEQUENCE"
+      ),
       stringsAsFactors = FALSE
     )
     try(RODBC::sqlQuery(channel, paste0("ALTER TRIGGER ", toupper(base_schema), ".", trg, " DISABLE")),
-        silent = TRUE)
-    f <- paste0(trg, ".sql"); writeLines(c(sql, "/"), f)
+      silent = TRUE
+    )
+    f <- paste0(trg, ".sql")
+    writeLines(c(sql, "/"), f)
     stop("Trigger ", base_schema, ".", trg, " is not VALID (it was disabled).\n",
-         if (is.data.frame(err) && nrow(err) > 0) paste(err$TEXT, collapse = "\n") else "",
-         "\nDDL saved to '", f, "'. A common cause is a missing direct INSERT grant on the audit table.",
-         call. = FALSE)
+      if (is.data.frame(err) && nrow(err) > 0) paste(err$TEXT, collapse = "\n") else "",
+      "\nDDL saved to '", f, "'. A common cause is a missing direct INSERT grant on the audit table.",
+      call. = FALSE
+    )
   }
   message("  Audit trigger ", base_schema, ".", trg, " is VALID -> ", audit_schema, ".", audit_table)
   invisible(TRUE)

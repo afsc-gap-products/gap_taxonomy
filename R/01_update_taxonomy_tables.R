@@ -196,7 +196,11 @@ taxonomic_changes_new <- taxonomy_final %>%
   ) %>%
   dplyr::arrange(dplyr::desc(year_changed), old_species_name) %>%
   bind_rows(taxonomic_changes_current) %>%
-  arrange(desc(year_changed))
+  dplyr::group_by(old_species_name, old_species_code, new_species_name, new_species_code) %>%
+  # Keep only the row with the earliest year_changed per group
+  dplyr::slice_min(order_by = year_changed, n = 1, with_ties = FALSE) %>%
+  dplyr::ungroup() %>%
+  dplyr::arrange(dplyr::desc(year_changed))
 
 
 # message("Taxonomic updates to be made this year:\n")
