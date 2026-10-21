@@ -1,4 +1,0 @@
-value
-"42S02 942 [Oracle][ODBC][Ora]ORA-00942: table or view does not exist
-"
-[RODBC] ERROR: Could not SQLExecDirect 'SELECT * FROM RACE_DATA.TAXONOMIC_RANKS'
