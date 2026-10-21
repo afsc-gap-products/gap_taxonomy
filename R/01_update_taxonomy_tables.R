@@ -31,7 +31,6 @@ source("R/utils/download_tables.R") # Pulls proper tables from Oracle and loads 
 ## 2) Core Logic: Data Transformation & Taxonomy
 ## ============================
 
-# Step 1: Prepare species data for taxonomic querying
 # This section identifies newly described species and combines them with existing survey species.
 # It then cleans the names for compatibility with 'taxize' functions.
 
@@ -50,10 +49,14 @@ fixed_spp <- bind_rows(survey_species, new_spp) %>%
 fixed_spp[fixed_spp$species_code == 70050, "fixed_name"] <- c("Neomeniamorpha", "Neomeniomorpha")
 
 
-# Step 2: Get taxonomic information for each unique name
+## ============================================================
+# 3) Get taxonomic information for each unique name
+## ============================================================
+
 # This approach avoids redundant API calls by grouping by the species name
 # before mapping the 'get_taxonomy_safely' function. Note: this will take a long
 # time to run.
+
 message("Fetching taxonomy data from external databases. This may take some time...")
 taxonomy_combined <- fixed_spp %>%
   dplyr::mutate(name = coalesce(fixed_name, survey_name)) %>%
@@ -99,9 +102,11 @@ while (rerun_count < max_reruns) {
 taxonomy_combined <- taxonomy_combined %>% tidyr::unnest(data)
 
 
-# Step 3: Clean and format the combined taxonomy data
-# This block standardizes names and IDs, ensuring consistency across the dataset
+## ============================================================
+# 4) Clean and format the combined taxonomy data
+## ============================================================
 
+# This block standardizes names and IDs, ensuring consistency across the dataset
 taxonomy_cleaned <- taxonomy_combined %>%
   tidyr::unnest(taxo) %>%
   dplyr::group_by(species_code) %>%
@@ -120,10 +125,10 @@ taxonomy_cleaned <- taxonomy_combined %>%
 
 
 ## ============================
-## 3) Data Processing & Output
+## 5) Data Processing & Output
 ## ============================
 
-# Step 4: Create final classification and changes tables
+# Create final classification and changes tables
 # This complex pipeline handles synonymization, code fixing, and reason/action assignment.
 taxonomy_final <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>%
@@ -163,7 +168,10 @@ taxonomy_final <- taxonomy_cleaned %>%
   )
 
 
-# Step 5: Format tables for Oracle upload and QC
+## ============================================================
+# 6) Format tables for Oracle upload and QC
+## ============================================================
+
 # The final tables are prepared, including renaming columns for consistency with Oracle.
 taxonomic_classification_new <- taxonomy_final %>%
   # dplyr::filter(reason != "nomen nudum") %>%
@@ -207,8 +215,12 @@ taxonomic_changes_new <- taxonomy_final %>%
 #       )
 
 
-# Step 6: Perform QC checks
-# This is a crucial step to ensure data integrity before writing to the database.
+## ============================================================
+# 7) Perform QC checks
+## ============================================================
+
+# This is a crucial step to ensure data integrity before writing to the database
+
 qc_issues <- taxonomy_final %>%
   dplyr::group_by(species_name) %>%
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>%
@@ -232,6 +244,7 @@ qc_issues <- taxonomy_final %>%
   filter(!is.na(flag)) %>%
   arrange(species_code) %>%
   select(active, survey_name:species_code, flag)
+
 
 if (nrow(qc_issues) > 0) {
   print(qc_issues)

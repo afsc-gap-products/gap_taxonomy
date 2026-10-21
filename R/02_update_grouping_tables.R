@@ -1,4 +1,4 @@
-# Purpose: Create taxon grouping tables (taxon_group_composition & taxon_group_stanzas) based on minimum ID standards
+Purpose: Create taxon grouping tables (taxon_group_composition & taxon_group_stanzas) based on minimum ID standards
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -144,6 +144,7 @@ rank_expanded <- min_id_expanded %>%
 taxon_groups <- rank_expanded %>%
   mutate(group_code = coalesce(gp_code, new_code, species_code)) %>%
   distinct(species_code, group_code, .keep_all = TRUE) %>%
+<<<<<<<< Updated upstream:R/02_update_grouping_tables.R
   left_join(bind_rows(survey_species_taxa, synonyms)) %>%
   select(taxon, group_code, species_code, species_name, common_name) %>%
   filter(!is.na(species_code)) %>%
@@ -167,6 +168,36 @@ historical_groups <- full_join(
   mutate(group_stanza_id = cur_group_id() +
     length(unique(taxon_groups$group_code))) %>%
   select(-group_id)
+========
+  left_join(bind_rows(survey_species_taxa, synonyms)) %>% 
+  select(taxon, group_code, species_code, species_name, common_name) %>%
+  filter!is.na(species_code) %>%
+  arrange(desc(species_code))
+
+
+
+taxon_groups %>%
+  group_by(group_code) %>% 
+  mutate(year_start = 1985,
+         year_end = Sys.Date() %>% format("%Y") %>% as.numeric()
+         ) %>%
+  arrange(group_code, species_code)
+
+
+###### TESTING HERE
+# species codes without groups
+rank_expanded %>% 
+  mutate(group_code = coalesce(gp_code, new_code, species_code)) %>%
+  distinct(group, species_code, group_code, .keep_all = TRUE) %>%
+  select(group, taxon, taxon_rank, group_code, species_code, species_name, common_name) %>%
+  left_join(survey_species_taxa) %>% filter(is.na(group)) %>% 
+  left_join(min_id_expanded) %>% 
+  mutate(id_to = case_when(
+    grepl("species", id_level) ~ "species",
+    id_level == "genus" ~ "genus",
+    TRUE ~ taxon_rank)) %>%
+  select(group:common_name, id_to, id_rank:kingdom) %>% filter(id_to != id_rank) %>% view
+>>>>>>>> Stashed changes:R/02_create_grouping_tables.R
 
 
 ## Reference table used to update year_start for modern groups
