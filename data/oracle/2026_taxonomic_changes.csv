@@ -1,4 +1,82 @@
 old_species_name,old_species_code,new_species_name,new_species_code,action,year_changed,reason
+Hippasteria pedicellaris,80647,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
+Hippasteria phrygiana (=spinosa),80650,Hippasteria phrygiana,80650,change taxon name,2023,Synonym according to Mah et al. (2014)
+Hippodiplosia sp.,95072,Reussia sp.,95072,change taxon name,2023,synonym
+Hippoporina insculpta,95071,Primavelans insculpta,95071,change taxon name,2023,synonym
+Histioteuthis dofleini,79511,Stigmatoteuthis dofleini,79513,change taxon code/name,2023,synonym
+Histioteuthis hoylei,79512,Stigmatoteuthis hoylei,79512,change taxon name,2023,unaccepted combination
+Hypsopsetta guttulata,10145,Pleuronichthys guttulatus,10145,change taxon name,2023,synonym
+Japelion aleutica,71740,Buccinum aleuticum,72753,change taxon code/name,2023,synonym
+Kali normani,21597,Kali kerberti,21597,change taxon name,2023,synonym
+Lamellariidae,71583,Lamellariinae,71583,change taxon name,2023,original rank
+Lampetra tridentata,21,Entosphenus tridentatus,21,change taxon name,2023,senior synonym
+Laqueus californianus,97116,Laqueus erythraeus,97116,change taxon name,2023,misspelling
+Laqueus vancouverensis,97117,Laqueus vancouveriensis,97117,change taxon name,2023,misspelling
+Leptagonus frenatus,20006,Sarritor frenatus,20006,change taxon name,2023,synonym
+Leptagonus leptorhynchus,20005,Sarritor leptorhynchus,20005,change taxon name,2023,synonym
+Leptasterias katharinae,80591,Leptasterias polaris katherinae,80591,change taxon name,2023,synonym
+Leptasterias stolocantha,80113,Leptasterias stolacantha,80113,change taxon name,2023,misspelling
+Leptasterias truculenta,80116,Leptasterias coei truculenta,80116,change taxon name,2023,synonym
+Leptochiton alveolus,70125,Belknapchiton alveolus,70125,change taxon name,2023,synonym
+Leptochiton belknapi,70127,Belknapchiton belknapi,70127,change taxon name,2023,synonym
+Leptochiton mesogonus,70128,Belknapchiton belknapi,70127,change taxon code/name,2023,a junior synonym
+Lillipathes lilliei,41551,Lillipathes lillei,41551,change taxon name,2023,misspelling
+Limanda proboscidea,10211,Myzopsetta proboscidea,10211,change taxon name,2023,synonym
+Liocyma fluctosa,75092,Liocyma fluctuosa,75092,change taxon name,2023,misspelling
+Liomesus nassula,71913,Pseudoliomesus nassula,71913,change taxon name,2023,original combination
+Lophaster vexator,81125,Lophaster furcilliger,81130,change taxon code/name,2023,synonym
+Lopholithodes foraminatus,69270,Echidnocerus foraminatus,69270,change taxon name,2023,synonym
+Lopholithodes mandtii,69280,Echidnocerus cibarius,69280,change taxon name,2023,synonym
+Lopholithodes sp.,69260,Echidnocerus sp.,69260,change taxon name,2023,synonym
+Lucinoma annulatum,75420,Lucinoma annulata,75420,change taxon name,2023,misspelling
+Lunatia lewisii,71570,Neverita lewisii,71570,change taxon name,2023,unaccepted combination
+Lunatia pallida,71580,Euspira pallida,71580,change taxon name,2023,synonym
+Lussivolutopsius filosus,71759,Habevolutopsius attenuatus,71739,change taxon code/name,2023,synonym
+Lycodapus grossidens,24233,Lycodapus fierasfer,24160,change taxon code/name,2023,synonym
+Lycodema barbatum,24240,Lyconema barbatum,24240,change taxon name,2023,misspelling
+Macoma secta,75244,Rexithaerus secta,75244,change taxon name,2023,synonym
+Macoma yoldiformis,75243,Macoploma yoldiformis,75243,change taxon name,2023,synonym
+Mallotus catervarius (=villosus),23041,Mallotus villosus,23041,change taxon name,2023,misspelling
+Margarites argentatus,72534,Margarites olivaceus,72534,change taxon name,2023,synonym
+Margarites beringensis,72539,Margarites helicinus,72539,change taxon name,2023,synonym
+Melita dentata,60130,Dulichiella appendiculata,60130,change taxon name,2023,misidentification
+Melonanchora globogilva,91234,Hanstoreia globogilva,91234,change taxon name,2023,genus transfer
+Mohnia robusta,71906,Retimohnia robusta,71906,change taxon name,2023,original combination
+Molpadia arenicola,85110,Caudina arenicola,85110,change taxon name,2023,synonym
+Moroteuthis robusta,79302,Onykia robusta,79302,change taxon name,2023,synonym
+Munida quadrispina,69556,Grimothea quadrispina,69556,change taxon name,2023,synonym
+Mursia gaudichaudii,68100,Platymera gaudichaudii,68100,change taxon name,2023,invalid synonym
+Musculus olivaceus,74563,Musculus discors,74562,change taxon code/name,2023,synonym
+Mya elegans,75336,Myra elegans,75336,change taxon name,2023,synonym
+Mycale bellabellensis,91054,Mycale loveni,91040,change taxon code/name,2023,junior synonym
+Myriapora sp. cf. subgracilis (Bayer et al.),95005,Leieschara sp. cf. subgracilis (Bayer et al.),95005,change taxon name,2023,synonym
+Myriapora subgracilis,95040,Leieschara subgracilis,95040,change taxon name,2023,synonym
+Nannobrachium nigrum,22627,Lampanyctus niger,22627,change taxon name,2023,synonym
+Nannobrachium regale,22624,Lampanyctus regalis,22624,change taxon name,2023,synonym
+Nannobrachium ritteri,22623,Lampanyctus ritteri,22623,change taxon name,2023,synonym
+Natica clausa,71530,Cryptonatica affinis,71526,change taxon code/name,2023,synonym
+Natica russa egg,71512,Cryptonatica russa egg,71512,change taxon name,2023,synonym
+Neadmete circumcenta,73189,Neadmete circumcincta,73189,change taxon name,2023,misspelling
+Nemocardium centifilosum,74987,Keenaea centifilosa,74987,change taxon name,2023,synonym
+Neoesperiopsis sp.,91091,Isodictya sp.,91256,change taxon code/name,2023,junior synonym
+Neomenia cf. yamamoti (Clark 2006),70062,Neomenia cf. yamamotoi (Clark 2006),70062,change taxon name,2023,synonym
+Neptunea middendorffii,71840,Neptunea middendorffiana,71840,change taxon name,2023,misspelling
+Nipponotrophon scitulus,72395,Scabrotrophon scitulus,72395,change taxon name,2023,synonym
+Notostomobdella sp.,59120,Notostomum sp.,59110,change taxon code/name,2023,synonym
+Nucula tenuis,74333,Pronucula tenuis,74333,change taxon name,2023,superseded combination
+Nuculana buccata,74440,Nuculana pernula,74436,change taxon code/name,2023,synonym
+Nuculana taphria,74437,Saccella taphria,74437,change taxon name,2023,synonym
+Olivella beatica,72797,Callianax alectona,72797,change taxon name,2023,misspelling
+Olivella biplicata,73201,Callianax biplicata,73201,change taxon name,2023,synonym
+Ommastrephes bartrami,79260,Ommastrephes bartramii,79260,change taxon name,2023,spelling variation
+Onychoteuthis borealijaponicus,79312,Onychoteuthis borealijaponica,79312,change taxon name,2023,misspelling
+Ophiomusium jolliensis,83407,Ophiosphalma jolliense,83407,change taxon name,2023,synonym
+Ophiomusium lymani,83480,Ophiomusa lymani,83480,change taxon name,2023,"type species of Ophiomusa, reinstated by (O'Hara et al. 2018)"
+Ophiopholis kennerleyi,83392,Ophiopholis kennerlyi,83392,change taxon name,2023,misspelling
+Ophiosphalma sp. cf. jolliensis,83408,Ophiosphalma sp. cf. jolliense,83408,change taxon name,2023,synonym
+Pandalopsis aleutica,66060,Pandalus aleuticus,66060,change taxon name,2023,synonym
+Pandalopsis ampla,66130,Pandalus amplus,66130,change taxon name,2023,synonym
+Pandalopsis dispar,66120,Pandalus dispar,66120,change taxon name,2023,synonym
 Pandalopsis longirostris,66061,Pandalus longirostris,66061,change taxon name,2023,synonym
 Pandalopsis sp.,66059,Pandalus sp.,66020,change taxon code/name,2023,synonym
 Pandalopsis sp. cf. lamelligera,66062,Pandalus sp. cf. lamelligerus,66062,change taxon name,2023,synonym
@@ -81,85 +159,6 @@ Triglops forficata,21352,Triglops forficatus,21352,change taxon name,2023,misspe
 Triglops pingeli,21355,Triglops pingelii,21355,change taxon name,2023,misspelling
 Tritonia diomedea,71030,Tritonia tetraquetra,71030,change taxon name,2023,synonym
 Acirsa sp. A (McLean and Clark),72071,Acirsa borealis,72071,change taxon name,2024,species described
-Colus bristolensis,71733,Colus barbarinus,71733,change taxon name,2023,synonym
-Colus calathus,71715,Aulacofusus calathus,71715,change taxon name,2023,original combination
-Colus callorhinus,71895,Plicifusus rodgersi,71895,change taxon name,2023,synonym
-Colus capponius,71713,Colus pulcius,71713,change taxon name,2023,synonym
-Colus datuzenbergii,71732,Anomalisipho verkruezeni,71732,change taxon name,2023,misspelling
-Colus esychus,71725,Aulacofusus esychus,71725,change taxon name,2023,synonym
-Colus georgianus,71727,Latisipho georgianus,71727,change taxon name,2023,synonym
-Colus halli,71731,Latisipho hallii,71731,change taxon name,2023,misspelling
-Colus herendeenii,71721,Aulacofusus herendeeni,71721,change taxon name,2023,synonym
-Colus hypolispus,71722,Latisipho hypolispus,71722,change taxon name,2023,synonym
-Colus jordani,71719,Latisipho jordani,71719,change taxon name,2023,synonym
-Colus martensi,71716,Anomalisipho martensi,71716,change taxon name,2023,synonym
-Colus oceandromae,71896,Plicifusus oceanodromae,71896,change taxon name,2023,misspelling
-Colus ombronius,71723,Aulacofusus ombronius,71723,change taxon name,2023,original combination
-Colus periscelidus,71718,Aulacofusus periscelidus,71718,change taxon name,2023,synonym
-Colus spitzbergensis,71726,Aulacofusus brevicauda,71726,change taxon name,2023,synonym
-Colus stejnegeri,71898,Volutopsius stejnegeri,71898,change taxon name,2023,synonym
-Colus tahwitanus,71728,Latisipho tahwitanus,71728,change taxon name,2023,original combination
-Colus trophius,71734,Aulacofusus trophius,71734,change taxon name,2023,synonym
-Colus virens,71897,Retifusus virens,71897,change taxon name,2023,synonym
-Compsomyax subdiaphanus,75016,Compsomyax subdiaphana,75016,change taxon name,2023,misspelling
-Crangon abyssorum,66510,Neocrangon abyssorum,66510,change taxon name,2023,synonym
-Crangon communis,66515,Neocrangon communis,66515,change taxon name,2023,synonym
-Crangon resima,66520,Neocrangon resima,66520,change taxon name,2023,synonym
-Crangon sp. cf. communis (CAS),66516,Neocrangon sp. cf. communis (CAS),66516,change taxon name,2023,synonym
-Cranopsis cucullata,71355,Puncturella cucullata,71355,change taxon name,2023,superseded combination
-Cranopsis major,71350,Puncturella major,71350,change taxon name,2023,synonym
-Cranopsis sp.,71349,Puncturella sp.,71349,change taxon name,2023,junior subjective synonym
-Crella brunnea,91062,Myxilla brunnea,91062,change taxon name,2023,synonym
-Crenella seminuda,74564,Vilasina seminuda,74551,change taxon code/name,2023,invalid synonym
-Cucumaria japonica,85010,Cucumaria frondosa japonica,85010,change taxon name,2023,synonym
-Cuthona concinna,71051,Cuthonella concinna,71051,change taxon name,2023,synonym
-Cyclocardia ventricosa,74653,Coanicardita ventricosa,74653,change taxon name,2023,superseded combination
-Cyclopecten uschakovi,74178,Parvamussium intuscostatum,74178,change taxon name,2023,synonym
-Decapodiform egg,79002,Decapodiformes egg,79002,change taxon name,2023,synonym
-Diamphiodia occidentalis,80018,Amphiodia occidentalis,80018,change taxon name,2023,invalid synonym
-Dipsacaster eximus,81875,Dipsacaster eximius,81875,change taxon name,2023,misspelling
-Embassichthys bathybius,10190,Microstomus bathybius,10190,change taxon name,2023,synonym
-Empleconia vaginata,74482,Limopsis vaginata,74482,change taxon name,2023,synonym
-Eogonatus tinro,79207,Gonatopsis okutanii,79207,change taxon name,2023,synonym
-Epitoneum indianorum,72081,Epitonium indianorum,72066,change taxon code/name,2023,misspelling
-Eptatretus stouti,120,Eptatretus stoutii,120,change taxon name,2023,misspelling
-Errinopora pourtalesi,44079,Errinopora pourtalesii,44079,change taxon name,2023,misspelling
-Escharopsis sarsi,95060,Posterula sarsii,95060,change taxon name,2023,synonym
-Esperiopsis flagrum,91092,Abyssocladia flagrum,91092,change taxon name,2023,genus transfer
-Eualus stoneyi,66192,Eualus macilentus,66179,change taxon code/name,2023,synonym
-Eumicrotremus birulai,22177,Eumicrotremus asperrimus,22177,change taxon name,2023,synonym
-Eunice valens,50005,Leodice valens,50005,change taxon name,2023,synonym
-Euplexaura marki,41586,Chromoplexaura marki,41586,change taxon name,2023,original combination
-Fanellia compressa,44090,Callogorgia compressa,44090,change taxon name,2023,synonym
-Fanellia fraseri,44091,Callogorgia fraseri,44091,change taxon name,2023,synonym
-Fanellia sp.,44089,Callogorgia sp.,41600,change taxon code/name,2023,synonym
-Flabellina trophina,71111,Coryphella trophina,71111,change taxon name,2023,synonym
-Florometra inexpectata,82765,Florometra asperrima,82771,change taxon code/name,2023,synonym
-Flustra serrulata,95030,Serratiflustra serrulata,95030,change taxon name,2023,synonym
-Gastropteron pacifica,71503,Gastropteron pacificum,71023,change taxon code/name,2023,misspelling
-Gastroptychus iaspis,69555,Sternostylus iaspis,69555,change taxon name,2023,synonym
-Geodinella lendenfeldi,91705,Geodia carolae,91705,change taxon name,2023,genus transfer and preoccupied
-Geodinella sp.,91704,Geodia sp.,91047,change taxon code/name,2023,junior synonym
-Glycymeris subobsoleta,74486,Glycymeris septentrionalis,74485,change taxon code/name,2023,synonym
-Gonatopsis sp. cf. japonica (Kubodera and Okutani),79253,Gonatopsis sp. cf. japonicus (Kubodera and Okutani),79253,change taxon name,2023,synonym
-Gorgonacea,41500,Octocorallia,41099,change taxon code/name,2023,synonym
-Grimpoteuthis albatrossi,78040,Opisthoteuthis albatrossi,78040,change taxon name,2023,synonym
-Halipteris californica,42013,Balticina californica,42013,change taxon name,2023,synonym
-Halipteris finmarchia,42010,Balticina finmarchica,42010,change taxon name,2023,misspelling
-Halipteris sp.,42008,Balticina sp.,42006,change taxon code/name,2023,synonym
-Halipteris sp. A (Stone 2015),42009,Balticina sp. A (Stone 2015),42009,change taxon name,2023,synonym
-Halipteris willemoesi,42012,Balticina willemoesi,42012,change taxon name,2023,synonym
-Halocynthia hispidus,98324,Halocynthia dumosa,98324,change taxon name,2023,new combination
-Hemithyrididae,97010,Hemithirididae,97010,change taxon name,2023,misspelling
-Henricia aleutica,80545,Henricia longispina aleutica,80545,change taxon name,2023,synonym
-Henricia multispina,80549,Henricia leviuscula spiculifera,80549,change taxon name,2023,Synonym according to Hayashi (1973)
-Heteropolypus (=Anthomastus) sp. A,41331,Anthomastus sp. A,41331,change taxon name,2023,synonym
-Heteropolypus (=Anthomastus) sp. B,41332,Anthomastus sp. B,41332,change taxon name,2023,synonym
-Hippasteria aleutica,80633,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
-Hippasteria armata,80632,Hippasteria phrygiana,80650,change taxon code/name,2023,synonym
-Hippasteria kurilensis,80631,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
-Urticina lofotensis,43043,Urticina eques,43043,change taxon name,2023,synonym
-Velutina nana,72801,Ciliatovelutina nana,72801,change taxon name,2023,original combination
 Balanus hesperius,65204,Solidobalanus hesperius,65204,change taxon name,2024,synonym
 Beringius sp. A (McLean and Clark),71778,Neptunea baxteri,71778,change taxon name,2024,species described
 Beringius sp. B (McLean and Clark),71779,Beringius bisulcatus,71779,change taxon name,2024,species described
@@ -316,84 +315,85 @@ Clinopegma unicum,72821,Clinopegma magnum unicum,72821,change taxon name,2023,sy
 Colossendeis dofleini,69911,Hedgpethia dofleini,69911,change taxon name,2023,synonym
 Colus acosmius,71714,Anomalisipho acosmius,71714,change taxon name,2023,synonym
 Colus aphelus,71730,Latisipho aphelus,71730,change taxon name,2023,synonym
-Hippasteria pedicellaris,80647,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
-Hippasteria phrygiana (=spinosa),80650,Hippasteria phrygiana,80650,change taxon name,2023,Synonym according to Mah et al. (2014)
-Hippodiplosia sp.,95072,Reussia sp.,95072,change taxon name,2023,synonym
-Hippoporina insculpta,95071,Primavelans insculpta,95071,change taxon name,2023,synonym
-Histioteuthis dofleini,79511,Stigmatoteuthis dofleini,79513,change taxon code/name,2023,synonym
-Histioteuthis hoylei,79512,Stigmatoteuthis hoylei,79512,change taxon name,2023,unaccepted combination
-Hypsopsetta guttulata,10145,Pleuronichthys guttulatus,10145,change taxon name,2023,synonym
-Japelion aleutica,71740,Buccinum aleuticum,72753,change taxon code/name,2023,synonym
-Kali normani,21597,Kali kerberti,21597,change taxon name,2023,synonym
-Lamellariidae,71583,Lamellariinae,71583,change taxon name,2023,original rank
-Lampetra tridentata,21,Entosphenus tridentatus,21,change taxon name,2023,senior synonym
-Laqueus californianus,97116,Laqueus erythraeus,97116,change taxon name,2023,misspelling
-Laqueus vancouverensis,97117,Laqueus vancouveriensis,97117,change taxon name,2023,misspelling
-Leptagonus frenatus,20006,Sarritor frenatus,20006,change taxon name,2023,synonym
-Leptagonus leptorhynchus,20005,Sarritor leptorhynchus,20005,change taxon name,2023,synonym
-Leptasterias katharinae,80591,Leptasterias polaris katherinae,80591,change taxon name,2023,synonym
-Leptasterias stolocantha,80113,Leptasterias stolacantha,80113,change taxon name,2023,misspelling
-Leptasterias truculenta,80116,Leptasterias coei truculenta,80116,change taxon name,2023,synonym
-Leptochiton alveolus,70125,Belknapchiton alveolus,70125,change taxon name,2023,synonym
-Leptochiton belknapi,70127,Belknapchiton belknapi,70127,change taxon name,2023,synonym
-Leptochiton mesogonus,70128,Belknapchiton belknapi,70127,change taxon code/name,2023,a junior synonym
-Lillipathes lilliei,41551,Lillipathes lillei,41551,change taxon name,2023,misspelling
-Limanda proboscidea,10211,Myzopsetta proboscidea,10211,change taxon name,2023,synonym
-Liocyma fluctosa,75092,Liocyma fluctuosa,75092,change taxon name,2023,misspelling
-Liomesus nassula,71913,Pseudoliomesus nassula,71913,change taxon name,2023,original combination
-Lophaster vexator,81125,Lophaster furcilliger,81130,change taxon code/name,2023,synonym
-Lopholithodes foraminatus,69270,Echidnocerus foraminatus,69270,change taxon name,2023,synonym
-Lopholithodes mandtii,69280,Echidnocerus cibarius,69280,change taxon name,2023,synonym
-Lopholithodes sp.,69260,Echidnocerus sp.,69260,change taxon name,2023,synonym
-Lucinoma annulatum,75420,Lucinoma annulata,75420,change taxon name,2023,misspelling
-Lunatia lewisii,71570,Neverita lewisii,71570,change taxon name,2023,unaccepted combination
-Lunatia pallida,71580,Euspira pallida,71580,change taxon name,2023,synonym
-Lussivolutopsius filosus,71759,Habevolutopsius attenuatus,71739,change taxon code/name,2023,synonym
-Lycodapus grossidens,24233,Lycodapus fierasfer,24160,change taxon code/name,2023,synonym
-Lycodema barbatum,24240,Lyconema barbatum,24240,change taxon name,2023,misspelling
-Macoma secta,75244,Rexithaerus secta,75244,change taxon name,2023,synonym
-Macoma yoldiformis,75243,Macoploma yoldiformis,75243,change taxon name,2023,synonym
-Mallotus catervarius (=villosus),23041,Mallotus villosus,23041,change taxon name,2023,misspelling
-Margarites argentatus,72534,Margarites olivaceus,72534,change taxon name,2023,synonym
-Margarites beringensis,72539,Margarites helicinus,72539,change taxon name,2023,synonym
-Melita dentata,60130,Dulichiella appendiculata,60130,change taxon name,2023,misidentification
-Melonanchora globogilva,91234,Hanstoreia globogilva,91234,change taxon name,2023,genus transfer
-Mohnia robusta,71906,Retimohnia robusta,71906,change taxon name,2023,original combination
-Molpadia arenicola,85110,Caudina arenicola,85110,change taxon name,2023,synonym
-Moroteuthis robusta,79302,Onykia robusta,79302,change taxon name,2023,synonym
-Munida quadrispina,69556,Grimothea quadrispina,69556,change taxon name,2023,synonym
-Mursia gaudichaudii,68100,Platymera gaudichaudii,68100,change taxon name,2023,invalid synonym
-Musculus olivaceus,74563,Musculus discors,74562,change taxon code/name,2023,synonym
-Mya elegans,75336,Myra elegans,75336,change taxon name,2023,synonym
-Mycale bellabellensis,91054,Mycale loveni,91040,change taxon code/name,2023,junior synonym
-Myriapora sp. cf. subgracilis (Bayer et al.),95005,Leieschara sp. cf. subgracilis (Bayer et al.),95005,change taxon name,2023,synonym
-Myriapora subgracilis,95040,Leieschara subgracilis,95040,change taxon name,2023,synonym
-Nannobrachium nigrum,22627,Lampanyctus niger,22627,change taxon name,2023,synonym
-Nannobrachium regale,22624,Lampanyctus regalis,22624,change taxon name,2023,synonym
-Nannobrachium ritteri,22623,Lampanyctus ritteri,22623,change taxon name,2023,synonym
-Natica clausa,71530,Cryptonatica affinis,71526,change taxon code/name,2023,synonym
-Natica russa egg,71512,Cryptonatica russa egg,71512,change taxon name,2023,synonym
-Neadmete circumcenta,73189,Neadmete circumcincta,73189,change taxon name,2023,misspelling
-Nemocardium centifilosum,74987,Keenaea centifilosa,74987,change taxon name,2023,synonym
-Neoesperiopsis sp.,91091,Isodictya sp.,91256,change taxon code/name,2023,junior synonym
-Neomenia cf. yamamoti (Clark 2006),70062,Neomenia cf. yamamotoi (Clark 2006),70062,change taxon name,2023,synonym
-Neptunea middendorffii,71840,Neptunea middendorffiana,71840,change taxon name,2023,misspelling
-Nipponotrophon scitulus,72395,Scabrotrophon scitulus,72395,change taxon name,2023,synonym
-Notostomobdella sp.,59120,Notostomum sp.,59110,change taxon code/name,2023,synonym
-Nucula tenuis,74333,Pronucula tenuis,74333,change taxon name,2023,superseded combination
-Nuculana buccata,74440,Nuculana pernula,74436,change taxon code/name,2023,synonym
-Nuculana taphria,74437,Saccella taphria,74437,change taxon name,2023,synonym
-Olivella beatica,72797,Callianax alectona,72797,change taxon name,2023,misspelling
-Olivella biplicata,73201,Callianax biplicata,73201,change taxon name,2023,synonym
-Ommastrephes bartrami,79260,Ommastrephes bartramii,79260,change taxon name,2023,spelling variation
-Onychoteuthis borealijaponicus,79312,Onychoteuthis borealijaponica,79312,change taxon name,2023,misspelling
-Ophiomusium jolliensis,83407,Ophiosphalma jolliense,83407,change taxon name,2023,synonym
-Ophiomusium lymani,83480,Ophiomusa lymani,83480,change taxon name,2023,"type species of Ophiomusa, reinstated by (O'Hara et al. 2018)"
-Ophiopholis kennerleyi,83392,Ophiopholis kennerlyi,83392,change taxon name,2023,misspelling
-Ophiosphalma sp. cf. jolliensis,83408,Ophiosphalma sp. cf. jolliense,83408,change taxon name,2023,synonym
-Pandalopsis aleutica,66060,Pandalus aleuticus,66060,change taxon name,2023,synonym
-Pandalopsis ampla,66130,Pandalus amplus,66130,change taxon name,2023,synonym
-Pandalopsis dispar,66120,Pandalus dispar,66120,change taxon name,2023,synonym
+Colus bristolensis,71733,Colus barbarinus,71733,change taxon name,2023,synonym
+Colus calathus,71715,Aulacofusus calathus,71715,change taxon name,2023,original combination
+Colus callorhinus,71895,Plicifusus rodgersi,71895,change taxon name,2023,synonym
+Colus capponius,71713,Colus pulcius,71713,change taxon name,2023,synonym
+Colus datuzenbergii,71732,Anomalisipho verkruezeni,71732,change taxon name,2023,misspelling
+Colus esychus,71725,Aulacofusus esychus,71725,change taxon name,2023,synonym
+Colus georgianus,71727,Latisipho georgianus,71727,change taxon name,2023,synonym
+Colus halli,71731,Latisipho hallii,71731,change taxon name,2023,misspelling
+Colus herendeenii,71721,Aulacofusus herendeeni,71721,change taxon name,2023,synonym
+Colus hypolispus,71722,Latisipho hypolispus,71722,change taxon name,2023,synonym
+Colus jordani,71719,Latisipho jordani,71719,change taxon name,2023,synonym
+Colus martensi,71716,Anomalisipho martensi,71716,change taxon name,2023,synonym
+Colus oceandromae,71896,Plicifusus oceanodromae,71896,change taxon name,2023,misspelling
+Colus ombronius,71723,Aulacofusus ombronius,71723,change taxon name,2023,original combination
+Colus periscelidus,71718,Aulacofusus periscelidus,71718,change taxon name,2023,synonym
+Colus spitzbergensis,71726,Aulacofusus brevicauda,71726,change taxon name,2023,synonym
+Colus stejnegeri,71898,Volutopsius stejnegeri,71898,change taxon name,2023,synonym
+Colus tahwitanus,71728,Latisipho tahwitanus,71728,change taxon name,2023,original combination
+Colus trophius,71734,Aulacofusus trophius,71734,change taxon name,2023,synonym
+Colus virens,71897,Retifusus virens,71897,change taxon name,2023,synonym
+Compsomyax subdiaphanus,75016,Compsomyax subdiaphana,75016,change taxon name,2023,misspelling
+Crangon abyssorum,66510,Neocrangon abyssorum,66510,change taxon name,2023,synonym
+Crangon communis,66515,Neocrangon communis,66515,change taxon name,2023,synonym
+Crangon resima,66520,Neocrangon resima,66520,change taxon name,2023,synonym
+Crangon sp. cf. communis (CAS),66516,Neocrangon sp. cf. communis (CAS),66516,change taxon name,2023,synonym
+Cranopsis cucullata,71355,Puncturella cucullata,71355,change taxon name,2023,superseded combination
+Cranopsis major,71350,Puncturella major,71350,change taxon name,2023,synonym
+Cranopsis sp.,71349,Puncturella sp.,71349,change taxon name,2023,junior subjective synonym
+Crella brunnea,91062,Myxilla brunnea,91062,change taxon name,2023,synonym
+Crenella seminuda,74564,Vilasina seminuda,74551,change taxon code/name,2023,invalid synonym
+Cucumaria japonica,85010,Cucumaria frondosa japonica,85010,change taxon name,2023,synonym
+Cuthona concinna,71051,Cuthonella concinna,71051,change taxon name,2023,synonym
+Cyclocardia ventricosa,74653,Coanicardita ventricosa,74653,change taxon name,2023,superseded combination
+Cyclopecten uschakovi,74178,Parvamussium intuscostatum,74178,change taxon name,2023,synonym
+Decapodiform egg,79002,Decapodiformes egg,79002,change taxon name,2023,synonym
+Diamphiodia occidentalis,80018,Amphiodia occidentalis,80018,change taxon name,2023,invalid synonym
+Dipsacaster eximus,81875,Dipsacaster eximius,81875,change taxon name,2023,misspelling
+Embassichthys bathybius,10190,Microstomus bathybius,10190,change taxon name,2023,synonym
+Empleconia vaginata,74482,Limopsis vaginata,74482,change taxon name,2023,synonym
+Eogonatus tinro,79207,Gonatopsis okutanii,79207,change taxon name,2023,synonym
+Epitoneum indianorum,72081,Epitonium indianorum,72066,change taxon code/name,2023,misspelling
+Eptatretus stouti,120,Eptatretus stoutii,120,change taxon name,2023,misspelling
+Errinopora pourtalesi,44079,Errinopora pourtalesii,44079,change taxon name,2023,misspelling
+Escharopsis sarsi,95060,Posterula sarsii,95060,change taxon name,2023,synonym
+Esperiopsis flagrum,91092,Abyssocladia flagrum,91092,change taxon name,2023,genus transfer
+Eualus stoneyi,66192,Eualus macilentus,66179,change taxon code/name,2023,synonym
+Eumicrotremus birulai,22177,Eumicrotremus asperrimus,22177,change taxon name,2023,synonym
+Eunice valens,50005,Leodice valens,50005,change taxon name,2023,synonym
+Euplexaura marki,41586,Chromoplexaura marki,41586,change taxon name,2023,original combination
+Fanellia compressa,44090,Callogorgia compressa,44090,change taxon name,2023,synonym
+Fanellia fraseri,44091,Callogorgia fraseri,44091,change taxon name,2023,synonym
+Fanellia sp.,44089,Callogorgia sp.,41600,change taxon code/name,2023,synonym
+Flabellina trophina,71111,Coryphella trophina,71111,change taxon name,2023,synonym
+Florometra inexpectata,82765,Florometra asperrima,82771,change taxon code/name,2023,synonym
+Flustra serrulata,95030,Serratiflustra serrulata,95030,change taxon name,2023,synonym
+Gastropteron pacifica,71503,Gastropteron pacificum,71023,change taxon code/name,2023,misspelling
+Gastroptychus iaspis,69555,Sternostylus iaspis,69555,change taxon name,2023,synonym
+Geodinella lendenfeldi,91705,Geodia carolae,91705,change taxon name,2023,genus transfer and preoccupied
+Geodinella sp.,91704,Geodia sp.,91047,change taxon code/name,2023,junior synonym
+Glycymeris subobsoleta,74486,Glycymeris septentrionalis,74485,change taxon code/name,2023,synonym
+Gonatopsis sp. cf. japonica (Kubodera and Okutani),79253,Gonatopsis sp. cf. japonicus (Kubodera and Okutani),79253,change taxon name,2023,synonym
+Gorgonacea,41500,Octocorallia,41099,change taxon code/name,2023,synonym
+Grimpoteuthis albatrossi,78040,Opisthoteuthis albatrossi,78040,change taxon name,2023,synonym
+Halipteris californica,42013,Balticina californica,42013,change taxon name,2023,synonym
+Halipteris finmarchia,42010,Balticina finmarchica,42010,change taxon name,2023,misspelling
+Halipteris sp.,42008,Balticina sp.,42006,change taxon code/name,2023,synonym
+Halipteris sp. A (Stone 2015),42009,Balticina sp. A (Stone 2015),42009,change taxon name,2023,synonym
+Halipteris willemoesi,42012,Balticina willemoesi,42012,change taxon name,2023,synonym
+Halocynthia hispidus,98324,Halocynthia dumosa,98324,change taxon name,2023,new combination
+Hemithyrididae,97010,Hemithirididae,97010,change taxon name,2023,misspelling
+Henricia aleutica,80545,Henricia longispina aleutica,80545,change taxon name,2023,synonym
+Henricia multispina,80549,Henricia leviuscula spiculifera,80549,change taxon name,2023,Synonym according to Hayashi (1973)
+Heteropolypus (=Anthomastus) sp. A,41331,Anthomastus sp. A,41331,change taxon name,2023,synonym
+Heteropolypus (=Anthomastus) sp. B,41332,Anthomastus sp. B,41332,change taxon name,2023,synonym
+Hippasteria aleutica,80633,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
+Hippasteria armata,80632,Hippasteria phrygiana,80650,change taxon code/name,2023,synonym
+Hippasteria kurilensis,80631,Hippasteria phrygiana,80650,change taxon code/name,2023,Synonym according to Mah et al. (2014)
+Urticina lofotensis,43043,Urticina eques,43043,change taxon name,2023,synonym
+Velutina nana,72801,Ciliatovelutina nana,72801,change taxon name,2023,original combination
 Velutina prolongata,72804,Limneria prolongata,72803,change taxon code/name,2023,original combination
 Velutina rubra,72810,Velutina plicatilis,72802,change taxon code/name,2023,synonym
 Velutina undata,72800,Limneria undata,72800,change taxon name,2023,original combination

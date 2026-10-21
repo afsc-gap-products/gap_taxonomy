@@ -1,4 +1,4 @@
-# Taxonomy update
+# GAP_TAXONOMY Schema Update
 
 > Code is always in development  
 >
@@ -21,7 +21,7 @@ Seattle, WA 98195
 
 ## Overview
 
-This repository include code to update the taxonomy tables in race_data, racebase, and gap_products based on online databases (namely WORMS and ITIS) to maintain modern, reliable, and consistent taxonomy. 
+This repository include code to update the taxonomy tables in race_data and gap_taxonomy based on online databases (namely WORMS and ITIS) to maintain modern, reliable, and consistent taxonomy. It will be run annually in January.
 
 ---
 
@@ -31,16 +31,19 @@ The scripts to regenerate our tables are sequentially numbered and are intended 
 
 ### General Flow of the code
 
-- `R/01_create_flat_taxonomic_tables.R`  
+- `R/01_update_taxonomy_tables.R`  
   Pulls updated taxonomic information for each species from both ITIS and WoRMS and reconciles taxonomic discrepancies. Generates the `taxonomic_classification` and `taxonomic_changes` tables
 
-- `R/02_create_grouping_tables.R`  
-  Leverages updated taxonomic information to regenerate the `GAP_PRODUCTS.TAXON_GROUP_COMPOSITION` and `GAP_PRODUCTS.TAXON_GROUP_STANZAS` tables.     These are primarily used by the `gap_products` repository to generate indices for stock assessment. 
+- `R/02_update_grouping_tables.R`  
+  Leverages updated taxonomic information to regenerate the `taxon_group_stanzas` and `taxon_group_composition` tables. These are primarily used by the `gap_products` repository to generate indices for stock assessment. 
 
-- `R/03_create_race_data_tables.R`  
-  Generates hierarchical taxonomic tables in `RACE_DATA` based on updated taxonomy: RACE_species_codes, species_taxonomics, taxonomic_ranks.
+- `R/03_update_race_data_tables.R`  
+  Generates hierarchical taxonomic tables (`RACE_species_codes`, `species_taxonomics`) in `RACE_DATA` based on updated taxonomy.
 
-- `R/04_update_taxonomy_tables.R`  
+- `R/04_update_confidence_table.R`  
+  Updates `taxonomic_confidence` table for the most recent year. Duplicates values from the previous year for each species code.
+  
+- `R/05_update_oracle.R`  
   Pushes all table updates to Oracle and creates audit records of changes made to each table. 
   
 ---

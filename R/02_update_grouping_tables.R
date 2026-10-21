@@ -1,4 +1,4 @@
-# Purpose: Create taxon grouping tables based on minimum ID standards
+# Purpose: Create taxon grouping tables (taxon_group_composition & taxon_group_stanzas) based on minimum ID standards
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -68,7 +68,7 @@ min_id <- read_csv("data/min_id.csv") %>%
   left_join(
     taxonomy_long %>%
       select(taxon, taxon_rank = rank) %>%
-      unique,
+      unique(),
     by = "taxon"
   ) %>%
   mutate(rank_priority = match(taxon_rank, KEEP_RANKS))
@@ -79,11 +79,11 @@ min_id <- read_csv("data/min_id.csv") %>%
 ##    (convert higher-level taxa to all matching species)
 ## ============================================================
 
-min_id_expanded <- min_id %>% 
+min_id_expanded <- min_id %>%
   filter(is.na(species_code) & !grepl("species", id_level)) %>%
   select(group, taxon, id_level, rank_priority) %>%
-  left_join(taxonomy_long, by = "taxon") %>% 
-  filter(id_rank == id_level) %>% 
+  left_join(taxonomy_long, by = "taxon") %>%
+  filter(id_rank == id_level) %>%
   select(
     group = taxon,
     taxon = species_name,
@@ -112,7 +112,7 @@ if (!all(min_id$taxon %in% taxonomy_long$taxon)) {
 ##    - resolve conflicts using rank_priority and taxonomic rank
 ## ============================================================
 
-rank_expanded <- min_id_expanded %>% 
+rank_expanded <- min_id_expanded %>%
   select(group, taxon, id_level, gp_code = species_code, rank_priority) %>%
   full_join(taxonomy_long, by = "taxon") %>%
   mutate(
@@ -127,12 +127,12 @@ rank_expanded <- min_id_expanded %>%
   select(
     group, gp_code,
     taxon, taxon_rank,
-    species_name, common_name, species_code, new_code, 
+    species_name, common_name, species_code, new_code,
     rank_priority
   ) %>%
   group_by(species_code) %>%
   mutate(rank = match(taxon_rank, KEEP_RANKS)) %>%
-  arrange(rank_priority, rank) %>%  
+  arrange(rank_priority, rank) %>%
   slice(1) %>%
   ungroup()
 
@@ -141,14 +141,13 @@ rank_expanded <- min_id_expanded %>%
 ## 9) Final mapping from species_code to group_code
 ## ============================================================
 
-taxon_groups <- rank_expanded %>% 
+taxon_groups <- rank_expanded %>%
   mutate(group_code = coalesce(gp_code, new_code, species_code)) %>%
   distinct(species_code, group_code, .keep_all = TRUE) %>%
-  left_join(bind_rows(survey_species_taxa, synonyms)) %>% 
+  left_join(bind_rows(survey_species_taxa, synonyms)) %>%
   select(taxon, group_code, species_code, species_name, common_name) %>%
   filter(!is.na(species_code)) %>%
   arrange(species_code)
-
 
 
 ## ============================================================
@@ -166,8 +165,8 @@ historical_groups <- full_join(
 ) %>%
   group_by(group_id) %>%
   mutate(group_stanza_id = cur_group_id() +
-           length(unique(taxon_groups$group_code))
-  ) %>% select(-group_id)
+    length(unique(taxon_groups$group_code))) %>%
+  select(-group_id)
 
 
 ## Reference table used to update year_start for modern groups
@@ -183,54 +182,44 @@ year_ref <- historical_groups %>%
 ## Build modern taxon group stanzas and append historical group stanzas
 
 taxon_group_stanzas <- taxon_groups %>%
-  
   # Define modern group time bounds and assign new stanza IDs
   group_by(group_code) %>%
   mutate(
     year_start      = 1982,
     year_end        = format(Sys.Date(), "%Y") %>% as.numeric(),
-    group_stanza_id = cur_group_id() 
+    group_stanza_id = cur_group_id()
   ) %>%
-  
   # Add species-specific year information
   left_join(species_year_current, by = "species_code") %>%
-  
   # Join historical group end years to adjust modern year_start
   left_join(year_ref, by = "group_code") %>%
-  
   # Update year_start to follow the last historical grouping, if present
   mutate(
     year_start = coalesce(year_end.y + 1, year_started, year_start)
   ) %>%
-  
   # Clean up columns and standardize naming
   select(
     taxon:year_start,
     year_end = year_end.x,
     group_stanza_id
   ) %>%
-  
   # Append historical group stanzas
   bind_rows(historical_groups) %>%
-  
   # Ensure correct temporal ordering
   arrange(group_stanza_id)
-
 
 
 ## Derive group composition table
 
 taxon_group_composition_new <- taxon_group_stanzas %>%
-  select(group_stanza_id, group_code, species_code) %>%
-  unique() %>%
+  select(group_stanza_id, species_code) %>%
+  distinct() %>%
   rename_with(toupper)
-
 
 
 ## Derive group stanza table
 
 taxon_group_stanzas_new <- taxon_group_stanzas %>%
   select(group_stanza_id, group_code, year_start, year_end) %>%
-  unique() %>%
+  distinct() %>%
   rename_with(toupper)
-

@@ -1,6 +1,4 @@
 # Oracle connection helpers
-path_oracle_connect <- "Z:/Projects/ConnectToOracle.R" 
-
 tables <- c("race_species_codes", "species_taxonomics", "taxonomic_ranks",
             "taxonomic_classification", "taxonomic_changes", "species_year",
             "taxonomic_confidence", "survey_design")
@@ -13,10 +11,10 @@ table_lookup <- tibble::tibble(
     "RACE_DATA.RACE_SPECIES_CODES",
     "RACE_DATA.SPECIES_TAXONOMICS",
     "RACE_DATA.TAXONOMIC_RANKS",
-    "RACE_DATA.TAXONOMIC_CLASSIFICATION",
-    "RACE_DATA.TAXONOMIC_CHANGES",
-    "GAP_PRODUCTS.SPECIES_YEAR",
-    "GAP_PRODUCTS.TAXONOMIC_CONFIDENCE",
+    "GAP_TAXONOMY.TAXONOMIC_CLASSIFICATION",
+    "GAP_TAXONOMY.TAXONOMIC_CHANGES",
+    "GAP_TAXONOMY.TAXONOMIC_CONFIDENCE",
+   # "GAP_PRODUCTS.SPECIES_YEAR",
     "GAP_PRODUCTS.SURVEY_DESIGN"
   ),
   file_path = file.path("data/oracle", paste0(this_year, "_", tables, ".csv"))
@@ -33,9 +31,7 @@ if (any(!table_lookup$exists)) {
   
   message("Connecting to Oracle to fetch missing tables…")
   
-  if (file.exists(path_oracle_connect)) {
-    source(path_oracle_connect)
-  } else {
+  if(!exists("channel")){
     channel <- gapindex::get_connected()
   }
   
@@ -93,7 +89,7 @@ species_year_current <- oracle_tables$species_year
 
 survey_species <- taxonomic_classification_current %>%
   dplyr::select(
-    survey_species_old = survey_species,
+    survey_species_old = active,
     species_name:species_code
   ) %>%
   dplyr::filter(!species_code %in% missing_taxa$species_code) %>%

@@ -27,8 +27,6 @@ source("R/utils/constants.R")
 source("R/utils/download_tables.R") # Pulls proper tables from Oracle and loads into R
 
 
-
-
 ## ============================
 ## 2) Core Logic: Data Transformation & Taxonomy
 ## ============================
@@ -57,13 +55,13 @@ fixed_spp[fixed_spp$species_code == 70050, "fixed_name"] <- c("Neomeniamorpha", 
 # before mapping the 'get_taxonomy_safely' function. Note: this will take a long
 # time to run.
 message("Fetching taxonomy data from external databases. This may take some time...")
-taxonomy_combined <- fixed_spp %>% 
+taxonomy_combined <- fixed_spp %>%
   dplyr::mutate(name = coalesce(fixed_name, survey_name)) %>%
   dplyr::group_by(name) %>%
-  tidyr::nest() %>% 
-  dplyr::mutate(taxo = furrr::future_map(name, get_taxonomy_safely)) 
+  tidyr::nest() %>%
+  dplyr::mutate(taxo = furrr::future_map(name, get_taxonomy_safely))
 
- 
+
 # Re-query loop for failed API hits (missing database info)
 max_reruns <- 3
 rerun_count <- 0
@@ -93,13 +91,12 @@ while (rerun_count < max_reruns) {
   taxonomy_combined <- taxonomy_combined %>%
     dplyr::left_join(retry_results, by = "name") %>%
     dplyr::mutate(
-      taxo = purrr::map2(taxo, taxo_new, ~ if (all(is.na(.x$database)) && !is.null(.y)) .y else .x)) %>%
+      taxo = purrr::map2(taxo, taxo_new, ~ if (all(is.na(.x$database)) && !is.null(.y)) .y else .x)
+    ) %>%
     dplyr::select(-taxo_new)
 }
 
 taxonomy_combined <- taxonomy_combined %>% tidyr::unnest(data)
-
-
 
 
 # Step 3: Clean and format the combined taxonomy data
@@ -107,7 +104,7 @@ taxonomy_combined <- taxonomy_combined %>% tidyr::unnest(data)
 
 taxonomy_cleaned <- taxonomy_combined %>%
   tidyr::unnest(taxo) %>%
-  dplyr::group_by(species_code) %>% 
+  dplyr::group_by(species_code) %>%
   dplyr::mutate(
     suggested_name = purrr::map2_chr(
       survey_name, database_name,
@@ -128,16 +125,16 @@ taxonomy_cleaned <- taxonomy_combined %>%
 
 # Step 4: Create final classification and changes tables
 # This complex pipeline handles synonymization, code fixing, and reason/action assignment.
-taxonomy_final <- taxonomy_cleaned %>% 
+taxonomy_final <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>%
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>%
   tidyr::nest() %>%
-  dplyr::mutate(new_code = purrr::map2_dbl(data, accepted_name, fix_syn_codes)) %>% 
-  tidyr::unnest(cols = c(data)) %>% 
+  dplyr::mutate(new_code = purrr::map2_dbl(data, accepted_name, fix_syn_codes)) %>%
+  tidyr::unnest(cols = c(data)) %>%
   dplyr::mutate(
     old_code = species_code,
     species_code = dplyr::coalesce(new_code, old_code)
-  ) %>% 
+  ) %>%
   dplyr::arrange(species_code, database, desc(taxonomic_status == "accepted")) %>%
   dplyr::distinct(species_code, database, database_id, .keep_all = TRUE) %>%
   dplyr::mutate(
@@ -145,7 +142,7 @@ taxonomy_final <- taxonomy_cleaned %>%
       fixed_name, new_spp, taxonomic_status, survey_name, accepted_name,
       database_id, common_name, species_code, new_code, n_codes
     )
-  ) %>% 
+  ) %>%
   dplyr::group_by(species_code, database) %>%
   dplyr::mutate(n_names = n()) %>%
   dplyr::filter(!(n_names > 1 & survey_species_old == 0)) %>%
@@ -156,7 +153,7 @@ taxonomy_final <- taxonomy_cleaned %>%
     n_codes2 = dplyr::n_distinct(species_code),
     accepted_name = ifelse(n_codes2 != 1, survey_name, accepted_name)
   ) %>%
-  dplyr::ungroup() %>% 
+  dplyr::ungroup() %>%
   dplyr::bind_rows(missing_taxa) %>%
   dplyr::select(
     reason, active, survey_name,
@@ -209,7 +206,6 @@ taxonomic_changes_new <- taxonomy_final %>%
 #         data.frame()
 #       )
 
-      
 
 # Step 6: Perform QC checks
 # This is a crucial step to ensure data integrity before writing to the database.
@@ -237,16 +233,16 @@ qc_issues <- taxonomy_final %>%
   arrange(species_code) %>%
   select(active, survey_name:species_code, flag)
 
-if(nrow(qc_issues) > 0){
+if (nrow(qc_issues) > 0) {
   print(qc_issues)
   stop("Fix quality control issues before proceeding")
 }
 
 
-if(!all(race_species$species_code %in% 
-        c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))){
-  code_check <- which(!race_species$species_code %in% 
-          c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))
-  print(race_species[code_check,])
+if (!all(race_species$species_code %in%
+  c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))) {
+  code_check <- which(!race_species$species_code %in%
+    c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))
+  print(race_species[code_check, ])
   stop("Some species codes will be dropped from the database. Review before proceeding.")
 }
