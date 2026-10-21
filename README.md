@@ -21,7 +21,7 @@ Seattle, WA 98195
 
 ## Overview
 
-This repository include code to update the taxonomy tables in race_data and gap_taxonomy based on online databases (namely WORMS and ITIS) to maintain modern, reliable, and consistent taxonomy. It will be run annually in January.
+This repository include code to update the taxonomy tables in `RACE_DATA` and `GAP_TAXONOMY` schema based on online databases (namely WORMS and ITIS) to maintain modern, reliable, and consistent taxonomy. It will be run annually in January.
 
 ---
 

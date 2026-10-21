@@ -1,3 +1,5 @@
+# Script to download necessary tables from Oracle
+
 # Oracle connection helpers
 tables <- c("race_species_codes", "species_taxonomics", "taxonomic_ranks",
             "taxonomic_classification", "taxonomic_changes", "species_year",

@@ -398,6 +398,14 @@ oracle_datatypes <- function(x) {
 # QA/QC AUDIT SUITE FOR SPECIES_TAXONOMICS_NEW AND RACE_SPECIES_CODES_NEW
 # ==============================================================================
 
+#' @title Run Taxonomy QA/QC Audit Suite
+#' @description Executes a comprehensive series of data integrity checks on the taxonomic hierarchy and species codes databases.
+#' Checks include validating parent-child rank ordering, detecting orphaned and circular references, 
+#' ensuring primary key uniqueness, checking foreign key relationships, and identifying unintended taxonomic orphans.
+#' @param species_taxonomics_new A data frame containing the updated taxonomic hierarchy.
+#' @param race_species_codes_new A data frame containing the updated species mapping codes.
+#' @return A logical value indicating whether all QA/QC checks passed (`TRUE`) or if any failed (`FALSE`).
+
 run_taxonomy_qaqc <- function(species_taxonomics_new, race_species_codes_new) {
   
   message("\n==================================================")

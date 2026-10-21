@@ -7,14 +7,25 @@
 # 0. SMALL UTILITIES
 # ------------------------------------------------------------------------------
 
-# RODBC::sqlQuery() returns character(0) on SUCCESS for statements with no result
-# set (CREATE/ALTER/DROP/INSERT/UPDATE/DELETE) and a non-empty character vector of
-# messages on ERROR. So is.character(res) alone cannot be used as an error test.
+
+#' @title Check RODBC Result for Failure
+#' @description RODBC::sqlQuery() returns character(0) on SUCCESS for statements with no result
+#' set (CREATE/ALTER/DROP/INSERT/UPDATE/DELETE) and a non-empty character vector of
+#' messages on ERROR. So is.character(res) alone cannot be used as an error test.
+#' @param res The result object returned from RODBC::sqlQuery().
+#' @return A logical value: `TRUE` if the query failed, `FALSE` otherwise.
 odbc_failed <- function(res) {
   (is.character(res) && length(res) > 0) ||
     (is.numeric(res) && !is.data.frame(res) && length(res) == 1 && res == -1)
 }
 
+
+#' @title Execute SQL Statement Safely
+#' @description Executes a SQL statement via RODBC and stops execution with a formatted error if it fails.
+#' @param channel A RODBC connection channel.
+#' @param sql The SQL query string to execute.
+#' @param context A character string describing the context of the query, used in error messages.
+#' @return Invisibly returns the query result on success.
 run_sql <- function(channel, sql, context = "Oracle statement") {
   res <- RODBC::sqlQuery(channel, sql, errors = TRUE)
   if (odbc_failed(res)) {
@@ -26,8 +37,12 @@ run_sql <- function(channel, sql, context = "Oracle statement") {
   invisible(res)
 }
 
-# Convert any vector to a stable character representation (no sci notation,
-# consistent date formats). Empty strings are treated as NA (Oracle does this too).
+
+#' @title Convert Vector to Stable Character
+#' @description Converts any R vector to a stable character representation (no scientific notation,
+#' consistent date formats). Empty strings are treated as NA (Oracle does this too).
+#' @param x An atomic vector (e.g., numeric, character, Date, POSIXt, factor).
+#' @return A character vector of the same length, suitably formatted for database entry.
 to_chr <- function(x) {
   if (is.factor(x)) x <- as.character(x)
   out <- if (inherits(x, "POSIXt")) {
@@ -43,6 +58,12 @@ to_chr <- function(x) {
   out
 }
 
+
+#' @title Infer Oracle Data Type
+#' @description Maps an R vector class/type to a corresponding Oracle database data type.
+#' Sizes text columns from the data (2x headroom) rather than defaulting to 4000 bytes.
+#' @param x An R vector.
+#' @return A character string specifying the Oracle data type (e.g., "VARCHAR2(255)").
 oracle_type <- function(x) {
   if (inherits(x, "POSIXt")) {
     "TIMESTAMP"
@@ -62,6 +83,11 @@ oracle_type <- function(x) {
 
 # ---- Oracle column-type introspection & coercion ----------------------------
 
+#' @title Determine Broad Oracle Data Kind
+#' @description Groups precise Oracle data types into broader categories ("numeric", "datetime", "character").
+#' @param data_type A character string of the Oracle data type (e.g., "VARCHAR2", "NUMBER").
+#' @return A character string describing the generic kind, or `NA_character_` if unmatched.
+
 oracle_kind <- function(data_type) {
   dt <- toupper(data_type)
   if (dt %in% c("NUMBER", "FLOAT", "BINARY_DOUBLE", "BINARY_FLOAT")) {
@@ -75,7 +101,15 @@ oracle_kind <- function(data_type) {
   }
 }
 
-# Full type spec usable in CAST(... AS <spec>); NA when we shouldn't cast.
+
+#' @title Build Oracle Type Specification
+#' @description Creates a full type specification usable in SQL CAST() functions, merging length and precision rules.
+#' @param data_type The base data type string.
+#' @param data_length The byte length of the data.
+#' @param char_length The character length of the data.
+#' @param precision The numeric precision.
+#' @param scale The numeric scale.
+#' @return A character string with the type specification, or `NA_character_` if cast is unnecessary or unsupported.
 oracle_type_spec <- function(data_type, data_length, char_length, precision, scale) {
   dt <- toupper(data_type)
   if (dt %in% c("VARCHAR2", "NVARCHAR2", "CHAR", "NCHAR")) {
@@ -94,7 +128,12 @@ oracle_type_spec <- function(data_type, data_length, char_length, precision, sca
   }
 }
 
-# One row per column of an existing Oracle table, with KIND and TYPE_SPEC added.
+#' @title Introspect Oracle Column Types
+#' @description Retrieves metadata for an existing Oracle table to extract its column names, types, sizes, and precision.
+#' @param channel A RODBC connection channel.
+#' @param schema The Oracle schema name.
+#' @param table The Oracle table name.
+#' @return A data frame containing metadata about the table's columns with added `KIND` and `TYPE_SPEC` fields.
 oracle_column_types <- function(channel, schema, table) {
   res <- RODBC::sqlQuery(
     channel,
@@ -122,9 +161,15 @@ oracle_column_types <- function(channel, schema, table) {
   res
 }
 
-# Coerce each R column to the class matching the existing Oracle column type.
-# Stops (rather than silently NA-ing) if values can't be converted, are too long
-# for a VARCHAR2, or exceed a NUMBER's precision.
+
+#' @title Coerce R Data.Frame to Oracle Types
+#' @description Coerces each R column to the class matching an existing Oracle column type.
+#' Stops rather than silently NA-ing if values cannot be converted, exceed VARCHAR2 lengths, or break precision limits.
+#' @param df The data frame to coerce.
+#' @param types A data frame of Oracle column specifications as returned by `oracle_column_types()`.
+#' @param quiet Logical. If `TRUE`, suppresses messaging about coerced columns.
+#' @return The mutated R data frame with column types aligned to Oracle requirements.
+
 coerce_to_oracle_types <- function(df, types, quiet = FALSE) {
   df <- as.data.frame(df, stringsAsFactors = FALSE)
   converted <- character(0)
@@ -205,8 +250,10 @@ coerce_to_oracle_types <- function(df, types, quiet = FALSE) {
   df
 }
 
-# Value -> SQL literal (vectorised). NA -> NULL. Values are sent as literals in the
-# SQL text, never as RODBC bind parameters (which is what raised ORA-01461).
+#' @title Convert R Value to SQL Literal
+#' @description Maps a single R value to a SQL-compatible literal string vector. Null values resolve to 'NULL'.
+#' @param x The R vector.
+#' @return A character vector of SQL literals.
 sql_literal <- function(x) {
   if (inherits(x, "POSIXt")) {
     ifelse(is.na(x), "NULL", paste0("TIMESTAMP '", format(x, "%Y-%m-%d %H:%M:%S"), "'"))
@@ -219,8 +266,16 @@ sql_literal <- function(x) {
   }
 }
 
-# Multi-row INSERT ALL. Oracle allows at most 999 columns in total per statement,
-# so the batch size depends on the number of columns.
+
+
+#' @title Bulk Insert Rows to Oracle
+#' @description Uses a multi-row INSERT ALL technique to load batch data efficiently into Oracle.
+#' @param channel A RODBC connection channel.
+#' @param schema The target schema.
+#' @param table The target table.
+#' @param df The data frame containing records to insert.
+#' @param batch_size Integer. The number of rows per SQL batch statement. Calculated automatically based on 900 column constraint if NULL.
+#' @return Invisibly returns the number of rows successfully inserted.
 insert_rows <- function(channel, schema, table, df, batch_size = NULL) {
   if (nrow(df) == 0) {
     return(invisible(0L))
@@ -248,10 +303,14 @@ insert_rows <- function(channel, schema, table, df, batch_size = NULL) {
 # ------------------------------------------------------------------------------
 # 1. IDENTIFY CHANGED ROWS BETWEEN LOCAL AND ORACLE DATAFRAMES
 # ------------------------------------------------------------------------------
-# Returns list(new_rows, deleted_rows, changed_rows). Non-key columns carry a
-# _UPDATE suffix (and changed_rows also _CURRENT for the value currently in
-# Oracle). Original column types are preserved.
-
+#' @title Identify Delta Between DataFrames
+#' @description Compares a new (local) data frame against an old (remote Oracle snapshot) data frame
+#' to determine which rows were added, deleted, or altered based on primary keys.
+#' @param old_df The old/baseline data frame.
+#' @param new_df The new/updated data frame.
+#' @param pk_cols Character vector defining the primary key columns.
+#' @param normalize_names Logical. If TRUE, capitalizes column names across both inputs.
+#' @return A list containing three data frames: `new_rows`, `deleted_rows`, and `changed_rows`.
 find_changed_rows <- function(old_df, new_df, pk_cols, normalize_names = TRUE) {
   stopifnot(is.data.frame(old_df), is.data.frame(new_df))
   old_df <- as.data.frame(old_df, stringsAsFactors = FALSE)
@@ -366,7 +425,12 @@ find_changed_rows <- function(old_df, new_df, pk_cols, normalize_names = TRUE) {
 # ------------------------------------------------------------------------------
 # 2. ORACLE SCHEMA & TABLE VALIDATION / CREATION
 # ------------------------------------------------------------------------------
-
+#' @title Check if Oracle Table Exists
+#' @description Queries the ALL_TABLES dictionary view to detect table existence.
+#' @param channel A RODBC connection channel.
+#' @param schema The schema string to check.
+#' @param table The table name string.
+#' @return Logical. TRUE if the table is found, FALSE otherwise.
 oracle_table_exists <- function(channel, schema, table) {
   res <- RODBC::sqlQuery(
     channel,
@@ -387,7 +451,14 @@ oracle_table_exists <- function(channel, schema, table) {
   res[[1]][1] > 0
 }
 
-# col_types: named character vector, e.g. c(SPECIES_CODE = "NUMBER", NAME = "VARCHAR2(4000)")
+
+#' @title Create Oracle Table
+#' @description Issues a CREATE TABLE statement to the database given specific columns and types.
+#' @param channel A RODBC connection channel.
+#' @param schema Schema string.
+#' @param table Table string.
+#' @param col_types A named character vector of Oracle column types (e.g. c(COL="NUMBER")).
+#' @return Invisibly returns TRUE on creation or FALSE if the table already existed.
 create_table <- function(channel, schema, table, col_types) {
   table <- toupper(table)
   cols <- paste(sprintf('"%s" %s', toupper(names(col_types)), col_types),

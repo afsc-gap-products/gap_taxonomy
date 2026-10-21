@@ -1,4 +1,4 @@
-Purpose: Create taxon grouping tables (taxon_group_composition & taxon_group_stanzas) based on minimum ID standards
+# Purpose: Create taxon grouping tables (taxon_group_composition &  taxon_group_stanzas) based on minimum ID standards
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

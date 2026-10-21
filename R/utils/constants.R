@@ -1,3 +1,5 @@
+# Documentation with constant vectors that are used in this workflow 
+# 
 # Taxonomic ranks to retain
 KEEP_RANKS <- c(
   "genus",
