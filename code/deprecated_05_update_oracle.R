@@ -2,7 +2,7 @@
 ##          Oracle trigger on each base table (nothing is audited from R).
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-source("R/utils/audit_table_helpers.R")
+source("code/utils/audit_table_helpers.R")
 
 if (!exists("channel") || !inherits(channel, "RODBC")) {
   channel <- gapindex::get_connected()

@@ -73,7 +73,7 @@ if (nrow(missing_survey_years) > 0) {
 # 3. FILTER BY VALID TAXON GROUP SPECIES CODES
 # ------------------------------------------------------------------------------
 
-spp_codes <- taxon_group_stanzas %>%
+spp_codes <- taxon_group_stanzas_updated %>%
   select(group_code) %>%
   unique() %>%
   .$group_code

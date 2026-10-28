@@ -393,6 +393,57 @@ oracle_datatypes <- function(x) {
   )
 }
 
+#' Ensure an Active Oracle Connection Exists
+#'
+#' @description Checks if an RODBC channel exists and is alive using a test query.
+#' If missing or broken, it closes any stale handle and establishes a new connection.
+#'
+#' @param channel An existing RODBC channel object. If NULL, checks the calling environment.
+#' @param db The database name to pass to gapindex::get_connected() (default: "AFSC").
+#' @param check_access Logical, whether gapindex checks access levels (default: FALSE).
+#'
+#' @return An active, verified RODBC connection handle.
+#' @export
+oracle_connect <- function(channel = NULL, db = "AFSC", check_access = FALSE) {
+  
+  # If channel not supplied directly, check if 'channel' exists in calling scope
+  if (is.null(channel)) {
+    if (exists("channel", envir = parent.frame())) {
+      channel <- get("channel", envir = parent.frame())
+    }
+  }
+  
+  need_connect <- FALSE
+  
+  if (is.null(channel)) {
+    message("Oracle channel does not exist. Connecting...")
+    need_connect <- TRUE
+  } else {
+    # 1. Test existing connection
+    test_result <- try(RODBC::sqlQuery(channel, "SELECT 1 FROM DUAL"), silent = TRUE)
+    
+    # 2. Check if query threw an R error or returned an ODBC/Oracle error message
+    is_broken <- inherits(test_result, "try-error") || 
+      (is.character(test_result) && any(grepl("ERROR|ORA-", test_result, ignore.case = TRUE)))
+    
+    if (is_broken) {
+      message("Oracle connection is broken or stale. Attempting to reconnect...")
+      try(RODBC::odbcClose(channel), silent = TRUE)
+      need_connect <- TRUE
+    } else {
+      message("Oracle connection is active and working.")
+    }
+  }
+  
+  # Establish new connection if needed
+  if (need_connect) {
+    channel <- gapindex::get_connected(db = db, check_access = check_access)
+  }
+  
+  return(channel)
+}
+
+
 
 # ==============================================================================
 # QA/QC AUDIT SUITE FOR SPECIES_TAXONOMICS_NEW AND RACE_SPECIES_CODES_NEW
@@ -536,4 +587,15 @@ run_taxonomy_qaqc <- function(species_taxonomics_new, race_species_codes_new) {
   message("--------------------------------------------------\n")
   
   return(passed_all)
+}
+
+
+
+run_sql <- function(channel, sql, what = "SQL") {
+  res <- RODBC::sqlQuery(channel, sql, errors = FALSE)
+  if (identical(res, -1L) ||
+      (is.character(res) && any(grepl("ERROR|ORA-", res)))) {
+    stop(sprintf("%s failed:\n%s\nSQL: %s", what, paste(res, collapse = "\n"), sql))
+  }
+  invisible(res)
 }
