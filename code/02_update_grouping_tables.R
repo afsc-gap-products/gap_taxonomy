@@ -179,9 +179,13 @@ year_ref <- historical_groups %>%
   slice_max(year_end)
 
 
-## ------------------------------------------------------------
-## Original First-Build Code
-## ------------------------------------------------------------
+# # ------------------------------------------------------------
+# # Original First-Build Code
+# # ------------------------------------------------------------
+# species_year_current <- readr::read_csv("data/oracle/2025_species_year.csv",
+#                                         show_col_types = FALSE) %>%
+#   janitor::clean_names()
+# 
 # taxon_group_stanzas <- taxon_groups %>%
 #   # Define modern group time bounds and assign new stanza IDs
 #   group_by(group_code) %>%
@@ -207,9 +211,10 @@ year_ref <- historical_groups %>%
 #   # Append historical group stanzas
 #   bind_rows(historical_groups) %>%
 #   # Ensure correct temporal ordering
-#   arrange(group_stanza_id)
-#
-#
+#   arrange(group_stanza_id) %>%
+#   ungroup()
+# 
+# 
 # taxon_group_stanzas_new <- taxon_group_stanzas %>%
 #   select(group_stanza_id, group_code, year_start, year_end) %>%
 #   distinct() %>%
@@ -220,7 +225,7 @@ year_ref <- historical_groups %>%
 #   distinct() %>%
 #   arrange(group_stanza_id, species_code)
 
-
+ 
 ## ------------------------------------------------------------
 ## Updating Existing Tables
 ## ------------------------------------------------------------

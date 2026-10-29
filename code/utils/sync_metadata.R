@@ -4,7 +4,7 @@
 ## =============================================================================
 
 sync_metadata <- function(conn,
-                          target_schema = "GAP_TAXONOMY",
+                          target_schema = cfg$schema,
                           meta_schema = "GAP_PRODUCTS") {
   message("--- Synchronizing Column Comments from GAP_PRODUCTS.METADATA_COLUMN ---")
 

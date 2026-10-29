@@ -88,15 +88,13 @@ taxonomic_classification_current <- oracle_tables$taxonomic_classification
 
 taxonomic_changes_current <- oracle_tables$taxonomic_changes
 
-# species_year_current <- oracle_tables$species_year
-
 taxon_group_stanzas_current <- oracle_tables$taxon_group_stanzas
 
 taxon_group_composition_current <- oracle_tables$taxon_group_composition
 
 survey_species <- taxonomic_classification_current %>%
   dplyr::select(
-    survey_species_old = active,
+    active_old = active,
     species_name:species_code
   ) %>%
   dplyr::filter(!species_code %in% missing_taxa$species_code) %>%

@@ -10,13 +10,7 @@
 missing_taxa <- readr::read_csv("data/missing_taxa.csv") %>%
   dplyr::mutate(reason = "", action = "")
 
-
-# Source helper scripts and data files
-download_tables <- TRUE # Set to FALSE to skip downloading tables from Oracle
-
-source("code/utils/constants.R")
-source("code/utils/download_tables.R") # Pulls proper tables from Oracle and loads into R
-
+source(here("code", "utils", "download_tables.R")) # Pulls proper tables from Oracle and loads into R
 
 ## ============================
 ## 2) Core Logic: Data Transformation & Taxonomy
@@ -141,7 +135,7 @@ taxonomy_final <- taxonomy_cleaned %>%
   ) %>%
   dplyr::group_by(species_code, database) %>%
   dplyr::mutate(n_names = n()) %>%
-  dplyr::filter(!(n_names > 1 & survey_species_old == 0)) %>%
+  dplyr::filter(!(n_names > 1 & active_old == 0)) %>%
   dplyr::group_by(species_code) %>%
   dplyr::mutate(active = assign_active_status(database, database_id)) %>%
   dplyr::group_by(accepted_name) %>%

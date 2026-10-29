@@ -1,18 +1,3 @@
----
-title: "GAP_TAXONOMY Update Report & Changelog"
-date: "`r Sys.time()`"
-output: 
-  html_document:
-    toc: true
-    theme: cosmo
-params:
-  detailed_notes: "Routine annual update"
-  run_user: !r Sys.getenv("USER")
-  timestamp: !r format(Sys.time(), "%Y-%m-%d")
-  audit_summary: NULL
-  taxonomic_changes: NULL
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(dplyr)
@@ -39,7 +24,11 @@ The table below summarizes all DML operations captured by triggers during this e
 
 ```{r audit_table}
 if (!is.null(params$audit_summary) && nrow(params$audit_summary) > 0) {
-  knitr::kable(params$audit_summary, col.names = c("Table Name", "Operation", "Record Count"))
+  # Normalize column names in case summary columns vary in casing
+  summary_df <- params$audit_summary
+  colnames(summary_df) <- toupper(colnames(summary_df))
+  
+  knitr::kable(summary_df)
 } else {
   cat("_No audit trigger records recorded for this time window._")
 }
@@ -51,8 +40,17 @@ if (!is.null(params$audit_summary) && nrow(params$audit_summary) > 0) {
 
 ```{r tax_changes}
 if (!is.null(params$taxonomic_changes) && nrow(params$taxonomic_changes) > 0) {
-  changes_this_year <- params$taxonomic_changes %>%
-    dplyr::filter(YEAR_CHANGED == as.numeric(format(Sys.Date(), "%Y")))
+  changes_df <- params$taxonomic_changes
+  colnames(changes_df) <- toupper(colnames(changes_df))
+  
+  current_year <- as.numeric(format(Sys.Date(), "%Y"))
+  
+  if ("YEAR_CHANGED" %in% colnames(changes_df)) {
+    changes_this_year <- changes_df %>%
+      dplyr::filter(as.numeric(YEAR_CHANGED) == current_year)
+  } else {
+    changes_this_year <- changes_df
+  }
   
   if (nrow(changes_this_year) > 0) {
     knitr::kable(changes_this_year)
@@ -61,5 +59,40 @@ if (!is.null(params$taxonomic_changes) && nrow(params$taxonomic_changes) > 0) {
   }
 } else {
   cat("_No taxonomic changes table provided._")
+}
+```
+
+---
+
+## Taxon Group Stanzas & Composition
+
+`TAXON_GROUP_COMPOSITION` identifies member taxa purely by `GROUP_STANZA_ID` and `SPECIES_CODE` (linked to `TAXON_GROUP_STANZAS` for temporal ranges and `GROUP_CODE`).
+
+```{r group_info}
+has_stanzas <- !is.null(params$group_stanzas) && nrow(params$group_stanzas) > 0
+has_comp    <- !is.null(params$group_composition) && nrow(params$group_composition) > 0
+
+if (has_stanzas || has_comp) {
+  if (has_stanzas) {
+    stanzas_df <- params$group_stanzas
+    colnames(stanzas_df) <- toupper(colnames(stanzas_df))
+    cat("### Stanzas Updated\n\n")
+    print(knitr::kable(head(stanzas_df, 20), caption = "Taxon Group Stanzas (first 20 rows shown)"))
+  }
+  
+  if (has_comp) {
+    comp_df <- params$group_composition
+    colnames(comp_df) <- toupper(colnames(comp_df))
+    
+    # Ensure only existing columns (GROUP_STANZA_ID, SPECIES_CODE, plus OPERATION if staged) are selected
+    comp_display <- comp_df %>%
+      dplyr::select(dplyr::any_of(c("GROUP_STANZA_ID", "SPECIES_CODE", "OPERATION")))
+    
+    cat("\n### Composition Membership Summary\n\n")
+    cat(sprintf("Total composition records staged/updated: %d\n\n", nrow(comp_display)))
+    print(knitr::kable(head(comp_display, 20), caption = "Taxon Group Composition (first 20 rows shown)"))
+  }
+} else {
+  cat("_No specific group composition delta tables passed to report parameters._")
 }
 ```

@@ -262,4 +262,4 @@ race_species_codes_new <- race_codes_current %>%
 # 6. RUN AUDIT CHECKS
 # ------------------------------------------------------------------------------
 
-run_taxonomy_qaqc(species_taxonomics_new, race_species_codes_new)
+race_qaqc_passed  <- run_taxonomy_qaqc(species_taxonomics_new, race_species_codes_new)
