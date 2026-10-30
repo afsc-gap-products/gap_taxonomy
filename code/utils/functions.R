@@ -1,10 +1,14 @@
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## functions.R -- taxonomy helpers for the GAP_TAXONOMY pipeline
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 # ---------------------------
 # STANDARDIZING NAMES FUNCTIONS
 # ---------------------------
 
 #' @title Fix Species Names
-#' @description Cleans and formats species names, particularly for "cf." (confer) cases,
-#'   by appending relevant taxonomic suffixes from old names to new ones.
+#' @description Cleans and formats species names, particularly for "cf." (confer) cases, by appending relevant taxonomic suffixes from old names to new ones.
 #' @param old_nm The original species name.
 #' @param new_nm The new species name.
 #' @return A character string of the cleaned and combined name.
@@ -20,7 +24,7 @@ fix_names <- function(old_nm, new_nm) {
   }
 
   nm <- stringr::str_remove(new_nm, " var\\.")
-  
+
   # Handle "cf." cases separately
   if (stringr::str_detect(old_nm, "cf\\.")) {
     ps <- stringr::str_extract(old_nm, "\\(.+\\)$|group$")
@@ -37,7 +41,7 @@ fix_names <- function(old_nm, new_nm) {
   } else {
     # General case: append any extra suffix bits from old name
     extra_bits <- stringr::str_extract(old_nm, paste0("(", RM_ALL, ")(.+)?$"))
-    if(!is.na(extra_bits)){
+    if (!is.na(extra_bits)) {
       nm <- paste(new_nm, extra_bits)
     }
   }
@@ -94,14 +98,14 @@ standardize_names <- function(species) {
 #' @param id An optional database ID.
 #' @param db The database to query, e.g., "worms", "itis".
 #' @param ask Logical, whether to ask for user input on multiple matches.
-#' @param presets A data frame of preset taxonomic IDs to use.
+#' @param presets A data frame of preset taxonomic IDs (columns taxon, dbe, db_id), or NULL.
 #' @return A `tibble` containing the taxonomic hierarchy (name, rank, ID) or a default tibble of NAs if no match is found.
-get_classification <- function(sp = NA, id = NA, db, ask = TRUE, presets = NA) {
+get_classification <- function(sp = NA, id = NA, db, ask = TRUE, presets = NULL) {
   if (is.na(sp)) {
     return(tibble::tibble(name = NA, rank = NA, id = NA))
   }
 
-  if (sp %in% presets$taxon && db %in% presets$dbe[presets$taxon == sp]) {
+  if (!is.null(presets) && sp %in% presets$taxon && db %in% presets$dbe[presets$taxon == sp]) {
     preset_id <- presets %>%
       dplyr::filter(taxon == sp & dbe == tolower(db)) %>%
       dplyr::pull(db_id)
@@ -135,24 +139,32 @@ get_classification <- function(sp = NA, id = NA, db, ask = TRUE, presets = NA) {
 #' @description A wrapper around `get_classification` to format the output into a wide, usable table.
 #' @param sp A character string of the species name.
 #' @param database An optional database name, e.g., "worms" or "itis".
+#' @param presets Preset taxonomic IDs; defaults to the global `defined_tax`.
 #' @param ... Additional arguments passed to `get_classification`.
-#' @return A wide-format `tibble` with columns for each taxonomic rank and a `survey_species` indicator.
-get_classification_formatted <- function(sp, database = NA, ...) {
+#' @return A `tibble` with columns name, rank and id_rank (one row per taxonomic rank).
+get_classification_formatted <- function(sp, database = NA, presets = NULL, ...) {
+  if (is.null(presets)) presets <- defined_tax # looked up inside the body so furrr detects the global
   db <- ifelse(is.na(database), "worms", tolower(database))
-  classy <- get_classification(sp, db = db, presets = defined_tax, ...) %>%
+  classy <- get_classification(sp, db = db, presets = presets, ...) %>%
     dplyr::filter(rank != "subspecies")
-  if (grepl(" ", sp) & classy$rank[nrow(classy)] != "species") {
+
+  # No usable classification (NA ranks are dropped above): return an empty result
+  # instead of failing on `if (logical(0))`
+  if (nrow(classy) == 0) {
+    return(tibble::tibble(name = character(), rank = character(), id_rank = character()))
+  }
+
+  if (grepl(" ", sp) && classy$rank[nrow(classy)] != "species") {
     classy <- classy %>%
       dplyr::bind_rows(data.frame(name = sp, rank = "species"))
   }
-  out <- classy %>%
+  classy %>%
     dplyr::mutate(
       rw_id = dplyr::row_number(),
       id_rank = ifelse(rw_id == max(rw_id), tolower(rank), NA)
     ) %>%
     tidyr::fill(id_rank, .direction = "downup") %>%
     dplyr::select(-id, -rw_id)
-  return(out)
 }
 
 
@@ -202,7 +214,7 @@ get_taxonomy <- function(species) {
     tmp <- taxize::classification(species, "worms")[[1]]
     if (!is.null(tmp) && !all(is.na(tmp))) {
       db_info <- tmp %>%
-        mutate(
+        dplyr::mutate(
           database_name = tmp$name[nrow(tmp)],
           database = "worms",
           taxonomic_status = "accepted",
@@ -210,9 +222,9 @@ get_taxonomy <- function(species) {
           database_id = tmp$id[nrow(tmp)],
           id_rank = tolower(tmp$rank[nrow(tmp)])
         ) %>%
-        select(-id) %>%
-        pivot_wider(names_from = rank, values_from = name)
-      if (nrow(db_info > 0)) {
+        dplyr::select(-id) %>%
+        tidyr::pivot_wider(names_from = rank, values_from = name)
+      if (nrow(db_info) > 0) { 
         return(db_info)
       }
     }
@@ -228,9 +240,9 @@ get_taxonomy <- function(species) {
       survey_name = submitted_name, database,
       database_id, database_name = current_canonical_simple, taxonomic_status
     ) %>%
-    rowwise() %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
-      database_name = ifelse(species %in% paste("Porifera", c("ball", "erect", "encrusting", "tubular")), species, database_name), 
+      database_name = ifelse(species %in% paste("Porifera", c("ball", "erect", "encrusting", "tubular")), species, database_name),
       classy = purrr::map2(database_name, database, ~ get_classification_formatted(sp = .x, database = .y)),
       database = toupper(database),
       taxonomic_status = tolower(taxonomic_status)
@@ -238,17 +250,19 @@ get_taxonomy <- function(species) {
     tidyr::unnest(classy) %>%
     tidyr::pivot_wider(names_from = rank, values_from = name) %>%
     dplyr::filter(kingdom == "Animalia") %>%
-    rowwise() %>%
-    mutate(database_name = ifelse(grepl("\\s", species) & !grepl("\\s", database_name) & !grepl(RM_ALL, species), NA, database_name),
-           id_rank = ifelse(is.na(database_name), NA, id_rank),
-           database_id = ifelse(is.na(database_name), NA, database_id)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      database_name = ifelse(grepl("\\s", species) & !grepl("\\s", database_name) & !grepl(RM_ALL, species), NA, database_name),
+      id_rank = ifelse(is.na(database_name), NA, id_rank),
+      database_id = ifelse(is.na(database_name), NA, database_id)
+    ) %>%
     dplyr::select(-survey_name)
 }
 
 #' @title Get Taxonomy Safely
 #' @description Wrapper to safely call `get_taxonomy` and handle API errors.
 #' @param nm The name to look up.
-#' @return A `tibble` with taxonomic information or a `NA_character_` if an error occurs.
+#' @return A `tibble` with taxonomic information, or an NA tibble if every attempt fails.
 get_taxonomy_safely <- function(nm) {
   purrr::possibly(
     function(x) {
@@ -257,7 +271,7 @@ get_taxonomy_safely <- function(nm) {
           get_taxonomy(x)
         },
         when = function(e) inherits(e, "error"),
-        # max_tries = 3,
+        max_tries = 5,
         interval = 1
       )
     },
@@ -279,7 +293,7 @@ fix_syn_codes <- function(data, nm) {
     return(data$species_code[[1]])
   }
 
-  if (is.na(nm) || grepl(" sp\\. ", data$survey_name[[1]]) ) {
+  if (is.na(nm) || grepl(" sp\\. ", data$survey_name[[1]])) {
     return(NA)
   }
 
@@ -307,7 +321,7 @@ fix_syn_codes <- function(data, nm) {
 
 #' @title Assign Reason and Action
 #' @description Assigns a reason and action for taxonomic changes.
-#' @param fixed_name A fixed species name.
+#' @param fixed_name A fixed species name (currently unused; kept for call compatibility).
 #' @param new_spp A `tibble` of newly described species.
 #' @param taxonomic_status The taxonomic status.
 #' @param survey_name The original survey name.
@@ -345,7 +359,7 @@ assign_reason_action <- function(fixed_name, new_spp, taxonomic_status,
 }
 
 
-#' @title Assign Survey Species
+#' @title Assign Active Status
 #' @description Determines the primary survey species row for each species code group.
 #' @param database The database name.
 #' @param database_id The database ID.
@@ -377,156 +391,167 @@ assign_active_status <- function(database, database_id) {
 
 
 # ---------------------------
-# ORACLE HELPERS
+# ORACLE CONNECTION
 # ---------------------------
 
-#' @title Get Oracle Datatypes
-#' @description Determines the Oracle data type for each column in a data frame.
-#' @param x A data frame.
-#' @return A character vector of Oracle data types.
-oracle_datatypes <- function(x) {
-  classes <- sapply(x, class)
-  dplyr::case_when(
-    classes == "character" ~ "VARCHAR2(255 BYTE)",
-    classes == "logical" ~ "NUMBER(1,0)",
-    TRUE ~ "NUMBER"
-  )
+#' Ensure an Active Oracle Connection Exists
+#' @description Checks if an RODBC channel exists and is alive using a test query. If missing or broken, it closes any stale handle and establishes a new connection.
+#' @param channel An existing RODBC channel object. If NULL, checks the calling environment.
+#' @param db The database name to pass to gapindex::get_connected() (default: "AFSC").
+#' @param check_access Logical, whether gapindex checks access levels (default: FALSE).
+#' @return An active, verified RODBC connection handle.
+oracle_connect <- function(channel = NULL, db = "AFSC", check_access = FALSE) {
+  # If channel not supplied directly, check if 'channel' exists in calling scope
+  if (is.null(channel)) {
+    if (exists("channel", envir = parent.frame())) {
+      channel <- get("channel", envir = parent.frame())
+    }
+  }
+
+  need_connect <- FALSE
+
+  if (is.null(channel)) {
+    message("Oracle channel does not exist. Connecting...")
+    need_connect <- TRUE
+  } else {
+    # 1. Test existing connection
+    test_result <- try(RODBC::sqlQuery(channel, "SELECT 1 FROM DUAL"), silent = TRUE)
+
+    # 2. Check if query threw an R error or returned an ODBC/Oracle error message
+    is_broken <- inherits(test_result, "try-error") ||
+      (is.character(test_result) && any(grepl("ERROR|ORA-", test_result, ignore.case = TRUE)))
+
+    if (is_broken) {
+      message("Oracle connection is broken or stale. Attempting to reconnect...")
+      try(RODBC::odbcClose(channel), silent = TRUE)
+      need_connect <- TRUE
+    } else {
+      message("Oracle connection is active and working.")
+    }
+  }
+
+  # Establish new connection if needed
+  if (need_connect) {
+    channel <- gapindex::get_connected(db = db, check_access = check_access)
+  }
+
+  channel
 }
 
 
 # ==============================================================================
-# QA/QC AUDIT SUITE FOR SPECIES_TAXONOMICS_NEW AND RACE_SPECIES_CODES_NEW
+# QA/QC AUDIT SUITE FOR RACE_DATA TABLES
 # ==============================================================================
 
 #' @title Run Taxonomy QA/QC Audit Suite
-#' @description Executes a comprehensive series of data integrity checks on the taxonomic hierarchy and species codes databases.
-#' Checks include validating parent-child rank ordering, detecting orphaned and circular references, 
-#' ensuring primary key uniqueness, checking foreign key relationships, and identifying unintended taxonomic orphans.
+#' @description Executes data integrity checks on the taxonomic hierarchy and species codes: parent/child rank ordering, orphaned and self-referencing parents, primary key uniqueness, foreign keys from race_species_codes, valid `active` flags, and unintended detached nodes.
 #' @param species_taxonomics_new A data frame containing the updated taxonomic hierarchy.
 #' @param race_species_codes_new A data frame containing the updated species mapping codes.
-#' @return A logical value indicating whether all QA/QC checks passed (`TRUE`) or if any failed (`FALSE`).
-
-run_taxonomy_qaqc <- function(species_taxonomics_new, race_species_codes_new) {
-  
+#' @param top_level_rank_threshold Ranks with `taxonomic_rank_id` above this must have a parent (e.g. Kingdom = 10 and Phylum = 30 may be roots).
+#' @return `TRUE` if all checks passed, otherwise `FALSE`. Assign it (e.g. `race_qaqc_passed <- run_taxonomy_qaqc(...)`): the Oracle update gates on it.
+run_taxonomy_qaqc <- function(species_taxonomics_new, race_species_codes_new,
+                              top_level_rank_threshold = 30) {
   message("\n==================================================")
   message("         RUNNING TAXONOMY QA/QC AUDIT SUITE       ")
   message("==================================================\n")
-  
-  passed_all <- TRUE
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 1: Parent Rank Order Check (Parent Rank ID < Child Rank ID)
-  # ----------------------------------------------------------------------------
+
+  # Reports one check; returns TRUE when n_bad == 0. `detail` is printed on failure.
+  check <- function(id, n_bad, pass_msg, fail_msg, detail = NULL) {
+    if (n_bad > 0) {
+      warning(sprintf("\u274c CHECK %d FAILED: %s", id, sprintf(fail_msg, n_bad)), call. = FALSE)
+      if (!is.null(detail)) print(detail)
+      FALSE
+    } else {
+      message(sprintf("\u2705 CHECK %d PASSED: %s", id, pass_msg))
+      TRUE
+    }
+  }
+
+  valid_ids <- species_taxonomics_new$species_taxonomic_id
+  results <- logical()
+
+  # 1. Parent rank must be strictly higher than child rank
   rank_check <- species_taxonomics_new %>%
     dplyr::filter(!is.na(parent_taxonomic_id)) %>%
     dplyr::left_join(
-      species_taxonomics_new %>% 
+      species_taxonomics_new %>%
         dplyr::select(parent_id = species_taxonomic_id, parent_rank_id = taxonomic_rank_id),
       by = c("parent_taxonomic_id" = "parent_id")
     ) %>%
     dplyr::filter(parent_rank_id >= taxonomic_rank_id)
-  
-  if (nrow(rank_check) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 1 FAILED: Found %d records where parent rank is NOT higher than child rank!", nrow(rank_check)))
-    print(rank_check %>% dplyr::select(species_taxonomic_id, name, taxonomic_rank_id, parent_taxonomic_id, parent_rank_id))
-  } else {
-    message("✅ CHECK 1 PASSED: All parent taxonomic ranks are strictly higher than child ranks.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 2: Orphan Parent ID Detection (Foreign Key Validation)
-  # ----------------------------------------------------------------------------
-  valid_ids <- species_taxonomics_new$species_taxonomic_id
+  results[1] <- check(
+    1, nrow(rank_check),
+    "All parent taxonomic ranks are strictly higher than child ranks.",
+    "Found %d records where parent rank is NOT higher than child rank!",
+    dplyr::select(
+      rank_check, species_taxonomic_id, name, taxonomic_rank_id,
+      parent_taxonomic_id, parent_rank_id
+    )
+  )
+
+  # 2. Orphan parent IDs (foreign key within the hierarchy)
   orphaned_parents <- species_taxonomics_new %>%
     dplyr::filter(!is.na(parent_taxonomic_id) & !parent_taxonomic_id %in% valid_ids)
-  
-  if (nrow(orphaned_parents) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 2 FAILED: Found %d orphaned parent_taxonomic_ids referencing non-existent IDs!", nrow(orphaned_parents)))
-    print(orphaned_parents %>% dplyr::select(species_taxonomic_id, name, parent_taxonomic_id))
-  } else {
-    message("✅ CHECK 2 PASSED: Zero orphaned parent_taxonomic_id references found.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 3: Circular Reference / Self-Loop Detection
-  # ----------------------------------------------------------------------------
+  results[2] <- check(
+    2, nrow(orphaned_parents),
+    "Zero orphaned parent_taxonomic_id references found.",
+    "Found %d orphaned parent_taxonomic_ids referencing non-existent IDs!",
+    dplyr::select(orphaned_parents, species_taxonomic_id, name, parent_taxonomic_id)
+  )
+
+  # 3. Self-referencing nodes
   self_loops <- species_taxonomics_new %>%
     dplyr::filter(!is.na(parent_taxonomic_id) & species_taxonomic_id == parent_taxonomic_id)
-  
-  if (nrow(self_loops) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 3 FAILED: Found %d self-referencing nodes!", nrow(self_loops)))
-    print(self_loops %>% dplyr::select(species_taxonomic_id, name, parent_taxonomic_id))
-  } else {
-    message("✅ CHECK 3 PASSED: Zero self-referencing nodes found.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 4: Primary Key Uniqueness Check
-  # ----------------------------------------------------------------------------
-  dup_tax_ids <- species_taxonomics_new %>% 
-    dplyr::filter(duplicated(species_taxonomic_id))
-  dup_race_codes <- race_species_codes_new %>% 
-    dplyr::filter(duplicated(species_code))
-  
-  if (nrow(dup_tax_ids) > 0 || nrow(dup_race_codes) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 4 FAILED: Duplicate PKs found! (Taxonomics dups: %d, Race codes dups: %d)", 
-                    nrow(dup_tax_ids), nrow(dup_race_codes)))
-  } else {
-    message("✅ CHECK 4 PASSED: Primary keys in both tables are 100% unique.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 5: Foreign Key Integrity Check (RACE_SPECIES_CODES -> SPECIES_TAXONOMICS)
-  # ----------------------------------------------------------------------------
+  results[3] <- check(
+    3, nrow(self_loops),
+    "Zero self-referencing nodes found.",
+    "Found %d self-referencing nodes!",
+    dplyr::select(self_loops, species_taxonomic_id, name, parent_taxonomic_id)
+  )
+
+  # 4. Primary key uniqueness
+  dup_tax_ids <- sum(duplicated(species_taxonomics_new$species_taxonomic_id))
+  dup_race_codes <- sum(duplicated(race_species_codes_new$species_code))
+  results[4] <- check(
+    4, dup_tax_ids + dup_race_codes,
+    "Primary keys in both tables are 100% unique.",
+    paste0(
+      "Duplicate PKs found! (total %d; taxonomics: ", dup_tax_ids,
+      ", race codes: ", dup_race_codes, ")"
+    )
+  )
+
+  # 5. Foreign key: race_species_codes -> species_taxonomics
   unmapped_fk <- race_species_codes_new %>%
     dplyr::filter(!is.na(species_taxonomic_id) & !species_taxonomic_id %in% valid_ids)
-  
-  if (nrow(unmapped_fk) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 5 FAILED: Found %d species_codes linked to invalid species_taxonomic_ids!", nrow(unmapped_fk)))
-    print(unmapped_fk %>% dplyr::select(species_code, species_name, species_taxonomic_id))
-  } else {
-    message("✅ CHECK 5 PASSED: All species_taxonomic_id foreign keys in race_species_codes_new exist.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 6: Active Status & Name Formatting Safeguards
-  # ----------------------------------------------------------------------------
+  results[5] <- check(
+    5, nrow(unmapped_fk),
+    "All species_taxonomic_id foreign keys in race_species_codes_new exist.",
+    "Found %d species_codes linked to invalid species_taxonomic_ids!",
+    dplyr::select(unmapped_fk, species_code, species_name, species_taxonomic_id)
+  )
+
+  # 6. Active flags
   invalid_active <- race_species_codes_new %>%
     dplyr::filter(!active %in% c("Y", "N") | is.na(active))
-  
-  if (nrow(invalid_active) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 6 FAILED: Found %d rows with invalid 'active' flags (not Y/N)!", nrow(invalid_active)))
-  } else {
-    message("✅ CHECK 6 PASSED: All active status flags are valid 'Y' or 'N' values.")
-  }
-  
-  # ----------------------------------------------------------------------------
-  # CHECK 7: Unintended Root / Internal Orphan Detection (Missing Parent IDs)
-  # ----------------------------------------------------------------------------
-  # Top-level root ranks expected to have NA parents (e.g., Kingdom = 10, Phylum = 30)
-  top_level_rank_threshold <- 30 
-  
+  results[6] <- check(
+    6, nrow(invalid_active),
+    "All active status flags are valid 'Y' or 'N' values.",
+    "Found %d rows with invalid 'active' flags (not Y/N)!"
+  )
+
+  # 7. Lower-rank taxa detached from the tree
   unintended_orphans <- species_taxonomics_new %>%
-    dplyr::filter(
-      is.na(parent_taxonomic_id) & 
-        taxonomic_rank_id > top_level_rank_threshold
-    )
-  
-  if (nrow(unintended_orphans) > 0) {
-    passed_all <- FALSE
-    warning(sprintf("❌ CHECK 7 FAILED: Found %d lower-rank taxa detached from the tree (parent_taxonomic_id = NA)!", 
-                    nrow(unintended_orphans)))
-    print(unintended_orphans %>% dplyr::select(species_taxonomic_id, taxonomic_rank_id, name, parent_taxonomic_id))
-  } else {
-    message("✅ CHECK 7 PASSED: Zero lower-rank orphan nodes with missing parent IDs.")
-  }
-  
+    dplyr::filter(is.na(parent_taxonomic_id) & taxonomic_rank_id > top_level_rank_threshold)
+  results[7] <- check(
+    7, nrow(unintended_orphans),
+    "Zero lower-rank orphan nodes with missing parent IDs.",
+    "Found %d lower-rank taxa detached from the tree (parent_taxonomic_id = NA)!",
+    dplyr::select(unintended_orphans, species_taxonomic_id, taxonomic_rank_id, name, parent_taxonomic_id)
+  )
+
+  passed_all <- all(results)
+
   message("\n--------------------------------------------------")
   if (passed_all) {
     message("ALL QA/QC CHECKS PASSED SUCCESSFULLY!")
@@ -534,6 +559,6 @@ run_taxonomy_qaqc <- function(species_taxonomics_new, race_species_codes_new) {
     message(" QA/QC AUDIT COMPLETED WITH WARNINGS. REVIEW OUTPUT ABOVE.")
   }
   message("--------------------------------------------------\n")
-  
-  return(passed_all)
+
+  passed_all
 }

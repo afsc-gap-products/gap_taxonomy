@@ -2,8 +2,10 @@
 
 # Oracle connection helpers
 tables <- c("race_species_codes", "species_taxonomics", "taxonomic_ranks",
-            "taxonomic_classification", "taxonomic_changes", "species_year",
-            "taxonomic_confidence", "survey_design")
+            "survey_design",
+            "taxonomic_classification", "taxonomic_changes", 
+            "taxonomic_confidence",
+            "taxon_group_stanzas", "taxon_group_composition")
 
 
 # Map Oracle tables to local filenames
@@ -13,11 +15,13 @@ table_lookup <- tibble::tibble(
     "RACE_DATA.RACE_SPECIES_CODES",
     "RACE_DATA.SPECIES_TAXONOMICS",
     "RACE_DATA.TAXONOMIC_RANKS",
-    "GAP_TAXONOMY.TAXONOMIC_CLASSIFICATION",
-    "GAP_TAXONOMY.TAXONOMIC_CHANGES",
-    "GAP_TAXONOMY.TAXONOMIC_CONFIDENCE",
+    "GAP_PRODUCTS.SURVEY_DESIGN",
+    paste0(tax_schema, ".TAXONOMIC_CLASSIFICATION"),
+    paste0(tax_schema, ".TAXONOMIC_CHANGES"),
+    paste0(tax_schema, ".TAXONOMIC_CONFIDENCE"),
+    paste0(tax_schema, ".TAXON_GROUP_STANZAS"),
+    paste0(tax_schema, ".TAXON_GROUP_COMPOSITION")
    # "GAP_PRODUCTS.SPECIES_YEAR",
-    "GAP_PRODUCTS.SURVEY_DESIGN"
   ),
   file_path = file.path("data/oracle", paste0(this_year, "_", tables, ".csv"))
 )
@@ -29,13 +33,11 @@ table_lookup <- table_lookup %>%
   )
 
 # Connect to Oracle if any table missing
+# Connect only if missing tables are flagged
 if (any(!table_lookup$exists)) {
-  
-  message("Connecting to Oracle to fetch missing tables…")
-  
-  if(!exists("channel")){
-    channel <- gapindex::get_connected()
-  }
+  message("Connecting to Oracle to fetch missing tables...")
+  channel <- oracle_connect(channel)
+
   
   # Loop over tables and download missing ones
   for(i in seq_len(nrow(table_lookup))) {
@@ -86,12 +88,13 @@ taxonomic_classification_current <- oracle_tables$taxonomic_classification
 
 taxonomic_changes_current <- oracle_tables$taxonomic_changes
 
-species_year_current <- oracle_tables$species_year
+taxon_group_stanzas_current <- oracle_tables$taxon_group_stanzas
 
+taxon_group_composition_current <- oracle_tables$taxon_group_composition
 
 survey_species <- taxonomic_classification_current %>%
   dplyr::select(
-    survey_species_old = active,
+    active_old = active,
     species_name:species_code
   ) %>%
   dplyr::filter(!species_code %in% missing_taxa$species_code) %>%
@@ -102,3 +105,4 @@ survey_years <- oracle_tables$survey_design
 # manual clunky fix; ok to delete after 2026
 survey_species$species_name[survey_species$species_code == 98001] <- "Ascidiacea sp. A"
 survey_species$species_name[survey_species$species_code == 98002] <- "Ascidiacea sp. B"
+

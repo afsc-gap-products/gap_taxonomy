@@ -1,6 +1,8 @@
-# Load necessary packages
-# This function checks if packages are installed and installs them if not.
-# It then loads all specified packages.
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Load necessary packages
+## This script checks if packages are installed and installs them if not. It then loads all specified packages.
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 load_packages <- function(pkgs) {
   pkgs <- unique(pkgs)
   for (p in pkgs) {
@@ -18,7 +20,7 @@ load_packages <- function(pkgs) {
 # The main list of packages required for the script
 required_packages <- c(
   "tidyverse", "taxize", "janitor", "googledrive", "gapindex",
-  "ritis", "worrms", "furrr", "future.apply", "getPass",
-  "RODBC", "glue", "retry", "testthat", "DBI"
+  "ritis", "worrms", "getPass", "furrr", "future.apply",
+  "RODBC", "glue", "retry", "testthat", "DBI", "fs"
 )
 load_packages(required_packages)

@@ -1,31 +1,17 @@
 # Purpose: Create updated taxonomic classification and changes tables for Oracle database
-# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## ============================
 ## 1) Setup & Utilities
 ## ============================
-
-source("R/utils/load_packages.R")
-
-
-# Set the current year
-this_year <- format(Sys.Date(), "%Y")
-
 
 # Load and preprocess static data
 # This dataset contains information for taxa with only a common name
 missing_taxa <- readr::read_csv("data/missing_taxa.csv") %>%
   dplyr::mutate(reason = "", action = "")
 
-
-# Source helper scripts and data files
-download_tables <- TRUE # Set to FALSE to skip downloading tables from Oracle
-
-source("R/utils/functions.R")
-source("R/utils/constants.R")
-source("R/utils/download_tables.R") # Pulls proper tables from Oracle and loads into R
-
+download_tables <- TRUE
+source(here("code", "utils", "download_tables.R")) # Pulls proper tables from Oracle and loads into R
 
 ## ============================
 ## 2) Core Logic: Data Transformation & Taxonomy
@@ -150,7 +136,7 @@ taxonomy_final <- taxonomy_cleaned %>%
   ) %>%
   dplyr::group_by(species_code, database) %>%
   dplyr::mutate(n_names = n()) %>%
-  dplyr::filter(!(n_names > 1 & survey_species_old == 0)) %>%
+  dplyr::filter(!(n_names > 1 & active_old == 0)) %>%
   dplyr::group_by(species_code) %>%
   dplyr::mutate(active = assign_active_status(database, database_id)) %>%
   dplyr::group_by(accepted_name) %>%
@@ -199,20 +185,38 @@ taxonomic_changes_new <- taxonomy_final %>%
     new_species_name = species_name, new_species_code = species_code,
     action, year_changed, reason
   ) %>%
-  dplyr::arrange(dplyr::desc(year_changed), old_species_name) %>%
-  bind_rows(taxonomic_changes_current) %>%
-  dplyr::group_by(old_species_name, old_species_code, new_species_name, new_species_code) %>%
-  # Keep only the row with the earliest year_changed per group
-  dplyr::slice_min(order_by = year_changed, n = 1, with_ties = FALSE) %>%
-  dplyr::ungroup() %>%
-  dplyr::arrange(dplyr::desc(year_changed))
+  dplyr::arrange(dplyr::desc(year_changed), old_species_name)
 
 
-# message("Taxonomic updates to be made this year:\n")
-# print(taxonomic_changes_new %>%
-#         filter(year_changed == this_year) %>%
-#         data.frame()
-#       )
+taxonomic_changes_new <- taxonomic_changes_new %>%
+  dplyr::mutate(
+    dplyr::across(
+      where(is.character), 
+      ~ stringr::str_trim(iconv(.x, to = "ASCII//TRANSLIT"))
+    )
+  )
+
+if (nrow(taxonomic_changes_new) > 0) {
+  taxonomic_changes_new <- taxonomic_changes_new %>%
+    bind_rows(taxonomic_changes_current) %>%
+    dplyr::group_by(old_species_name, old_species_code, new_species_name, new_species_code) %>%
+    # Keep only the row with the earliest year_changed per group
+    dplyr::slice_min(order_by = year_changed, n = 1, with_ties = FALSE) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(dplyr::desc(year_changed))
+} else {
+  print("No taxonomic changes to be made this year.")
+  taxonomic_changes_new <- taxonomic_changes_new %>%
+    mutate(
+      old_species_name = character(),
+      old_species_code = numeric(),
+      new_species_name = character(),
+      new_species_code = numeric(),
+      action = character(),
+      year_changed = numeric(),
+      reason = character()
+    )
+}
 
 
 ## ============================================================
