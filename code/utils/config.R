@@ -38,14 +38,18 @@ tax_registry <- list(
     current    = "taxonomic_classification_current"
   ),
   taxonomic_changes = list(
-    mode       = "insert_only",
-    id_keys    = c("old_species_name", "old_species_code",
-                   "new_species_name", "new_species_code"),
-    audit_keys = c("old_species_name", "old_species_code",
-                   "new_species_name", "new_species_code"),
-    new        = "taxonomic_changes_new",
-    current    = NULL,                                # read from Oracle
-    fast_save  = FALSE                                # avoids ORA-01461 on long strings
+    mode = "insert_only",
+    id_keys = c(
+      "old_species_name", "old_species_code",
+      "new_species_name", "new_species_code"
+    ),
+    audit_keys = c(
+      "old_species_name", "old_species_code",
+      "new_species_name", "new_species_code"
+    ),
+    new = "taxonomic_changes_new",
+    current = NULL, # read from Oracle
+    fast_save = FALSE # avoids ORA-01461 on long strings
   ),
   taxonomic_confidence = list(
     mode       = "insert_only",
@@ -54,21 +58,21 @@ tax_registry <- list(
     new        = "taxonomic_confidence_new",
     current    = "taxon_confidence_current"
   ),
-  taxon_group_stanzas = list(                         # parent of composition
+  taxon_group_stanzas = list( # parent of composition
     mode       = "upsert",
     id_keys    = "group_stanza_id",
     audit_keys = "group_stanza_id",
     new        = "taxon_group_stanzas_new",
     current    = "taxon_group_stanzas_current"
   ),
-  taxon_group_composition = list(                     # child of stanzas
+  taxon_group_composition = list( # child of stanzas
     mode       = "upsert",
     id_keys    = c("group_stanza_id", "species_code"),
     audit_keys = c("group_stanza_id", "species_code"),
     new        = "taxon_group_composition_new",
     current    = "taxon_group_composition_current"
   ),
-  
+
   ## --- RACE_DATA tables (parent -> child). Enable with cfg$include_race_data ---
   species_taxonomics = list(
     group      = "race_data",
@@ -78,17 +82,17 @@ tax_registry <- list(
     audit_keys = "species_taxonomic_id",
     new        = "species_taxonomics_new",
     current    = "species_taxonomics_current",
-    no_deletes = TRUE,                      # script 03 preserves every legacy node
+    no_deletes = TRUE, # script 03 preserves every legacy node
     gate       = "race_qaqc_passed"
   ),
-  race_species_codes = list(                # child: FK species_taxonomic_id
+  race_species_codes = list( # child: FK species_taxonomic_id
     group      = "race_data",
     schema     = "RACE_DATA",
     mode       = "upsert",
     id_keys    = "species_code",
     audit_keys = "species_code",
     new        = "race_species_codes_new",
-    current    = "race_codes_current",      # name created in 03
+    current    = "race_codes_current", # name created in 03
     no_deletes = TRUE,
     gate       = "race_qaqc_passed"
   )
@@ -101,7 +105,7 @@ resolve_registry <- function(registry, cfg) {
   }
   for (nm in names(registry)) {
     sp <- registry[[nm]]
-    sp$schema       <- toupper(if (is.null(sp$schema)) cfg$schema else sp$schema)
+    sp$schema <- toupper(if (is.null(sp$schema)) cfg$schema else sp$schema)
     sp$stage_schema <- toupper(if (is.null(sp$stage_schema)) sp$schema else sp$stage_schema)
     sp$audit_schema <- toupper(if (is.null(sp$audit_schema)) sp$schema else sp$audit_schema)
     registry[[nm]] <- sp
@@ -113,7 +117,7 @@ active_registry <- resolve_registry(tax_registry, cfg)
 
 # Globals that scripts 01-04 already expect
 tax_schema <- cfg$schema
-this_year  <- format(Sys.Date(), "%Y")
+this_year <- as.numeric(format(Sys.Date(), "%Y"))
 
 
 # Taxonomic ranks to retain

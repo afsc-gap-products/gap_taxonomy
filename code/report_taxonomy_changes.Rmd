@@ -1,3 +1,16 @@
+---
+title: "GAP_TAXONOMY Release Changes"
+output: html_document
+params:
+  timestamp: ""
+  run_user: ""
+  detailed_notes: ""
+  audit_summary: NULL
+  taxonomic_changes: NULL
+  group_stanzas: NULL
+  group_composition: NULL
+---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(dplyr)
@@ -22,7 +35,7 @@ cat(params$detailed_notes)
 
 The table below summarizes all DML operations captured by triggers during this execution window:
 
-```{r audit_table}
+```{r audit_table, results='asis'}
 if (!is.null(params$audit_summary) && nrow(params$audit_summary) > 0) {
   # Normalize column names in case summary columns vary in casing
   summary_df <- params$audit_summary
@@ -38,7 +51,7 @@ if (!is.null(params$audit_summary) && nrow(params$audit_summary) > 0) {
 
 ## Summary of Taxonomic Changes
 
-```{r tax_changes}
+```{r tax_changes, results='asis'}
 if (!is.null(params$taxonomic_changes) && nrow(params$taxonomic_changes) > 0) {
   changes_df <- params$taxonomic_changes
   colnames(changes_df) <- toupper(colnames(changes_df))
@@ -68,7 +81,7 @@ if (!is.null(params$taxonomic_changes) && nrow(params$taxonomic_changes) > 0) {
 
 `TAXON_GROUP_COMPOSITION` identifies member taxa purely by `GROUP_STANZA_ID` and `SPECIES_CODE` (linked to `TAXON_GROUP_STANZAS` for temporal ranges and `GROUP_CODE`).
 
-```{r group_info}
+```{r group_info, results='asis'}
 has_stanzas <- !is.null(params$group_stanzas) && nrow(params$group_stanzas) > 0
 has_comp    <- !is.null(params$group_composition) && nrow(params$group_composition) > 0
 

@@ -27,7 +27,7 @@ new_spp <- race_species %>%
 fixed_spp <- bind_rows(survey_species, new_spp) %>%
   dplyr::mutate(
     survey_name = stringr::str_replace_all(species_name, "_", " "),
-    fixed_name = furrr::future_map_chr(survey_name, standardize_names)
+    fixed_name = purrr::map_chr(survey_name, standardize_names)
   ) %>%
   dplyr::select(-species_name)
 
@@ -47,7 +47,7 @@ taxonomy_combined <- fixed_spp %>%
   dplyr::mutate(name = coalesce(fixed_name, survey_name)) %>%
   dplyr::group_by(name) %>%
   tidyr::nest() %>%
-  dplyr::mutate(taxo = furrr::future_map(name, get_taxonomy_safely))
+  dplyr::mutate(taxo = purrr::map(name, get_taxonomy_safely))
 
 
 # Re-query loop for failed API hits (missing database info)
