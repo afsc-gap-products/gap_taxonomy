@@ -67,4 +67,5 @@ changelog_msg <- paste("
 -- Synced column metadata descriptions from GAP_PRODUCTS.METADATA_COLUMN."
 )
 
+cfg$dry_run <- TRUE
 source("code/05_update_oracle.R")

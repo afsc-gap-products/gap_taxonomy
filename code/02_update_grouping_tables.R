@@ -186,7 +186,7 @@ year_ref <- historical_groups %>%
 #                                         show_col_types = FALSE) %>%
 #   janitor::clean_names()
 # 
-# taxon_group_stanzas <- taxon_groups %>%
+# taxon_group_stanzas_updated <- taxon_groups %>%
 #   # Define modern group time bounds and assign new stanza IDs
 #   group_by(group_code) %>%
 #   mutate(
@@ -215,12 +215,12 @@ year_ref <- historical_groups %>%
 #   ungroup()
 # 
 # 
-# taxon_group_stanzas_new <- taxon_group_stanzas %>%
+# taxon_group_stanzas_new <- taxon_group_stanzas_updated %>%
 #   select(group_stanza_id, group_code, year_start, year_end) %>%
 #   distinct() %>%
 #   arrange(group_stanza_id)
 # 
-# taxon_group_composition_new <- taxon_group_stanzas %>%
+# taxon_group_composition_new <- taxon_group_stanzas_updated %>%
 #   select(group_stanza_id, species_code) %>%
 #   distinct() %>%
 #   arrange(group_stanza_id, species_code)

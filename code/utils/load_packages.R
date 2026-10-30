@@ -20,7 +20,7 @@ load_packages <- function(pkgs) {
 # The main list of packages required for the script
 required_packages <- c(
   "tidyverse", "taxize", "janitor", "googledrive", "gapindex",
-  "ritis", "worrms", "getPass",
+  "ritis", "worrms", "getPass", "furrr", "future.apply",
   "RODBC", "glue", "retry", "testthat", "DBI", "fs"
 )
 load_packages(required_packages)

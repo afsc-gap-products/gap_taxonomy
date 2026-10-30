@@ -16,11 +16,11 @@
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Globals that scripts 01-04 already expect
 cfg <- list(
-  schema                = "SFRIEDMAN", # Oracle schema for taxonomic tables
-  rebuild_audit         = TRUE, # TRUE = rename + recreate drifted AUDIT_ tables
+  schema                = "GAP_TAXONOMY", # Oracle schema for taxonomic tables
+  rebuild_audit         = FALSE, # TRUE = rename + recreate drifted AUDIT_ tables
   include_race_data     = FALSE, # TRUE = also update the two RACE_DATA tables
   create_missing_tables = FALSE, # TRUE = first-time load: create tables that don't exist yet
-  dry_run               = FALSE, # TRUE = show/write deltas, change nothing
+  dry_run               = TRUE, # TRUE = show/write deltas, change nothing
   max_delete_frac       = 0.05, # abort if > 5% of a table would be deleted
   allow_large_deletes   = FALSE # override for the guard above
 )
