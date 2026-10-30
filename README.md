@@ -25,27 +25,17 @@ This repository include code to update the taxonomy tables in `RACE_DATA` and `G
 
 ### Table Structure
 
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Schema             | Table Name                 | Purpose & Contents                                                                                                                                                                                                   |
-+:===================+:===========================+:=====================================================================================================================================================================================================================+
+| Schema | Table Name | Purpose & Contents |
+|:------------|:--------------------|:------------------------------------|
 | **`GAP_TAXONOMY`** | `TAXONOMIC_CLASSIFICATION` | Authoritative hierarchical classification for all bottom trawl survey taxa across all major ranks (Kingdom down to Subspecies). Integrates external identifiers (WoRMS AphiaID, ITIS TSN) and accepted nomenclature. |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`GAP_TAXONOMY`** | `TAXONOMIC_CHANGES`        | Audit history and mapping log documenting nomenclatural updates, reclassifications, code changes, splits, and synonymizations across survey years.                                                                   |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`GAP_TAXONOMY`** | `TAXONOMIC_CONFIDENCE`     | Region- and year-specific field identification confidence ratings (levels 1–3) assigned to taxa across standard survey series (e.g., EBS, AI, GOA).                                                                  |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`GAP_TAXONOMY`** | `TAXON_GROUP_STANZAS`      | Temporal definitions and validity windows (`YEAR_START` to `YEAR_END`) for analytical taxon aggregations, separating historical baseline periods from modern groupings.                                              |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`GAP_TAXONOMY`** | `TAXON_GROUP_COMPOSITION`  | Relational bridge linking specific survey `SPECIES_CODE` records to their designated `GROUP_STANZA_ID` aggregate definitions.                                                                                        |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`GAP_TAXONOMY`** | `AUDIT_*`                  | Change-data-capture tables tracking DML transactions (`INSERT`, `UPDATE`, `DELETE`) with timestamps, database/proxy users, and split `_CURRENT` vs. `_UPDATE` values.                                                |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`RACE_DATA`**    | `SPECIES_TAXONOMICS`       | Recursive parent-child tree capturing the full taxonomic hierarchy within the `RACE_DATA` schema, standardizing rank IDs and internal tree references.                                                               |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`RACE_DATA`**    | `RACE_SPECIES_CODES`       | Production look-up linking RACE species survey codes to accepted binomials, common names, survey activity flags, and the taxonomic tree.                                                                             |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **`RACE_DATA`**    | `AUDIT_*`                  | Transaction logs mirroring `SPECIES_TAXONOMICS` and `RACE_SPECIES_CODES` updates and lineage modifications for schema provenance.                                                                                    |
-+--------------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **`GAP_TAXONOMY`** | `TAXONOMIC_CHANGES` | Audit history and mapping log documenting nomenclatural updates, reclassifications, code changes, splits, and synonymizations across survey years. |
+| **`GAP_TAXONOMY`** | `TAXONOMIC_CONFIDENCE` | Region- and year-specific field identification confidence ratings (levels 1–3) assigned to taxa across standard survey series (e.g., EBS, AI, GOA). |
+| **`GAP_TAXONOMY`** | `TAXON_GROUP_STANZAS` | Temporal definitions and validity windows (`YEAR_START` to `YEAR_END`) for analytical taxon aggregations, separating historical baseline periods from modern groupings. |
+| **`GAP_TAXONOMY`** | `TAXON_GROUP_COMPOSITION` | Relational bridge linking specific survey `SPECIES_CODE` records to their designated `GROUP_STANZA_ID` aggregate definitions. |
+| **`GAP_TAXONOMY`** | `AUDIT_*` | Change-data-capture tables tracking DML transactions (`INSERT`, `UPDATE`, `DELETE`) with timestamps, database/proxy users, and split `_CURRENT` vs. `_UPDATE` values. |
+| **`RACE_DATA`** | `SPECIES_TAXONOMICS` | Recursive parent-child tree capturing the full taxonomic hierarchy within the `RACE_DATA` schema, standardizing rank IDs and internal tree references. |
+| **`RACE_DATA`** | `RACE_SPECIES_CODES` | Production look-up linking RACE species survey codes to accepted binomials, common names, survey activity flags, and the taxonomic tree. |
+| **`RACE_DATA`** | `AUDIT_*` | Transaction logs mirroring `SPECIES_TAXONOMICS` and `RACE_SPECIES_CODES` updates and lineage modifications for schema provenance. |
 
 ------------------------------------------------------------------------
 
