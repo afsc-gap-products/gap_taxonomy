@@ -21,6 +21,8 @@ load_packages <- function(pkgs) {
 required_packages <- c(
   "tidyverse", "taxize", "janitor", "googledrive", "gapindex",
   "ritis", "worrms", "getPass", "furrr", "future.apply",
-  "RODBC", "glue", "retry", "testthat", "DBI", "fs"
+  "RODBC", "glue", "retry", "testthat", "DBI", "fs",
+  "here", "rmarkdown", "devtools"
 )
+
 load_packages(required_packages)

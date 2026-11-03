@@ -33,7 +33,8 @@ table_lookup <- table_lookup %>%
   )
 
 # Connect to Oracle if any table missing
-# Connect only if missing tables are flagged
+dir.create("data/oracle", showWarnings = FALSE, recursive = TRUE)
+
 if (any(!table_lookup$exists)) {
   message("Connecting to Oracle to fetch missing tables...")
   channel <- oracle_connect(channel)
@@ -63,7 +64,7 @@ if (any(!table_lookup$exists)) {
 # ---- Load all CSVs into a named list ----
 oracle_tables <- purrr::map(
   table_lookup$file_path,
-  ~ readr::read_csv(.x, show_col_types = FALSE) %>%
+  ~ readr::read_csv(.x, show_col_types = FALSE, guess_max = Inf) %>%
     janitor::clean_names()
 )
 
@@ -102,7 +103,7 @@ survey_species <- taxonomic_classification_current %>%
 
 survey_years <- oracle_tables$survey_design
 
-# manual clunky fix; ok to delete after 2026
-survey_species$species_name[survey_species$species_code == 98001] <- "Ascidiacea sp. A"
-survey_species$species_name[survey_species$species_code == 98002] <- "Ascidiacea sp. B"
+# # manual clunky fix; ok to delete after 2026
+# survey_species$species_name[survey_species$species_code == 98001] <- "Ascidiacea sp. A"
+# survey_species$species_name[survey_species$species_code == 98002] <- "Ascidiacea sp. B"
 

@@ -219,7 +219,7 @@ get_taxonomy <- function(species) {
           database = "worms",
           taxonomic_status = "accepted",
           rank = tolower(rank),
-          database_id = tmp$id[nrow(tmp)],
+          database_id = suppressWarnings(as.numeric(tmp$id[nrow(tmp)])),
           id_rank = tolower(tmp$rank[nrow(tmp)])
         ) %>%
         dplyr::select(-id) %>%

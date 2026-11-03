@@ -159,7 +159,7 @@ taxonomic_confidence_new <- taxonomic_confidence %>%
 #   1. uncomment this block and run it (needs a Google login and the network),
 #   2. uncomment `taxonomic_confidence <- taxonomic_confidence_rebuilt` in section 1,
 #   3. rerun this script from section 1. Revised scores then show up in step 05 as
-#      UPDATEs, new rows as INSERTs and removed rows as DELETEs. If the rebuild
+#      UPDATEs and new rows as INSERTs. If the rebuild
 #      removes more than cfg$max_delete_frac of the table, step 05 stops (see config.R).
 #
 # Needs: readxl, googledrive, janitor, tidyr, dplyr, stringr.

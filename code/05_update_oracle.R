@@ -7,6 +7,11 @@
 channel <- oracle_connect()
 source(here::here("code", "utils", "sync_metadata.R"))
 
+## Re-resolve so cfg changes made after config.R was sourced (e.g. include_race_data)
+## take effect; active_registry is otherwise fixed at source time.
+active_registry <- resolve_registry(tax_registry, cfg)
+  
+  
 timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%S")
 
 ## 1. Compute deltas (read-only) and review them
@@ -57,7 +62,7 @@ if (isTRUE(cfg$dry_run)) {
     output_file = paste0("../temp/report_changes_", timestamp, ".html"),
     params = list(
       detailed_notes    = notes,
-      run_user          = Sys.getenv("USER"),
+      run_user          = Sys.getenv("USER", Sys.getenv("USERNAME")),
       timestamp         = timestamp,
       audit_summary     = audit_summary,
       taxonomic_changes = payloads$taxonomic_changes$data,

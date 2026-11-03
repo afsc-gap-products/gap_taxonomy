@@ -52,6 +52,8 @@ tax_registry <- list(
     fast_save = FALSE # avoids ORA-01461 on long strings
   ),
   taxonomic_confidence = list(
+    # insert_only: revised scores for existing rows are NOT pushed. Use "upsert"
+    # if you rebuild from the spreadsheets and want revisions applied (see 04).
     mode       = "insert_only",
     id_keys    = c("survey_definition_id", "year", "species_code"),
     audit_keys = c("survey_definition_id", "year", "species_code"),

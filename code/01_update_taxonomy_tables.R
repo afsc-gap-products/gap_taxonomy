@@ -4,6 +4,7 @@
 ## ============================
 ## 1) Setup & Utilities
 ## ============================
+future::plan(future::multisession)
 
 # Load and preprocess static data
 # This dataset contains information for taxa with only a common name
@@ -28,11 +29,12 @@ new_spp <- race_species %>%
 fixed_spp <- bind_rows(survey_species, new_spp) %>%
   dplyr::mutate(
     survey_name = stringr::str_replace_all(species_name, "_", " "),
-    fixed_name = furrr::future_map_chr(survey_name, standardize_names)
+    fixed_name = furrr::future_map_chr(survey_name, standardize_names, .options = furrr::furrr_options(globals = TRUE))
   ) %>%
   dplyr::select(-species_name)
 
-fixed_spp[fixed_spp$species_code == 70050, "fixed_name"] <- c("Neomeniamorpha", "Neomeniomorpha")
+# # manual clunky fix; ok to delete after 2026
+# fixed_spp[fixed_spp$species_code == 70050, "fixed_name"] <- c("Neomeniamorpha", "Neomeniomorpha")
 
 
 ## ============================================================
@@ -48,7 +50,7 @@ taxonomy_combined <- fixed_spp %>%
   dplyr::mutate(name = coalesce(fixed_name, survey_name)) %>%
   dplyr::group_by(name) %>%
   tidyr::nest() %>%
-  dplyr::mutate(taxo = furrr::future_map(name, get_taxonomy_safely))
+  dplyr::mutate(taxo = furrr::future_map(name, get_taxonomy_safely, .options = furrr::furrr_options(globals = TRUE)))
 
 
 # Re-query loop for failed API hits (missing database info)
@@ -136,7 +138,7 @@ taxonomy_final <- taxonomy_cleaned %>%
   ) %>%
   dplyr::group_by(species_code, database) %>%
   dplyr::mutate(n_names = n()) %>%
-  dplyr::filter(!(n_names > 1 & active_old == 0)) %>%
+  dplyr::filter(!(n_names > 1 & dplyr::coalesce(active_old, 1) == 0)) %>%
   dplyr::group_by(species_code) %>%
   dplyr::mutate(active = assign_active_status(database, database_id)) %>%
   dplyr::group_by(accepted_name) %>%
@@ -165,16 +167,18 @@ taxonomic_classification_new <- taxonomy_final %>%
   dplyr::rename_with(~ paste0(., "_taxon"), tidyselect::all_of(KEEP_RANKS)) %>%
   dplyr::arrange(species_code)
 
-taxonomic_classification_updates <- dplyr::bind_rows(
-  # dplyr::anti_join(classification_current, classification_new),
-  dplyr::anti_join(taxonomic_classification_new, taxonomic_classification_current)
-) %>%
-  dplyr::distinct(species_name, species_code, database, .keep_all = TRUE)
-# View(taxonomic_classification_updates) # manually check changes and ensure they are necessary
+# taxonomic_classification_updates <- dplyr::bind_rows(
+#   # dplyr::anti_join(classification_current, classification_new),
+#   dplyr::anti_join(taxonomic_classification_new, taxonomic_classification_current)
+# ) %>%
+#   dplyr::distinct(species_name, species_code, database, .keep_all = TRUE)
+# # View(taxonomic_classification_updates) # manually check changes and ensure they are necessary
 
 taxonomic_changes_new <- taxonomy_final %>%
-  dplyr::filter(active == 1 & reason != "" &
-    survey_name != species_name | reason == "species code added" & active == 1) %>%
+  dplyr::filter(
+  (active == 1 & reason != "" & survey_name != species_name) |
+       (reason == "species code added" & active == 1)
+  ) %>%
   dplyr::mutate(
     year_changed = as.numeric(this_year),
     old_species_code = as.numeric(ifelse(reason == "species code added", NA_character_, old_code)),
@@ -206,16 +210,7 @@ if (nrow(taxonomic_changes_new) > 0) {
     dplyr::arrange(dplyr::desc(year_changed))
 } else {
   print("No taxonomic changes to be made this year.")
-  taxonomic_changes_new <- taxonomic_changes_new %>%
-    mutate(
-      old_species_name = character(),
-      old_species_code = numeric(),
-      new_species_name = character(),
-      new_species_code = numeric(),
-      action = character(),
-      year_changed = numeric(),
-      reason = character()
-    )
+  taxonomic_changes_new <- taxonomic_changes_current
 }
 
 
@@ -256,10 +251,15 @@ if (nrow(qc_issues) > 0) {
 }
 
 
-if (!all(race_species$species_code %in%
-  c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))) {
-  code_check <- which(!race_species$species_code %in%
-    c(taxonomic_classification_new$species_code, taxonomic_changes_new$old_species_code))
+# Retired codes live in the CURRENT changes table too (taxonomic_changes_new is empty
+# in a year with no changes), so check against both.
+known_codes <- unique(c(
+  taxonomic_classification_new$species_code,
+  taxonomic_changes_new$old_species_code,
+  taxonomic_changes_current$old_species_code
+))
+if (!all(race_species$species_code %in% known_codes)) {
+  code_check <- which(!race_species$species_code %in% known_codes)
   print(race_species[code_check, ])
   stop("Some species codes will be dropped from the database. Review before proceeding.")
 }

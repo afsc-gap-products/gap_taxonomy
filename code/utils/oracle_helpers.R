@@ -54,7 +54,7 @@ get_table_columns <- function(channel, schema, table) {
 
 load_current <- function(channel, schema, table) {
   res <- RODBC::sqlQuery(channel, sprintf("SELECT * FROM %s.%s", schema, toupper(table)),
-    stringsAsFactors = FALSE
+                         stringsAsFactors = FALSE
   )
   if (!is.data.frame(res)) {
     stop(
@@ -95,14 +95,14 @@ build_create_table_sql <- function(schema, table, df, id_keys, references = NULL
   table <- toupper(table)
   id_keys <- toupper(id_keys)
   key_ok <- all(vapply(id_keys, function(k) !anyNA(df[[k]]), logical(1)))
-
+  
   col_sql <- vapply(names(df), function(col) {
     sprintf(
       "  %s %s%s", col, infer_oracle_type(df[[col]]),
       if (key_ok && col %in% id_keys) " NOT NULL" else ""
     )
   }, character(1))
-
+  
   constraints <- character()
   if (key_ok) {
     constraints <- c(constraints, sprintf(
@@ -162,7 +162,7 @@ prepare_delta <- function(new_df, current_df, key_cols, mode = c("upsert", "inse
   key_cols <- toupper(key_cols)
   new_clean <- clean_for_oracle(new_df)
   curr_clean <- clean_for_oracle(current_df)
-
+  
   target_cols <- names(new_clean)
   absent <- setdiff(c(key_cols, target_cols), names(curr_clean))
   if (length(absent)) stop("Current table is missing column(s): ", paste(absent, collapse = ", "))
@@ -173,7 +173,7 @@ prepare_delta <- function(new_df, current_df, key_cols, mode = c("upsert", "inse
     )
   }
   curr_aligned <- curr_clean[, target_cols, drop = FALSE]
-
+  
   # Harmonize types so integer/numeric/character differences don't cause phantom updates
   for (col in target_cols) {
     if (is.numeric(new_clean[[col]]) || is.numeric(curr_aligned[[col]])) {
@@ -184,7 +184,7 @@ prepare_delta <- function(new_df, current_df, key_cols, mode = c("upsert", "inse
       curr_aligned[[col]] <- as.character(curr_aligned[[col]])
     }
   }
-
+  
   if (mode == "insert_only") {
     new_clean <- dplyr::distinct(new_clean)
     return(
@@ -192,7 +192,7 @@ prepare_delta <- function(new_df, current_df, key_cols, mode = c("upsert", "inse
         dplyr::mutate(OPERATION = "INSERT")
     )
   }
-
+  
   # Keys must be unique, otherwise MERGE is ambiguous
   for (nm in c("new", "current")) {
     d <- if (nm == "new") new_clean else curr_aligned
@@ -204,18 +204,18 @@ prepare_delta <- function(new_df, current_df, key_cols, mode = c("upsert", "inse
       stop(sprintf("Duplicate id_keys (%s) in %s data.", paste(key_cols, collapse = ", "), nm))
     }
   }
-
+  
   inserts <- dplyr::anti_join(new_clean, curr_aligned, by = key_cols) %>%
     dplyr::mutate(OPERATION = "INSERT")
-
+  
   # same key, any column different (this is where ACTIVE flips land)
   updates <- dplyr::semi_join(new_clean, curr_aligned, by = key_cols) %>%
     dplyr::anti_join(curr_aligned, by = target_cols) %>%
     dplyr::mutate(OPERATION = "UPDATE")
-
+  
   deletes <- dplyr::anti_join(curr_aligned, new_clean, by = key_cols) %>%
     dplyr::mutate(OPERATION = "DELETE")
-
+  
   dplyr::bind_rows(inserts, updates, deletes)
 }
 
@@ -225,11 +225,11 @@ build_stage_payloads <- function(channel, registry, envir = globalenv(),
                                  max_delete_frac = 0.05, allow_large_deletes = FALSE,
                                  create_missing = FALSE) {
   payloads <- list()
-
+  
   for (tbl in names(registry)) {
     spec <- registry[[tbl]]
     schema <- assert_schema(spec$schema)
-
+    
     # QA/QC gate (e.g. race_qaqc_passed from script 03)
     if (!is.null(spec$gate)) {
       if (!exists(spec$gate, envir = envir) || !isTRUE(get(spec$gate, envir = envir))) {
@@ -239,15 +239,15 @@ build_stage_payloads <- function(channel, registry, envir = globalenv(),
         ), tbl, spec$gate, schema))
       }
     }
-
+    
     if (!exists(spec$new, envir = envir)) {
       stop(sprintf("[%s] R object '%s' not found. Did steps 01-04 run?", tbl, spec$new))
     }
     new_df <- get(spec$new, envir = envir)
-
+    
     prod_cols <- get_table_columns(channel, schema, tbl)
     create_sql <- NULL
-
+    
     if (!length(prod_cols)) {
       can_create <- isTRUE(create_missing) && !identical(spec$can_create, FALSE)
       if (!can_create) {
@@ -298,7 +298,7 @@ build_stage_payloads <- function(channel, registry, envir = globalenv(),
         current_df <- load_current(channel, schema, tbl)
       }
     }
-
+    
     extra <- setdiff(toupper(names(new_df)), prod_cols)
     if (length(extra)) {
       stop(sprintf(
@@ -306,15 +306,15 @@ build_stage_payloads <- function(channel, registry, envir = globalenv(),
         tbl, schema, toupper(tbl), paste(extra, collapse = ", ")
       ))
     }
-
+    
     delta <- prepare_delta(new_df, current_df, spec$id_keys, mode = spec$mode)
-
+    
     n_del <- sum(delta$OPERATION == "DELETE")
     if (isTRUE(spec$no_deletes) && n_del > 0) {
       print(utils::head(delta[delta$OPERATION == "DELETE", ], 10))
       stop(sprintf("[%s] %d row(s) would be DELETED, but this table is configured no_deletes.", tbl, n_del))
     }
-
+    
     # Guard against catastrophic deletes (e.g. an empty/partial `new` table)
     if (spec$mode == "upsert" && nrow(current_df) > 0) {
       frac <- n_del / nrow(current_df)
@@ -333,7 +333,7 @@ build_stage_payloads <- function(channel, registry, envir = globalenv(),
         )
       }
     }
-
+    
     payloads[[tbl]] <- list(
       table        = tbl,
       schema       = schema,
@@ -369,7 +369,7 @@ print_delta_summary <- function(payloads, out_dir = NULL) {
     for (p in payloads) {
       if (nrow(p$data) > 0) {
         utils::write.csv(p$data, file.path(out_dir, paste0("delta_", p$table, ".csv")),
-          row.names = FALSE, na = ""
+                         row.names = FALSE, na = ""
         )
       }
     }
@@ -383,7 +383,7 @@ ensure_stage_table <- function(channel, target_schema, stage_schema, table) {
   stage <- paste0("STAGE_", toupper(table))
   expected <- c(get_table_columns(channel, target_schema, table), "OPERATION")
   actual <- get_table_columns(channel, stage_schema, stage)
-
+  
   if (length(actual) && !setequal(actual, expected)) {
     message(sprintf("--> %s.%s columns are out of date; recreating", stage_schema, stage))
     run_sql(channel, sprintf("DROP TABLE %s.%s PURGE", stage_schema, stage), "drop stage table")
@@ -405,19 +405,19 @@ load_stage_table <- function(channel, payload) {
   path <- paste0(payload$stage_schema, ".", stage)
   ensure_stage_table(channel, payload$schema, payload$stage_schema, payload$table)
   run_sql(channel, paste("TRUNCATE TABLE", path), paste("truncate", path))
-
+  
   df <- payload$data
   if (nrow(df) == 0) {
     message("0 records to upload for ", path)
     return(invisible(0L))
   }
-
+  
   res <- RODBC::sqlSave(channel, df,
-    tablename = path, append = TRUE, rownames = FALSE,
-    safer = FALSE, fast = payload$fast_save
+                        tablename = path, append = TRUE, rownames = FALSE,
+                        safer = FALSE, fast = payload$fast_save
   )
   if (identical(res, -1L)) stop("sqlSave failed for ", path, ":\n", RODBC::odbcGetErrMsg(channel))
-
+  
   n <- RODBC::sqlQuery(channel, paste("SELECT COUNT(*) AS N FROM", path))$N[1]
   if (!identical(as.integer(n), nrow(df))) {
     stop(sprintf("%s: uploaded %d rows but table has %s", path, nrow(df), n))
@@ -485,15 +485,15 @@ build_insert_only_sql <- function(p) {
 apply_changes <- function(channel, payloads) {
   has <- function(p, op) any(p$data$OPERATION == op)
   name <- function(p) paste0(p$schema, ".", toupper(p$table))
-
+  
   if (!any(vapply(payloads, function(p) nrow(p$data) > 0, logical(1)))) {
     message("No records to change in any table.")
     return(invisible(FALSE))
   }
-
+  
   RODBC::odbcSetAutoCommit(channel, autoCommit = FALSE)
   on.exit(try(RODBC::odbcSetAutoCommit(channel, autoCommit = TRUE), silent = TRUE), add = TRUE)
-
+  
   tryCatch(
     {
       for (p in rev(payloads)) { # deletes: child -> parent
@@ -532,24 +532,24 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
   table <- toupper(table)
   audit_tbl <- paste0("AUDIT_", table)
   audit_keys <- toupper(audit_keys)
-
+  
   all_cols <- get_table_columns(channel, schema, table)
   if (!length(all_cols)) stop("Table not found: ", schema, ".", table)
   bad <- setdiff(audit_keys, all_cols)
   if (length(bad)) stop(sprintf("%s: audit key(s) not in table: %s", table, paste(bad, collapse = ", ")))
-
+  
   key_cols <- all_cols[all_cols %in% audit_keys]
   resp_cols <- all_cols[!all_cols %in% audit_keys]
   # sprintf (not paste0): paste0(character(0), "x") returns "x", which broke tables
   # whose columns are ALL keys (e.g. TAXON_GROUP_COMPOSITION)
   curr_cols <- sprintf("%s_CURRENT", resp_cols)
   upd_cols <- sprintf("%s_UPDATE", resp_cols)
-
+  
   # -- 1. Audit table: create, or detect drift ----------------------------------
   hdr_cols <- c("OPERATION_TYPE", "OPERATION_TIMESTAMP", "USER_NAME")
   expected <- c(hdr_cols, key_cols, curr_cols, upd_cols)
   actual <- get_table_columns(channel, audit_schema, audit_tbl)
-
+  
   if (length(actual) && !setequal(actual, expected)) {
     msg <- sprintf(
       paste0(
@@ -570,7 +570,7 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
     )
     actual <- character()
   }
-
+  
   if (!length(actual)) {
     message(sprintf("--> creating %s.%s", audit_schema, audit_tbl))
     pair_sql <- as.vector(rbind(
@@ -589,7 +589,7 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
       ),
       paste("create", audit_tbl)
     )
-
+    
     # CTAS copies NOT NULL; CURRENT is empty on INSERT and UPDATE on DELETE, so relax them
     nn <- RODBC::sqlQuery(channel, sprintf(
       "SELECT column_name FROM all_tab_columns
@@ -605,7 +605,7 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
     }
     run_sql(channel, sprintf("GRANT SELECT ON %s.%s TO PUBLIC", audit_schema, audit_tbl), "grant")
   }
-
+  
   # -- 2. Trigger ---------------------------------------------------------------
   user_expr <- "COALESCE(SYS_CONTEXT('USERENV', 'PROXY_USER'), SYS_CONTEXT('USERENV', 'SESSION_USER'))"
   ins_stmt <- function(op, cols, vals) {
@@ -616,10 +616,10 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
       paste(c(sprintf("'%s'", op), "SYSTIMESTAMP", user_expr, vals), collapse = ", ")
     )
   }
-
+  
   both_cols <- as.vector(rbind(curr_cols, upd_cols))
   both_vals <- as.vector(rbind(sprintf(":OLD.%s", resp_cols), sprintf(":NEW.%s", resp_cols)))
-
+  
   trigger_ddl <- sprintf(
     "CREATE OR REPLACE TRIGGER %1$s.%2$s
 AFTER INSERT OR DELETE OR UPDATE ON %1$s.%3$s
@@ -638,8 +638,18 @@ END;",
     ins_stmt("DELETE", c(key_cols, curr_cols), c(sprintf(":OLD.%s", key_cols), sprintf(":OLD.%s", resp_cols))),
     ins_stmt("UPDATE", c(key_cols, both_cols), c(sprintf(":NEW.%s", key_cols), both_vals))
   )
-
-  RODBC::sqlQuery(channel, trigger_ddl) # compile errors are read from ALL_ERRORS below
+  
+  trig_res <- RODBC::sqlQuery(channel, trigger_ddl)
+  # Hard failures (e.g. ORA-01031 insufficient privileges) never reach ALL_ERRORS.
+  # ORA-24344 = "created with compilation errors", reported from ALL_ERRORS below.
+  trig_err <- if (is.character(trig_res)) trig_res[!grepl("ORA-24344", trig_res)] else character()
+  if (identical(trig_res, -1L) || length(trig_err) > 0) {
+    detail <- tryCatch(paste(RODBC::odbcGetErrMsg(channel), collapse = "\n"), error = function(e) "")
+    stop(sprintf(
+      "Creating trigger %s.%s failed:\n%s\n%s", schema, audit_tbl,
+      paste(trig_err, collapse = "\n"), detail
+    ), call. = FALSE)
+  }
   errs <- RODBC::sqlQuery(channel, sprintf(
     "SELECT line, position, text FROM all_errors
      WHERE owner = '%s' AND name = '%s' AND type = 'TRIGGER' ORDER BY sequence", schema, audit_tbl
@@ -660,7 +670,7 @@ sync_all_audits <- function(channel, registry, rebuild = FALSE) {
   for (tbl in names(registry)) {
     sp <- registry[[tbl]]
     sync_audit_table(channel, sp$schema, tbl, sp$audit_keys,
-      audit_schema = sp$audit_schema, rebuild = rebuild
+                     audit_schema = sp$audit_schema, rebuild = rebuild
     )
   }
   invisible(TRUE)
@@ -682,7 +692,7 @@ summarize_all_updates <- function(channel, payloads, time_start, time_end) {
     }, character(1)),
     collapse = "\nUNION ALL\n"
   )
-
+  
   res <- RODBC::sqlQuery(channel, sql, stringsAsFactors = FALSE)
   if (!is.data.frame(res)) stop("Failed to summarize audit tables:\n", paste(res, collapse = "\n"))
   res
