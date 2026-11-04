@@ -23,8 +23,8 @@ source(here("code", "utils", "download_tables.R")) # Pulls proper tables from Or
 
 new_spp <- race_species %>%
   dplyr::filter(!species_code %in% survey_species$species_code &
-    species_name != "test subject" &
-    !species_code %in% taxonomic_changes_current$old_species_code)
+                  species_name != "test subject" &
+                  !species_code %in% taxonomic_changes_current$old_species_code)
 
 fixed_spp <- bind_rows(survey_species, new_spp) %>%
   dplyr::mutate(
@@ -63,12 +63,12 @@ while (rerun_count < max_reruns) {
     dplyr::filter(purrr::map_lgl(taxo, ~ all(is.na(.x$database)))) %>%
     dplyr::pull(name) %>%
     unique()
-
+  
   if (length(failed_names) == 0) break
-
+  
   rerun_count <- rerun_count + 1
   message(glue::glue("Re-querying {length(failed_names)} failed taxa (Attempt {rerun_count}/{max_reruns})..."))
-
+  
   # Run retry queries sequentially (purrr::map) to avoid hitting rate limits
   retry_results <- tibble::tibble(
     name = failed_names,
@@ -77,7 +77,7 @@ while (rerun_count < max_reruns) {
       get_taxonomy_safely(x)
     })
   )
-
+  
   # Update original taxonomy table with new attempts
   taxonomy_combined <- taxonomy_combined %>%
     dplyr::left_join(retry_results, by = "name") %>%
@@ -118,22 +118,48 @@ taxonomy_cleaned <- taxonomy_combined %>%
 
 # Create final classification and changes tables
 # This complex pipeline handles synonymization, code fixing, and reason/action assignment.
-taxonomy_final <- taxonomy_cleaned %>%
+
+taxonomy_remapped <- taxonomy_cleaned %>%
   dplyr::group_by(accepted_name) %>%
   dplyr::mutate(n_codes = dplyr::n_distinct(species_code)) %>%
   tidyr::nest() %>%
   dplyr::mutate(new_code = purrr::map2_dbl(data, accepted_name, fix_syn_codes)) %>%
   tidyr::unnest(cols = c(data)) %>%
   dplyr::mutate(
+    # placeholder names (RM_ALL, e.g. "sp.", "cf.") and keep_codes are never merged into another code
+    new_code = dplyr::if_else(
+      grepl(RM_ALL, survey_name), NA_real_, new_code
+    ),
     old_code = species_code,
     species_code = dplyr::coalesce(new_code, old_code)
-  ) %>%
+  )
+
+# Retire codes whose WoRMS (primary) row was merged into another code.
+# Without this, a database that still accepts the old name (e.g. ITIS for
+# 78030 Opisthoteuthis californiana) leaves a stranded row under the old code,
+# which then gets active = 1 and survives next to its own entry in the changes table.
+moved_worms <- taxonomy_remapped %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(database == "WORMS", species_code != old_code) %>%
+  dplyr::pull(old_code)
+kept_worms <- taxonomy_remapped %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(database == "WORMS", species_code == old_code) %>%
+  dplyr::pull(old_code)
+retired_codes <- setdiff(moved_worms, kept_worms)
+if (length(retired_codes) > 0) {
+  message("Retiring merged species codes: ", paste(sort(retired_codes), collapse = ", "))
+}
+
+taxonomy_final <- taxonomy_remapped %>%
+  # drop rows left behind under a retired code (remapped rows have old_code != species_code and are kept)
+  dplyr::filter(!(species_code == old_code & species_code %in% retired_codes)) %>%
   dplyr::arrange(species_code, database, desc(taxonomic_status == "accepted")) %>%
   dplyr::distinct(species_code, database, database_id, .keep_all = TRUE) %>%
   dplyr::mutate(
     assign_reason_action(
       fixed_name, new_spp, taxonomic_status, survey_name, accepted_name,
-      database_id, common_name, species_code, new_code, n_codes
+      database_id, common_name, old_code, new_code, n_codes # old_code, not the already-remapped species_code, so code changes get "change taxon code/name"
     )
   ) %>%
   dplyr::group_by(species_code, database) %>%
@@ -176,13 +202,13 @@ taxonomic_classification_new <- taxonomy_final %>%
 
 taxonomic_changes_new <- taxonomy_final %>%
   dplyr::filter(
-  (active == 1 & reason != "" & survey_name != species_name) |
-       (reason == "species code added" & active == 1)
+    (active == 1 & reason != "" & survey_name != species_name) |
+      (reason == "species code added" & active == 1)
   ) %>%
   dplyr::mutate(
     year_changed = as.numeric(this_year),
     old_species_code = as.numeric(ifelse(reason == "species code added", NA_character_, old_code)),
-    survey_name = ifelse(reason == "species code added", NA_character_, survey_name)
+    survey_name = as.character(ifelse(reason == "species code added", NA_character_, survey_name))
   ) %>%
   dplyr::select(
     old_species_name = survey_name, old_species_code,
@@ -191,6 +217,31 @@ taxonomic_changes_new <- taxonomy_final %>%
   ) %>%
   dplyr::arrange(dplyr::desc(year_changed), old_species_name)
 
+# Retired codes must be logged even though distinct() above discards their rows
+# (the target code's own row wins the dedup), so build their entries from the
+# pre-distinct remapped rows.
+retired_code_changes <- taxonomy_remapped %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(old_code %in% retired_codes, species_code != old_code, database == "WORMS") %>%
+  dplyr::distinct(old_code, species_code, .keep_all = TRUE) %>%
+  dplyr::left_join(
+    taxonomy_final %>%
+      dplyr::filter(active == 1) %>%
+      dplyr::distinct(species_code, .keep_all = TRUE) %>%
+      dplyr::select(species_code, new_species_name = species_name),
+    by = "species_code"
+  ) %>%
+  dplyr::transmute(
+    old_species_name = survey_name,
+    old_species_code = as.numeric(old_code),
+    new_species_name,
+    new_species_code = species_code,
+    action = "change taxon code/name",
+    year_changed = as.numeric(this_year),
+    reason = "synonym"
+  )
+
+taxonomic_changes_new <- dplyr::bind_rows(taxonomic_changes_new, retired_code_changes)
 
 taxonomic_changes_new <- taxonomic_changes_new %>%
   dplyr::mutate(
@@ -235,7 +286,7 @@ qc_issues <- taxonomy_final %>%
     n_rows > 2 ~ "More than two rows present with same code",
     n_survey_sp > 1 & !is.na(species_name) ~ "Multiple active rows with same code",
     reason != "" & reason != "species code added" &
-      survey_name == species_name & active == 1 ~ "Two undescribed species synonymized",
+      survey_name == species_name & active == 1 & grepl(" sp\\. ", survey_name) ~ "Two undescribed species synonymized",
     kingdom != "Animalia" ~ "Non-animal taxon in database",
     is.na(kingdom) & !grepl("unsorted", common_name) ~ "No taxonomic info found",
     TRUE ~ NA_character_
