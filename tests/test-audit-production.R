@@ -1,6 +1,6 @@
 ## READ-ONLY checks of the real audit objects (needs GAP_TAX_TEST_ORACLE=true).
 ## Per registry table:
-##   * audit table: columns, PUBLIC grant, audit-data sanity
+##   * audit table: columns, audit-data sanity
 ##   * trigger: exists, ENABLED (and VALID when this account is allowed to see that)
 ##   * id_keys identify rows uniquely in production
 ##
@@ -45,13 +45,7 @@ for (tbl in names(reg_prod)) {
         )
         expect_setequal(get_table_columns(ch, sp$audit_schema, audit), expected)
         
-        # everyone can read it
-        grant <- ora_q(ch, sprintf(
-          "SELECT COUNT(*) AS N FROM all_tab_privs
-            WHERE table_schema = '%s' AND table_name = '%s' AND grantee = 'PUBLIC' AND privilege = 'SELECT'",
-          sp$audit_schema, audit
-        ))
-        expect_gte(grant$N, 1)
+        # (PUBLIC SELECT is no longer required: access is managed through registry `grants`)
         
         # audit data sanity (what the trigger guarantees)
         bad_type <- ora_q(ch, sprintf(

@@ -309,6 +309,29 @@ taxon_group_stanzas_updated <- taxon_group_stanzas_updated %>%
 taxon_group_composition_updated <- taxon_group_composition_updated %>%
   filter(!group_stanza_id %in% obsolete_modern_stanzas)
 
+# Keep modern stanzas in sync with taxon_groups.
+# Earlier steps only ever add composition rows, so a species whose group changed (renamed to a
+# different genus, synonymized into another code, ...) stays behind in its previous group.
+# Any species that taxon_groups assigns to a group is removed from modern stanzas (year_end ==
+# current year) of every other group. Historical stanzas are left alone on purpose.
+stale_composition <- taxon_group_composition_updated %>%
+  inner_join(
+    taxon_group_stanzas_updated %>%
+      filter(year_end == current_year_num) %>%
+      select(group_stanza_id, group_code),
+    by = "group_stanza_id"
+  ) %>%
+  semi_join(taxon_groups, by = "species_code") %>%
+  anti_join(taxon_groups %>% distinct(species_code, group_code), by = c("species_code", "group_code")) %>%
+  select(group_stanza_id, group_code, species_code)
+
+if (nrow(stale_composition) > 0) {
+  message("Removing species from modern groups they no longer belong to:")
+  print(stale_composition, n = Inf)
+  taxon_group_composition_updated <- taxon_group_composition_updated %>%
+    anti_join(stale_composition, by = c("group_stanza_id", "species_code"))
+}
+
 
 ## ============================================================
 ## 11) Format tables for Oracle upload

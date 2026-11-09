@@ -66,6 +66,21 @@ load_current <- function(channel, schema, table) {
 }
 
 ## ---- First-time table creation ---------------------------------------------
+sync_grants <- function(channel, registry) {
+  for (tbl in names(registry)) {
+    sp <- registry[[tbl]]
+    for (g in sp$grants) {
+      sql <- sprintf(
+        "GRANT %s ON %s.%s TO %s%s",
+        g$privilege, sp$schema, toupper(tbl), assert_schema(g$to),
+        if (isTRUE(g$with_grant_option)) " WITH GRANT OPTION" else ""
+      )
+      message("--> ", sql)
+      run_sql(channel, sql, "grant")
+    }
+  }
+  invisible(TRUE)
+}
 
 infer_oracle_type <- function(x) {
   if (is.integer(x)) {
@@ -603,7 +618,7 @@ sync_audit_table <- function(channel, schema, table, audit_keys,
         "relax NOT NULL"
       )
     }
-    run_sql(channel, sprintf("GRANT SELECT ON %s.%s TO PUBLIC", audit_schema, audit_tbl), "grant")
+  #  run_sql(channel, sprintf("GRANT SELECT ON %s.%s TO PUBLIC", audit_schema, audit_tbl), "grant")
   }
   
   # -- 2. Trigger ---------------------------------------------------------------

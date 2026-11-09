@@ -18,17 +18,17 @@ library(here)
 library(testthat)
 
 run_gap_tax_tests <- function(oracle = FALSE, scratch_schema = NULL, contract = FALSE) {
-  dir <- here::here("tests")
-  filters <- "^(delta|sql-builders|registry|functions|qaqc|audit-ddl)$"
+  dir <- here::here("tests", "testthat")
+  filters <- "^(delta|sql-builders|registry|functions|qaqc|audit-ddl|grants)$"
   if (oracle) filters <- c(filters, "^(audit-scratch-oracle|audit-production)$")
   if (contract) filters <- c(filters, "^pipeline-outputs$")
-
+  
   if (oracle) {
     Sys.setenv(GAP_TAX_TEST_ORACLE = "true")
     if (!is.null(scratch_schema)) Sys.setenv(GAP_TAX_TEST_SCHEMA = scratch_schema)
   }
   testthat::test_dir(dir,
-    filter = paste(filters, collapse = "|"),
-    reporter = "progress", stop_on_failure = FALSE
+                     filter = paste(filters, collapse = "|"),
+                     reporter = "progress", stop_on_failure = FALSE
   )
 }

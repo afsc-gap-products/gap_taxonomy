@@ -35,7 +35,8 @@ tax_registry <- list(
     id_keys    = c("species_code", "database", "database_id"),
     audit_keys = c("species_code", "database", "database_id"),
     new        = "taxonomic_classification_new",
-    current    = "taxonomic_classification_current"
+    current    = "taxonomic_classification_current",
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE))
   ),
   taxonomic_changes = list(
     mode = "insert_only",

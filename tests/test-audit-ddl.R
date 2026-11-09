@@ -55,7 +55,9 @@ test_that("audit table pairs every non-key column as _CURRENT / _UPDATE", {
   expect_match(ctas, "CREATE TABLE SCH.AUDIT_TBL AS", fixed = TRUE)
   expect_match(ctas, "OPERATION_TYPE", fixed = TRUE)
   expect_match(ctas, "ID, LABEL AS LABEL_CURRENT, LABEL AS LABEL_UPDATE, ACTIVE AS ACTIVE_CURRENT, ACTIVE AS ACTIVE_UPDATE", fixed = TRUE)
-  expect_match(ctas, "GRANT SELECT ON SCH.AUDIT_TBL TO PUBLIC", fixed = TRUE)
+  # audit tables are no longer granted to PUBLIC automatically (access is managed via
+  # registry `grants` / sync_grants()); this guards against it quietly coming back
+  expect_false(any(grepl("TO PUBLIC", cap$sql, fixed = TRUE)))
 })
 
 test_that("trigger has INSERT / DELETE / UPDATE branches that use :NEW / :OLD correctly", {
@@ -64,7 +66,7 @@ test_that("trigger has INSERT / DELETE / UPDATE branches that use :NEW / :OLD co
   expect_match(trg, "CREATE OR REPLACE TRIGGER SCH.AUDIT_TBL", fixed = TRUE)
   expect_match(trg, "AFTER INSERT OR DELETE OR UPDATE ON SCH.TBL", fixed = TRUE)
   expect_match(trg, "FOR EACH ROW", fixed = TRUE)
-
+  
   parts <- strsplit(trg, "ELSIF DELETING THEN", fixed = TRUE)[[1]]
   expect_length(parts, 2)
   ins <- parts[1]
@@ -72,7 +74,7 @@ test_that("trigger has INSERT / DELETE / UPDATE branches that use :NEW / :OLD co
   expect_length(rest, 2)
   del <- rest[1]
   upd <- rest[2]
-
+  
   # INSERT: new values only
   expect_match(ins, ":NEW.ID", fixed = TRUE)
   expect_match(ins, ":NEW.LABEL", fixed = TRUE)
@@ -114,7 +116,7 @@ test_that("column drift stops the run unless rebuild = TRUE, which renames the o
   stale <- c("OPERATION_TYPE", "OPERATION_TIMESTAMP", "USER_NAME", "ID", "LABEL_CURRENT", "LABEL_UPDATE")
   # production table gained a column (ACTIVE) the audit table doesn't have
   expect_error(run_sync(c("ID", "LABEL", "ACTIVE"), audit_cols = stale), "columns don't match")
-
+  
   cap <- run_sync(c("ID", "LABEL", "ACTIVE"), audit_cols = stale, rebuild = TRUE)
   sql <- paste(cap$sql, collapse = "\n")
   expect_match(sql, "RENAME TO AUDIT_TBL_BAK", fixed = TRUE)

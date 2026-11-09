@@ -33,6 +33,7 @@ if (isTRUE(cfg$dry_run)) {
 
   ## 2. Make sure audit tables/triggers exist and match the production tables
   ##    (skipped in dry runs because this creates/replaces database objects)
+  sync_grants(channel, active_registry)
   sync_all_audits(channel, active_registry, rebuild = cfg$rebuild_audit)
 
   time_start <- get_db_time(channel)
