@@ -36,7 +36,8 @@ tax_registry <- list(
     audit_keys = c("species_code", "database", "database_id"),
     new        = "taxonomic_classification_new",
     current    = "taxonomic_classification_current",
-    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE))
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE),
+                      list(privilege = "SELECT", to = "PUBLIC", with_grant_option = TRUE))
   ),
   taxonomic_changes = list(
     mode = "insert_only",
@@ -50,7 +51,9 @@ tax_registry <- list(
     ),
     new = "taxonomic_changes_new",
     current = NULL, # read from Oracle
-    fast_save = FALSE # avoids ORA-01461 on long strings
+    fast_save = FALSE, # avoids ORA-01461 on long strings
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE),
+                      list(privilege = "SELECT", to = "PUBLIC", with_grant_option = TRUE))
   ),
   taxonomic_confidence = list(
     # insert_only: revised scores for existing rows are NOT pushed. Use "upsert"
@@ -59,21 +62,27 @@ tax_registry <- list(
     id_keys    = c("survey_definition_id", "year", "species_code"),
     audit_keys = c("survey_definition_id", "year", "species_code"),
     new        = "taxonomic_confidence_new",
-    current    = "taxon_confidence_current"
+    current    = "taxon_confidence_current",
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE),
+                      list(privilege = "SELECT", to = "PUBLIC", with_grant_option = TRUE))
   ),
   taxon_group_stanzas = list( # parent of composition
     mode       = "upsert",
     id_keys    = "group_stanza_id",
     audit_keys = "group_stanza_id",
     new        = "taxon_group_stanzas_new",
-    current    = "taxon_group_stanzas_current"
+    current    = "taxon_group_stanzas_current",
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE),
+                      list(privilege = "SELECT", to = "PUBLIC", with_grant_option = TRUE))
   ),
   taxon_group_composition = list( # child of stanzas
     mode       = "upsert",
     id_keys    = c("group_stanza_id", "species_code"),
     audit_keys = c("group_stanza_id", "species_code"),
     new        = "taxon_group_composition_new",
-    current    = "taxon_group_composition_current"
+    current    = "taxon_group_composition_current",
+    grants     = list(list(privilege = "SELECT", to = "GAP_PRODUCTS", with_grant_option = TRUE),
+                      list(privilege = "SELECT", to = "PUBLIC", with_grant_option = TRUE))
   ),
 
   ## --- RACE_DATA tables (parent -> child). Enable with cfg$include_race_data ---
